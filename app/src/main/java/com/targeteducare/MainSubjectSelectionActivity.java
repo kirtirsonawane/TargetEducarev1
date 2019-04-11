@@ -12,14 +12,13 @@ import java.util.ArrayList;
 
 public class MainSubjectSelectionActivity extends Activitycommon {
 
-    MainSubjectAdapter mainSubjectAdapter;
-    ArrayList<MainSubjectDataModel> mainSubjectDataArrayList;
+    private MainSubjectAdapter mainSubjectAdapter;
+    private ArrayList<MainSubjectDataModel> mainSubjectDataArrayList;
 
-    ArrayList<String> temp_data;
+    private ArrayList<String> temp_data;
 
-    RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
-    RecyclerView.LayoutManager layoutManager;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

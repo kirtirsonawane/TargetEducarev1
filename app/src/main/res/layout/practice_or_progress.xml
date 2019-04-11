@@ -21,6 +21,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/chapternumber"
                 android:layout_marginLeft="10dp"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
                 android:layout_marginLeft="5dp">
 
                 <TextView
+                    android:id="@+id/nameoftopic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Topic Name"
@@ -50,18 +52,21 @@
                     android:weightSum="3">
 
                     <TextView
+                        android:id="@+id/totalvideos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Videos"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/totalgoals"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Goals"
                         android:layout_weight="1"/>
 
                     <TextView
+                        android:id="@+id/totalconcepts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Concepts"
@@ -70,13 +75,19 @@
                 </LinearLayout>
 
                 <ProgressBar
-                    android:id="@+id/progressBar_cyclic"
+                    android:id="@+id/progress_topiccovered"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:minHeight="10dp"
                     android:minWidth="10dp"
                     android:layout_marginRight="10dp"/>
+
+                <TextView
+                    android:id="@+id/coveredpercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Covered x%"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -87,20 +98,24 @@
                     android:weightSum="2">
 
                     <Button
+                        android:id="@+id/button_startpractice"
                         android:layout_marginRight="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAllCaps="false"
                         android:text="Start Practice"
+                        android:textColor="@color/white"
                         android:background="@drawable/rounded_button_layout"
                         android:layout_weight="1" />
 
                     <Button
+                        android:id="@+id/button_checkprogress"
                         android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAllCaps="false"
                         android:text="Check Progress"
+                        android:textColor="@color/white"
                         android:background="@drawable/rounded_button_layout"
                         android:layout_weight="1"/>
 

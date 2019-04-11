@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class SamplePapers extends Activitycommon {
 
-    public static ArrayList<PaperModel> data;
-    private RecyclerView.Adapter adapter;
+    private ArrayList<PaperModel> data;
+    private PaperReadorDownloadAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

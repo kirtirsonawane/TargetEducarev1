@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class SelectBoard extends Activitycommon {
 
-    GetCategoryBoardAdapter getCategoryBoardAdapter;
+    private GetCategoryBoardAdapter getCategoryBoardAdapter;
 
     ArrayList<GetCategoryBoard> getCategoryBoardsdata;
 

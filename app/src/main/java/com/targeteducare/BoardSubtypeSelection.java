@@ -23,7 +23,7 @@ public class BoardSubtypeSelection extends AppCompatActivity {
     TextView tv_boarddisplay;
     ArrayList<GetCategorySubBoard> getCategorySubBoards;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private GetCategorySubBoardAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     SharedPreferences preferences;

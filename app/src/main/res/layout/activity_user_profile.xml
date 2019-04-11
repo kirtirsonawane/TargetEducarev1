@@ -11,7 +11,7 @@
         layout="@layout/toolbar">
     </include>
 
-    <com.exammultiplechoice.Classes.CircularImageView
+    <com.targeteducare.Classes.CircularImageView
         android:id="@+id/iconuserprof"
         android:layout_width="100dp"
         android:layout_height="100dp"

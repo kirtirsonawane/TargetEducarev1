@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".PracticeTestActivity"></activity>
+        <activity android:name=".ProgressReport"></activity>
+        <activity android:name=".PracticeTestActivity" />
         <activity android:name=".MainSubjectSelectionActivity" />
         <activity android:name=".SubjectSelectionActivity" />
         <activity android:name=".BoardSubtypeSelection" />

@@ -14,10 +14,10 @@ import java.util.ArrayList;
 
 public class QnAFeed extends Activitycommon {
 
-    private static ArrayList<QnaQuestionModel> dataQuestionmodel;
-    private static RecyclerView.Adapter adapter;
+    private ArrayList<QnaQuestionModel> dataQuestionmodel;
+    private QnaQuestionAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private  RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

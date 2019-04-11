@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class UserProfile extends Activitycommon {
 
     private static ArrayList<UserProfModel> userProfModels;
-    private RecyclerView.Adapter adapter;
+    private UserProfAdapter adapter;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;

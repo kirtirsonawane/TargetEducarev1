@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class GridMainActivity extends Activitycommon{
     private static ArrayList<QnaQuestionModel> dataQuestionmodel;
     private static ArrayList<Menu> data;
-    private RecyclerView.Adapter adapter;
+    private CustomAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView1;
 
