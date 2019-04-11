@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">TargetEducare</string>
+    <string name="app_name">TEPL CBT</string>
+    <string name="title_activity_exam">ExamActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="activity_label">Example</string>
+    <string name="image_button_content_description">Change state of section</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Connectiontimeout">Please check lan connection</string>
+
+    <string name="storage_name">examination</string>
 </resources>
