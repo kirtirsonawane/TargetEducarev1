@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/layout_1"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.exammultiplechoice.TouchImageView
+        android:id="@+id/viewPagerItem_image2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:scaleType="center"
+        />
+
+    <!--<WebView
+        android:id="@+id/webview_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        ></WebView>-->
+<!--
+    <ImageButton
+        android:id="@+id/thumb_button_1"
+        android:layout_width="100dp"
+        android:layout_height="75dp"
+        android:layout_marginRight="1dp"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"
+        android:contentDescription="description_image_1" />
+-->
+</LinearLayout>

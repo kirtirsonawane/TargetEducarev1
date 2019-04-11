@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/Gray">
+
+    <include
+        layout="@layout/header_gridmain">
+    </include>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerviewforgrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical"
+        android:background="@color/white">
+    </android.support.v7.widget.RecyclerView>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:layout_marginTop="10dp"
+        android:weightSum="2">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/qna"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="QnA"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:padding="15dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/tv_viewmore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blue1"
+            android:text="View More"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:padding="15dp"
+            android:layout_marginLeft="60dp"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/Graylight"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerviewforqna"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="5dp">
+    </android.support.v7.widget.RecyclerView>-->
+
+</LinearLayout>
+
