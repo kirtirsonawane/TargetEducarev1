@@ -39,7 +39,6 @@
             android:label="@string/title_activity_exam"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".ExamListActivity" />
         <activity android:name=".AnswersheetActivity" />
         <activity android:name=".IPSettingActivity" />
