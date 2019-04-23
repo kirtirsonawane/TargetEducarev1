@@ -35,9 +35,9 @@ import com.targeteducare.URLS;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdapter.Holder>{
-    ArrayList <MyPackages> arrayList;
-    MyPackages myPackages= new MyPackages();
+public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdapter.Holder> {
+    ArrayList<MyPackages> arrayList;
+    MyPackages myPackages = new MyPackages();
     Context context;
     public ItemClickListener itemClickListener;
 
@@ -59,7 +59,7 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
             view.setTag(this);
 
             Packages_TextView_Amount = (TextView) view.findViewById(R.id.package_textview_amount);
-            Packages_TextView_Discription = (TextView) view.findViewById(R.id.package_textview_discription);
+            // Packages_TextView_Discription = (TextView) view.findViewById(R.id.package_textview_discription);
             Packages_TextView_Course_Name = (TextView) view.findViewById(R.id.package_textview_course_name);
             Packages_ImageView = (ImageView) view.findViewById(R.id.package_imageview_1);
             Packages_TextView_Course_Name = (TextView) view.findViewById(R.id.package_textview_course_name);
@@ -68,7 +68,7 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
 
 
             myPackagesArrayList = new ArrayList<MyPackages>();
-          //  Packages_TextView_ViewMore.setTypeface(Fonter.getTypefaceregular(context));
+            //  Packages_TextView_ViewMore.setTypeface(Fonter.getTypefaceregular(context));
             Packages_TextView_ViewMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -98,21 +98,25 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
             TextView dialog_heading = (TextView) dialog.findViewById((R.id.textview_dialog_heading));
             dialog_discp.getSettings().setJavaScriptEnabled(true);
             dialog_heading.setText("Details : ");
-            Log.e("data ","data "+arrayList.get(position).getDescription());
-            dialog_discp.loadData(arrayList.get(position).getDescription().replaceAll("/images/Uploadvideo", Constants.ippath),"text/html","utf-8");
+            Log.e("data ", "data " + arrayList.get(position).getDescription());
+
+            dialog_discp.loadData(arrayList.get(position).getDescription().replaceAll("/images/Uploadvideo", Constants.ippath), "text/html", "utf-8");
+
+            Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
 
 
             TextView Textview_dialog_Amount = (TextView) dialog.findViewById(R.id.textview_dialog_amount);
 
+            Packages_TextView_Amount.setTypeface(Fonter.getTypefacebold(context));
             Textview_dialog_Amount.setText(Packages_TextView_Amount.getText());
+
+
             TextView text1 = (TextView) dialog.findViewById(R.id.textview_course_name);
 
             //  text.setText(Packages_TextView_Discription.getText());
 
 
-
             text1.setText(Packages_TextView_Course_Name.getText());
-
 
 
             ImageView dialog_close = (ImageView) dialog.findViewById(R.id.dialog_close_button);
@@ -132,16 +136,16 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
     }
 
 
-
-    public GetMyPackagesAdapter(Context context,ArrayList<MyPackages> qList) {
+    public GetMyPackagesAdapter(Context context, ArrayList<MyPackages> qList) {
         this.arrayList = qList;
-        this.context=context;
+        this.context = context;
     }
+
     @NonNull
     @Override
 
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.my_package_adapter_xml_file, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_package_adapter_xml_file, parent, false);
 
 
         return new Holder(view);
@@ -149,34 +153,34 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(@NonNull final Holder holder, final int i) {
 
 
-Log.e("size of array ", String.valueOf(arrayList.size()));
+        Log.e("size of array ", String.valueOf(arrayList.size()));
 
-        for ( int j=0; j<arrayList.size(); j++) {
-           String urls=Constants.imagepath+arrayList.get(i).getImageurl();
-           Log.e("url",i+" "+urls);
+        for (int j = 0; j < arrayList.size(); j++) {
+            String urls = Constants.imagepath + arrayList.get(i).getImageurl();
+            Log.e("url", i + " " + urls);
 
-          //  String urls=URLS.getmy_package_image();
-                    //Log.e("URLS ::: ;;; ",arrayList.get(i).getImageurl());
-            /*Picasso.with(context)
+            //  String urls=URLS.getmy_package_image();
+            //Log.e("URLS ::: ;;; ",arrayList.get(i).getImageurl());
+            Picasso.with(context)
                     .load(urls)
                     .placeholder(R.drawable.ic_exam)
-                    .error(R.drawable.close_dialog_one)
+                    .error(R.drawable.ic_launcher)
                     .into(holder.Packages_ImageView);
-            Picasso.Builder builder = new Picasso.Builder(context);
-            builder.listener(new Picasso.Listener() {
+            //Picasso.Builder builder = new Picasso.Builder(context);
+            /*builder.listener(new Picasso.Listener() {
                 @Override
                 public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
                     exception.printStackTrace();
 
-                }
-setTypeface(Fonter.getTypefaceregular(mContext)
-            });*/
+                }*/
+
+        }
+        ;
         /*    Glide.with(context)
                     .load(urls)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -185,60 +189,49 @@ setTypeface(Fonter.getTypefaceregular(mContext)
                     .into(holder.Packages_ImageView);*/
 
 
+        holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
 
-
-           // /images/Uploadvideos/20190417150559_download (1).jpg+arrayList.get(i).getImageurl();/images/Uploadvideos/Thumbnail/
-           // holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
-            holder.Packages_TextView_Course_Name.setText(Html.fromHtml(arrayList.get(i).getName()));
+        // /images/Uploadvideos/20190417150559_download (1).jpg+arrayList.get(i).getImageurl();/images/Uploadvideos/Thumbnail/
+        // holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
+        holder.Packages_TextView_Course_Name.setText(Html.fromHtml(arrayList.get(i).getName()));
 
          /*  holder.Packages_TextView_Discription.setText(Html.fromHtml( arrayList.get(i).getDescription()));
             Log.e("Discription::holder@ ::",arrayList.get(i).getDescription());*/
 
 
+        holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
+        // holder.Packages_TextView_Amount.setTypeface(Fonter.getTypefaceregular(context));
+        holder.Packages_TextView_Amount.setText("₹ " + arrayList.get(i).getAmount());
+        //  Log.e("Image:::",String.valueOf(arrayList.get(j).getAmount()));
 
 
+        holder.Packages_CheckBox.setTypeface(Fonter.getTypefaceregular(context));
+        holder.Packages_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-           // holder.Packages_TextView_Amount.setTypeface(Fonter.getTypefaceregular(context));
-            holder.Packages_TextView_Amount.setText("₹ "+arrayList.get(i).getAmount());
-            Log.e("Image:::",String.valueOf(arrayList.get(j).getAmount()));
-
-
-
-            holder.Packages_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                    Log.e("is Checked", String.valueOf((isChecked)));
+                Log.e("is Checked", String.valueOf((isChecked)));
 
 
+                if (isChecked == true) {
 
-                    if (isChecked == true) {
+                    Log.e("is Checked in if", String.valueOf((isChecked)));
+                    holder.Packages_CheckBox.setText("Remove");
+                    ((MyPackagesActivity) context).gotogetamount(arrayList.get(i).getAmount(), 1);
 
-                            Log.e("is Checked in if", String.valueOf((isChecked)));
-                        holder.Packages_CheckBox.setText("Remove");
-                        ((MyPackagesActivity) context).gotogetamount(arrayList.get(i).getAmount(), 1);
-
-                        Log.e("value of amount :: ::",getAmount().toString());
-                        Log.e("checked ", String.valueOf(arrayList.get(i).getAmount()));
-                    } else if (isChecked == false) {
-                        holder.Packages_CheckBox.setText("Add");
-                        ((MyPackagesActivity) context).gotogetamount(arrayList.get(i).getAmount(), 0);
-                    }
-
-
+                    Log.e("value of amount :: ::", getAmount().toString());
+                    Log.e("checked ", String.valueOf(arrayList.get(i).getAmount()));
+                } else if (isChecked == false) {
+                    holder.Packages_CheckBox.setText("Add");
+                    ((MyPackagesActivity) context).gotogetamount(arrayList.get(i).getAmount(), 0);
                 }
-            });
 
 
+            }
+        });
 
-
-
-
-        }
 
     }
-
-
 
 
     @Override

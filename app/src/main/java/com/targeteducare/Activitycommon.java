@@ -70,6 +70,33 @@ public class Activitycommon extends AppCompatActivity {
         }
     }
 
+
+
+    public void setmaterialDesign_my_package() {
+        try {
+            tag = "ActivityCommon";
+            toolbar = findViewById(R.id.packages_toolbar_xm);
+            toolbar.setTitleTextColor(getResources().getColor(R.color.White));
+
+            setSupportActionBar(toolbar);
+            toolbar.setLogo(R.mipmap.ic_launcher);
+
+            toolbar.setTitle("Packages");
+
+            ((TextView) toolbar.findViewById(R.id.package_toolbar_textview_amount_sign)).setText("₹");
+            ((TextView) toolbar.findViewById(R.id.package_toolbar_textview_payment)).setText("0.00");
+           //toolbar.addView((Button)findViewById(R.id.package_toolbar_button_1));
+
+
+            LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(responseRec, new IntentFilter(Constants.BROADCAST_WIZARD));
+            context = this;
+        } catch (Exception e) {
+            Log.e("error ","error "+e.toString());
+            e.printStackTrace();
+        }
+    }
+
+
     public void registerreceiver() {
         try {
             context = this;
