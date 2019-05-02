@@ -1,5 +1,7 @@
 package com.targeteducare.Classes;
 
+import android.graphics.drawable.Drawable;
+
 public class Student {
     String Id="";
     String Name="";
@@ -44,6 +46,19 @@ public class Student {
     String state = "";
     String city = "";
     String district = "";
+
+
+    /*public Drawable getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(Drawable profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
+    Drawable profile_pic;*/
+
+
 
     public String getDistrict() {
         return district;

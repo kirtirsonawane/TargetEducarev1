@@ -46,7 +46,7 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomAdapterEngColg.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.icon.setImageResource(dataSet.get(position).getLogo_img());
         holder.ratings.setText(dataSet.get(position).getRating()+"/5");
         holder.reviews.setText(dataSet.get(position).getReviews()+" reviews");

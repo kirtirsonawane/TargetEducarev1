@@ -33,7 +33,7 @@ public class QnAdapterRecyclerView extends RecyclerView.Adapter<QnAdapterRecycle
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QnAdapterRecyclerView.MyViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         holder.profile_pic.setImageResource(dataSet.get(i).getProfile_pic());
         holder.name.setText(dataSet.get(i).getName());
         holder.xminsago.setText(dataSet.get(i).getMinutes_ago()+" minutes ago");

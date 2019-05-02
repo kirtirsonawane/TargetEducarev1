@@ -125,6 +125,7 @@ public class GridMainActivity extends Activitycommon{
                 itest.putExtra("testtype",data.get(position).getName());
                 startActivity(itest);
                 break;
+
             case 1:
                 itest = new Intent(GridMainActivity.this,MockTestActivity.class);
                 /*edit.putBoolean("flagtestacivity", true);
@@ -132,40 +133,57 @@ public class GridMainActivity extends Activitycommon{
                 itest.putExtra("testtype",data.get(position).getName());
                 startActivity(itest);
                 break;
+
             case 2:
                 itest = new Intent(GridMainActivity.this,LoginActivity.class);
                 itest.putExtra("testtype",data.get(position).getName());
                 /*edit.putBoolean("flagtestacivity", true);
                 edit.apply();*/
                 startActivity(itest);
-                /*Intent iexamlist = new Intent(GridMainActivity.this, LoginActivity.class);
-                startActivity(iexamlist);*/
                 break;
+
             case 3:
-                Intent ismppaper = new Intent(GridMainActivity.this, SamplePapers.class);
-                startActivity(ismppaper);
+                itest = new Intent(GridMainActivity.this,LoginActivity.class);
+                itest.putExtra("testtype",data.get(position).getName());
+                /*edit.putBoolean("flagtestacivity", true);
+                edit.apply();*/
+                startActivity(itest);
                 break;
+
             case 4:
-                Intent mypackage = new Intent(GridMainActivity.this, MyPackagesActivity.class);
-                startActivity(mypackage);
+                /*Intent ismppaper = new Intent(GridMainActivity.this, SamplePapers.class);
+                startActivity(ismppaper);*/
                 break;
+
             case 5:
                 break;
+
             case 6:
                 Intent imainsubjselect = new Intent(GridMainActivity.this, MainSubjectSelectionActivity.class);
                 startActivity(imainsubjselect);
                 break;
+
             case 7:
                 Intent iprof = new Intent(GridMainActivity.this, UserProfileActivity.class);
                 startActivity(iprof);
                 break;
+
             case 8:
                 Intent iengcolg = new Intent(GridMainActivity.this, EngineeringCollegesActivity.class);
                 startActivity(iengcolg);
                 break;
+
             case 9:
                 Intent iqnafeed = new Intent(GridMainActivity.this, QnAFeedActivity.class);
                 startActivity(iqnafeed);
+                break;
+
+            case 10:
+                break;
+
+            case 11:
+                Intent mypackage = new Intent(GridMainActivity.this, MyPackagesActivity.class);
+                startActivity(mypackage);
                 break;
         }
     }

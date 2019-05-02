@@ -79,7 +79,7 @@ public class TouchImageView extends AppCompatImageView {
     private Fling fling;
     private int orientation;
 
-    private ImageView.ScaleType mScaleType;
+    private ScaleType mScaleType;
 
     private boolean imageRenderedAtLeastOnce;
     private boolean onDrawReady;
@@ -99,7 +99,7 @@ public class TouchImageView extends AppCompatImageView {
     private ScaleGestureDetector mScaleDetector;
     private GestureDetector mGestureDetector;
     private GestureDetector.OnDoubleTapListener doubleTapListener = null;
-    private View.OnTouchListener userTouchListener = null;
+    private OnTouchListener userTouchListener = null;
     private OnTouchImageViewListener touchImageViewListener = null;
 
     public TouchImageView(Context context) {
@@ -130,7 +130,7 @@ public class TouchImageView extends AppCompatImageView {
         m = new float[9];
         normalizedScale = 1;
         if (mScaleType == null) {
-            mScaleType = ImageView.ScaleType.FIT_CENTER;
+            mScaleType = ScaleType.FIT_CENTER;
         }
 
         minScale = 1;
@@ -140,7 +140,7 @@ public class TouchImageView extends AppCompatImageView {
         superMaxScale = SUPER_MAX_MULTIPLIER * maxScale;
 
         setImageMatrix(matrix);
-        setScaleType(ImageView.ScaleType.MATRIX);
+        setScaleType(ScaleType.MATRIX);
         setState(State.NONE);
 
         onDrawReady = false;
@@ -161,7 +161,7 @@ public class TouchImageView extends AppCompatImageView {
     }
 
     @Override
-    public void setOnTouchListener(View.OnTouchListener l) {
+    public void setOnTouchListener(OnTouchListener l) {
         userTouchListener = l;
     }
 

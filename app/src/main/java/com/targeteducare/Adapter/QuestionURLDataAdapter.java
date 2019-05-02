@@ -30,14 +30,14 @@ public class QuestionURLDataAdapter extends RecyclerView.Adapter<QuestionURLData
 
     @NonNull
     @Override
-    public QuestionURLDataAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.list_item_image, parent, false);
-        return new QuestionURLDataAdapter.viewHolder(v);
+        return new viewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final QuestionURLDataAdapter.viewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final viewHolder holder, final int position) {
         try {
             Log.e("data ", "data " + mdataset.get(0).getImagemainsource() + " " + mdataset.get(0).getId());
 /*

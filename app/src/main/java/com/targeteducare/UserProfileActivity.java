@@ -2,10 +2,14 @@ package com.targeteducare;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +20,11 @@ import com.targeteducare.Classes.UserProfModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -93,5 +102,6 @@ public class UserProfileActivity extends Activitycommon {
     protected void onPostResume() {
         super.onPostResume();
         tv_username.setText(GlobalValues.student.getFullname());
+        //profile_image.setImageDrawable(GlobalValues.student.getProfile_pic());
     }
 }

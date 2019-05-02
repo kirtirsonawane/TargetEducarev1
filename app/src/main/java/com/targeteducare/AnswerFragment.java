@@ -54,7 +54,7 @@ import static com.targeteducare.AnswersheetActivity.exam;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AnswerFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link AnswerFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -712,7 +712,7 @@ public class AnswerFragment extends Fragment implements Html.ImageGetter {
                     Drawable empty = getResources().getDrawable(R.mipmap.ic_launcher);
                     d.addLevel(0, 0, empty);
                     d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
-                    new AnswerFragment.LoadImage(cb, 1).execute(s, d);
+                    new LoadImage(cb, 1).execute(s, d);
                     return d;
                 }
             };

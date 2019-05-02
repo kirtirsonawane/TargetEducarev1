@@ -28,11 +28,37 @@ public class LoginV1Activity extends Activitycommon {
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
 
-    String id = "";
-    String name = "";
-    String mobile = "";
-    String referralmobile = "";
-    String rolename = "";
+    String Id = "";
+    String Name = "";
+    String RollNumber = "";
+    String CenterId = "";
+    String FatherName = "";
+    String MotherName = "";
+    String DOB = "";
+    String Mobile = "";
+    String Email = "";
+    String QualificationId = "";
+    String CountryId = "";
+    String StateId = "";
+    String CityId = "";
+    String Password = "";
+    String Address = "";
+    String RegistrationDate = "";
+    String CategoryId = "";
+    String SubCategoryId = "";
+    String CasteCategory = "";
+    String Adhar = "";
+    String IsActive = "";
+    String Gender = "";
+    String Nationality = "";
+    String AltMobile = "";
+    String AltEmail = "";
+    String Totalamt = "";
+    String dueAmt = "";
+    String sanstha_id = "";
+    String ReferalMobile = "";
+    String RoleName = "";
+    String UserTheme = "";
 
     boolean flag = false;
 
@@ -99,6 +125,7 @@ public class LoginV1Activity extends Activitycommon {
                     Log.e("Value of flag is ",String.valueOf(flag));
                     Log.e("Entered otp is ",enter_otp.getText().toString());
                     Log.e("Sent otp is ",otp);
+
                     if(flag == true){
                         Log.e("I am into ","flag == true");
                         if (!(enter_otp.getText().toString().trim().equals(""))) {
@@ -107,13 +134,25 @@ public class LoginV1Activity extends Activitycommon {
 
                                 Gson gson = new Gson();
 
-                                GlobalValues.student.setId(id);
-                                GlobalValues.student.setName(name);
-                                Log.e("From login ","mobile no. is "+mobile);
+                                GlobalValues.student.setId(Id);
+                                GlobalValues.student.setRollNumber(RollNumber);
+                                GlobalValues.student.setName(Name);
+                                GlobalValues.student.setFatherName(FatherName);
+                                GlobalValues.student.setFullname(Name+ " "+FatherName);
+                                GlobalValues.student.setDOB(DOB);
+                                GlobalValues.student.setGender(Gender);
+                                Log.e("From login ","mobile no. is "+Mobile);
                                 GlobalValues.student.setMobile(et_mobileno);
-                                GlobalValues.student.setReferalMobile(referralmobile);
-                                GlobalValues.student.setRollNumber(rolename);
-                                String nametest = GlobalValues.student.getName();
+                                GlobalValues.student.setReferalMobile(ReferalMobile);
+                                GlobalValues.student.setAltMobile(AltMobile);
+                                GlobalValues.student.setEmail(Email);
+                                GlobalValues.student.setCategoryId(CategoryId);
+                                GlobalValues.student.setSubCategoryId(SubCategoryId);
+                                GlobalValues.student.setStateId(StateId);
+                                GlobalValues.student.setCityId(CityId);
+                                GlobalValues.student.setRoleName(RoleName);
+
+                                //String nametest = GlobalValues.student.getName();
 
                                 String jsonstudent = gson.toJson(GlobalValues.student);
                                 Log.e("Id is: ", GlobalValues.student.getId());
@@ -176,11 +215,39 @@ public class LoginV1Activity extends Activitycommon {
                             ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, otp);
                             Toast.makeText(context, "We have sent an OTP to the registered mobile number " + et_mobileno + ". Please Verify the same", Toast.LENGTH_SHORT).show();
                             Log.e("OTP is ",otp);
-                            id = subroot.optString("Id");
-                            name = subroot.optString("Name");
-                            mobile = subroot.optString("Mobile");
-                            referralmobile = subroot.optString("ReferalMobile");
-                            rolename = subroot.optString("RoleName");
+
+                            Id = subroot.optString("Id");
+                            Name = subroot.optString("Name");
+                            RollNumber = subroot.optString("RollNumber");
+                            CenterId = subroot.optString("CenterId");
+                            FatherName = subroot.optString("FatherName");
+                            MotherName = subroot.optString("MotherName");
+                            DOB = subroot.optString("DOB");
+                            Mobile = subroot.optString("Mobile");
+                            Email = subroot.optString("Email");
+                            QualificationId = subroot.optString("QualificationId");
+                            CountryId = subroot.optString("CountryId");
+                            StateId = subroot.optString("StateId");
+                            CityId = subroot.optString("CityId");
+                            Password = subroot.optString("Password");
+                            Address = subroot.optString("Address");
+                            RegistrationDate = subroot.optString("RegistrationDate");
+                            CategoryId = subroot.optString("CategoryId");
+                            SubCategoryId = subroot.optString("SubCategoryId");
+                            CasteCategory = subroot.optString("CasteCategory");
+                            Adhar = subroot.optString("Adhar");
+                            IsActive = subroot.optString("IsActive");
+                            Gender = subroot.optString("Gender");
+                            Log.e("In login, gender is ", Gender);
+                            Nationality = subroot.optString("Nationality");
+                            AltMobile = subroot.optString("AltMobile");
+                            AltEmail = subroot.optString("AltEmail");
+                            Totalamt = subroot.optString("Totalamt");
+                            dueAmt = subroot.optString("dueAmt");
+                            sanstha_id = subroot.optString("sanstha_id");
+                            ReferalMobile = subroot.optString("ReferalMobile");
+                            RoleName = subroot.optString("RoleName");
+                            UserTheme = subroot.optString("UserTheme");
 
                         } else {
 

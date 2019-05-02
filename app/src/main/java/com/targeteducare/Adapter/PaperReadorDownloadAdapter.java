@@ -33,7 +33,7 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PaperReadorDownloadAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         // set the data in items
         holder.readordownload.setText(dataSet.get(position).getDownloadorread());
         holder.papername.setImageResource(dataSet.get(position).getPapername());

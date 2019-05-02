@@ -33,7 +33,7 @@ public class CustomAdapterforGridMain extends RecyclerView.Adapter<CustomAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomAdapterforGridMain.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         // set the data in items
         holder.name.setText(dataSet.get(position).getName());
         holder.image.setImageResource(dataSet.get(position).getIcon());

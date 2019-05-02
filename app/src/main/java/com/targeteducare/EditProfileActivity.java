@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -60,21 +62,21 @@ public class EditProfileActivity extends Activitycommon {
     private RadioGroup radioGroup;
     ImageView profileimageupdate;
     EditText et_name, et_fathersname, et_surname, et_mobno, et_alternateno, et_emailid, et_district;
-    String id, state_id;
+    String id = "", city_id = "";
     TextView tv_username;
     Button update;
     RadioButton rb_female, rb_male, rb;
     JSONArray subrootboard;
-    View vstandard;
-    TextView tv_standard;
+    View vstandard, vcity;
+    TextView tv_standard, tv_city;
 
     Bitmap selectedImage;
 
-    String date;
+    String date = "";
 
     int radiobutton_gender;
 
-    String rb_text;
+    String rb_text = "";
 
     Spinner spin_stream, spin_standard, spin_state, spin_city;
 
@@ -94,7 +96,7 @@ public class EditProfileActivity extends Activitycommon {
     ArrayAdapter<SpinnerStandard> arrayAdapterstandard;
 
     String check_str, check_subboardstr;
-    String citycheckvalue;
+    String citycheckvalue = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +125,10 @@ public class EditProfileActivity extends Activitycommon {
             GlobalValues.student = gson.fromJson(preferences.getString("studentdetails", ""), type);
             Log.e("selected board ", "" + GlobalValues.student.getBoard_name());
             Log.e("value subboard editprof", " " + GlobalValues.student.getSubboard_name());
+            Log.e("selected student1 ", "selected student1 " + GlobalValues.student.getStateId() + " " + GlobalValues.student.getCityId());
 
             vstandard = findViewById(R.id.viewforstandard);
+            vcity = findViewById(R.id.vcity);
 
             dateofbirth = findViewById(R.id.edittext_dob);
             profileimageupdate = findViewById(R.id.profileimage);
@@ -143,6 +147,7 @@ public class EditProfileActivity extends Activitycommon {
 
             tv_username = findViewById(R.id.tv_username);
             tv_standard = findViewById(R.id.tv_standard);
+            tv_city = findViewById(R.id.tv_city);
 
             update = findViewById(R.id.button_updateprofile);
 
@@ -151,7 +156,7 @@ public class EditProfileActivity extends Activitycommon {
             et_surname.setText(GlobalValues.student.getSurname());
             tv_username.setText(GlobalValues.student.getFullname());
 
-            Log.e("Mobile number is ",GlobalValues.student.getMobile()+"");
+            Log.e("Mobile number is ", GlobalValues.student.getMobile() + "");
             et_mobno.setText(GlobalValues.student.getMobile());
             et_alternateno.setText(GlobalValues.student.getAltMobile());
 
@@ -159,7 +164,7 @@ public class EditProfileActivity extends Activitycommon {
             et_emailid.setText(GlobalValues.student.getEmail());
             et_district.setText(GlobalValues.student.getDistrict());
 
-            Log.e("getting gender ",GlobalValues.student.getGender());
+            Log.e("Getting gender ", GlobalValues.student.getGender());
             if (GlobalValues.student.getGender().equalsIgnoreCase("Female")) {
                 rb_female.setChecked(true);
             } else if (GlobalValues.student.getGender().equalsIgnoreCase("Male")) {
@@ -168,7 +173,6 @@ public class EditProfileActivity extends Activitycommon {
                 rb_male.setChecked(false);
                 rb_female.setChecked(false);
             }
-
 
             et_name.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -284,76 +288,7 @@ public class EditProfileActivity extends Activitycommon {
                 @Override
                 public void onClick(View view) {
 
-                    try{
-                        Gson gson = new Gson();
-
-                        GlobalValues.student.setName(et_name.getText().toString().trim());
-                        GlobalValues.student.setFatherName(et_fathersname.getText().toString().trim());
-                        GlobalValues.student.setSurname(et_surname.getText().toString().trim());
-                        GlobalValues.student.setFullname(GlobalValues.student.getName() + " " + GlobalValues.student.getFatherName() + " " +
-                                GlobalValues.student.getSurname());
-
-                        GlobalValues.student.setDOB(dateofbirth.getText().toString());
-
-                        GlobalValues.student.setGender(rb_text);
-
-                        GlobalValues.student.setMobile(et_mobno.getText().toString());
-                        GlobalValues.student.setAltMobile(et_alternateno.getText().toString());
-
-                        GlobalValues.student.setEmail(et_emailid.getText().toString().trim());
-
-                        GlobalValues.student.setBoard_name(spinnerStreams.get(spin_stream.getSelectedItemPosition()).getBoard_name());
-
-                        if(spin_standard.getSelectedItemPosition()>=0 && (spin_standard.getSelectedItemPosition()<spinnerStandards.size())){
-                            GlobalValues.student.setSubboard_name(spinnerStandards.get(spin_standard.getSelectedItemPosition()).getStandard());
-                        } else{
-                            GlobalValues.student.setSubboard_name("");
-                        }
-
-
-                        Log.e("roll no test: ",GlobalValues.student.getId());
-
-                        //Log.e("spinner state value ",spinnerStates.get(spin_state.getSelectedItemPosition()).getStatename());
-
-                        GlobalValues.student.setState(spinnerStates.get(spin_state.getSelectedItemPosition()).getStatename());
-
-                        if ((spin_city.getSelectedItemPosition() >= 0) && (spin_city.getSelectedItemPosition() < spinnerCities.size())) {
-                            GlobalValues.student.setCity(spinnerCities.get(spin_city.getSelectedItemPosition()).getCity_name());
-                        } else {
-                            GlobalValues.student.setCity("");
-                        }
-
-                        tv_username.setText(GlobalValues.student.getFullname());
-
-                        String jsonstudent = gson.toJson(GlobalValues.student);
-                        editor.putString("studentdetails", jsonstudent);
-                        editor.apply();
-
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-
-                    //Uncomment this for updating profile
-
-                    /*try {
-                        OutputStream fout = null;
-                        *//*File f = File.createTempFile(Constants.PROFILE_PIC, Constants.FILE_NAME_EXT,
-                                new File(StructureClass.generate()));*//*
-
-                        File f2= new File(StructureClass.generate());
-                        File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
-                        Log.e("File path ",f1.toString());
-                        //BufferedWriter out = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
-
-                        fout = new FileOutputStream(f1.getAbsoluteFile());
-
-                        selectedImage.compress(Bitmap.CompressFormat.JPEG, 85, fout);
-                        fout.flush();
-                        fout.close();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }*/
+                    Log.e("On Update click", "this is what happens..");
 
                     JSONObject objupdate = new JSONObject();
                     JSONObject objsubroot = new JSONObject();
@@ -364,27 +299,28 @@ public class EditProfileActivity extends Activitycommon {
                     try {
                         objupdate.put("TotalRecord", "");
                         objupdate.put("Id", GlobalValues.student.getId());
-                        objupdate.put("Name", GlobalValues.student.getFullname());
+                        objupdate.put("Name", et_name.getText().toString());
                         objupdate.put("RollNumber", GlobalValues.student.getRollNumber());
                         objupdate.put("CenterId", "");
-                        objupdate.put("FatherName", GlobalValues.student.getFatherName());
+                        objupdate.put("FatherName", et_fathersname.getText().toString());
                         objupdate.put("MotherName", "");
-                        objupdate.put("DOB", GlobalValues.student.getDOB());
-                        objupdate.put("Mobile", GlobalValues.student.getMobile());
-                        objupdate.put("Email", GlobalValues.student.getEmail());
+                        objupdate.put("DOB", dateofbirth.getText().toString());
+                        objupdate.put("Mobile", et_mobno.getText().toString());
+                        objupdate.put("Email", et_emailid.getText().toString());
                         objupdate.put("QualificationId", "");
                         objupdate.put("CountryId", "");
                         objupdate.put("StateId", (int) Double.parseDouble(spinnerStates.get(spin_state.getSelectedItemPosition()).getState_id()));
-                        if(spinnerCities!=null){
-                            if(spin_city.getSelectedItemPosition()>=0 && (spin_city.getSelectedItemPosition()<spinnerCities.size())){
-                                objupdate.put("CityId", (int) Double.parseDouble(spinnerCities.get(spin_city.getSelectedItemPosition()).getState_id()));
+                        Log.e("State id is ", String.valueOf((int) Double.parseDouble(spinnerStates.get(spin_state.getSelectedItemPosition()).getState_id())));
+
+                        if (spinnerCities != null) {
+                            if (spin_city.getSelectedItemPosition() >= 0 && (spin_city.getSelectedItemPosition() < spinnerCities.size())) {
+                                Log.e("City id is ", String.valueOf((int) Double.parseDouble(spinnerCities.get(spin_city.getSelectedItemPosition()).getCity_id())));
+                                objupdate.put("CityId", (int) Double.parseDouble(spinnerCities.get(spin_city.getSelectedItemPosition()).getCity_id()));//check
+                            } else {
+                                objupdate.put("CityId", "");
                             }
-                            else{
-                                objupdate.put("CityId","");
-                            }
-                        }
-                        else{
-                            objupdate.put("CityId","");
+                        } else {
+                            objupdate.put("CityId", "");
                         }
 
                         objupdate.put("Password", "a");
@@ -408,9 +344,11 @@ public class EditProfileActivity extends Activitycommon {
                         }*/
 
                         objupdate.put("CasteCategory", "");
-                        objupdate.put("Gender", GlobalValues.student.getGender());
+
+                        Log.e("Gender is ", rb_text);
+                        objupdate.put("Gender", rb_text);
                         objupdate.put("Nationality", "Indian");
-                        objupdate.put("AltMobile", GlobalValues.student.getAltMobile());
+                        objupdate.put("AltMobile", et_alternateno.getText().toString());
                         objupdate.put("AltEmail", "");
                         objupdate.put("IsActive", "");
 
@@ -534,11 +472,11 @@ public class EditProfileActivity extends Activitycommon {
                             spin_standard.setAdapter(arrayAdapterstandard);
                             arrayAdapterstandard.notifyDataSetChanged();
 
-                            check_subboardstr = GlobalValues.student.getSubboard_name();
+                            check_subboardstr = GlobalValues.student.getId();
                             Log.e("subboard in editprof is", check_subboardstr);
 
                             for (int k = 0; k < spinnerStandards.size(); k++) {
-                                if (spinnerStandards.get(k).getStandard().equalsIgnoreCase(check_subboardstr)) {
+                                if (spinnerStandards.get(k).getId().equalsIgnoreCase(check_subboardstr)) {
                                     spin_standard.setSelection(k);
                                     break;
                                 }
@@ -609,7 +547,7 @@ public class EditProfileActivity extends Activitycommon {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject c = jsonArray.getJSONObject(i);
 
-                            id = c.optString("Id");
+                            id = Integer.toString((int) Double.parseDouble(c.optString("Id")));
                             String state_name = c.optString("Name");
                             String country_id = c.optString("CountryId");
 
@@ -622,12 +560,17 @@ public class EditProfileActivity extends Activitycommon {
                         spin_state.setAdapter(arrayAdapterstate);
                         arrayAdapterstate.notifyDataSetChanged();
 
-                        String statecheckvalue = GlobalValues.student.getState();
+                        String statecheckvalue = GlobalValues.student.getStateId();
                         for (int statecheck = 0; statecheck < spinnerStates.size(); statecheck++) {
-                            if (spinnerStates.get(statecheck).getStatename().equalsIgnoreCase(statecheckvalue)) {
+                            //Log.e("spinstate ","spinstate "+spinnerStates.get(statecheck).getState_id()+" "+statecheckvalue);
+                            if (spinnerStates.get(statecheck).getState_id().equalsIgnoreCase(statecheckvalue)) {
                                 spin_state.setSelection(statecheck);
                                 break;
                             }
+                            /*if (spinnerStates.get(statecheck).getStatename().equalsIgnoreCase(statecheckvalue)) {
+                                spin_state.setSelection(statecheck);
+                                break;
+                            }*/
                         }
 
                     }
@@ -638,31 +581,52 @@ public class EditProfileActivity extends Activitycommon {
                     JSONArray jsonArray1 = new JSONArray(GlobalValues.TEMP_STR);
 
                     if (jsonArray1 != null) {
-                        spinnerCities = new ArrayList<>();
 
-                        for (int i = 0; i < jsonArray1.length(); i++) {
-                            JSONObject c1 = jsonArray1.getJSONObject(i);
+                        if (jsonArray1.length() > 0) {
+                            tv_city.setVisibility(View.VISIBLE);
+                            vcity.setVisibility(View.VISIBLE);
+                            spin_city.setVisibility(View.VISIBLE);
 
-                            state_id = c1.optString("Id");
-                            String city_name = c1.optString("Name");
-                            String id = c1.optString("StateID");
+                            spinnerCities = new ArrayList<>();
 
-                            SpinnerCity spinnerCity = new SpinnerCity(city_name, state_id);
-                            spinnerCities.add(spinnerCity);
-                        }
-                        arrayAdaptercity = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerCities);
-                        arrayAdaptercity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spin_city.setAdapter(arrayAdaptercity);
-                        arrayAdaptercity.notifyDataSetChanged();
+                            for (int i = 0; i < jsonArray1.length(); i++) {
+                                JSONObject c1 = jsonArray1.getJSONObject(i);
 
-                        citycheckvalue = GlobalValues.student.getCity();
-                        for (int citycheck = 0; citycheck < spinnerCities.size(); citycheck++) {
-                            if (spinnerCities.get(citycheck).getCity_name().equalsIgnoreCase(citycheckvalue)) {
+                                city_id = Integer.toString((int) Double.parseDouble(c1.optString("Id")));
+                                String city_name = c1.optString("Name");
+                                String id = c1.optString("StateID");
+
+                                SpinnerCity spinnerCity = new SpinnerCity(city_name, city_id);
+                                spinnerCities.add(spinnerCity);
+                            }
+                            arrayAdaptercity = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerCities);
+                            arrayAdaptercity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spin_city.setAdapter(arrayAdaptercity);
+                            arrayAdaptercity.notifyDataSetChanged();
+
+                            citycheckvalue = GlobalValues.student.getCityId();
+                            Log.e("Value of citycheck is", citycheckvalue);
+
+
+                            for (int citycheck = 0; citycheck < spinnerCities.size(); citycheck++) {
+
+                                if (spinnerCities.get(citycheck).getCity_id().equalsIgnoreCase(citycheckvalue)) {
+                                    spin_city.setSelection(citycheck);
+                                    break;
+                                }
+                            /*if (spinnerCities.get(citycheck).getCity_name().equalsIgnoreCase(citycheckvalue)) {
                                 spin_city.setSelection(citycheck);
                                 break;
+                            }*/
                             }
+                        } else {
+                            Log.e("city size is ", "null");
+                            tv_city.setVisibility(View.GONE);
+                            vcity.setVisibility(View.GONE);
+                            spin_city.setVisibility(View.GONE);
                         }
                     }
+
                 } else if (accesscode == Connection.GETCATEGORY.ordinal()) {
 
                     Log.e("res", "res " + GlobalValues.TEMP_STR);
@@ -697,15 +661,19 @@ public class EditProfileActivity extends Activitycommon {
                         spin_stream.setAdapter(arrayAdapterstream);
                         arrayAdapterstream.notifyDataSetChanged();
 
-                        check_str = GlobalValues.student.getBoard_name();
+                        check_str = GlobalValues.student.getCategoryId();
                         Log.e("board name is ", check_str);
                         for (int check = 0; check < spinnerStreams.size(); check++) {
-                            Log.e("spinner board name is ", spinnerStreams.get(check).getBoard_name());
+                            Log.e("spinner board name is ", spinnerStreams.get(check).getID());
 
-                            if (spinnerStreams.get(check).getBoard_name().equalsIgnoreCase(check_str)) {
+                            if (spinnerStreams.get(check).getID().equalsIgnoreCase(check_str)) {
                                 spin_stream.setSelection(check);
                                 break;
                             }
+                            /*if (spinnerStreams.get(check).getBoard_name().equalsIgnoreCase(check_str)) {
+                                spin_stream.setSelection(check);
+                                break;
+                            }*/
                         }
 
 
@@ -765,6 +733,107 @@ public class EditProfileActivity extends Activitycommon {
 
 
                     Gson gson = new Gson();
+
+                    GlobalValues.student.setName(et_name.getText().toString().trim());
+                    GlobalValues.student.setFatherName(et_fathersname.getText().toString().trim());
+                    GlobalValues.student.setSurname(et_surname.getText().toString().trim());
+                    GlobalValues.student.setFullname(et_name.getText().toString().trim() + " " + et_fathersname.getText().toString().trim() + " " +
+                            et_surname.getText().toString().trim());
+
+                    GlobalValues.student.setDOB(dateofbirth.getText().toString());
+
+                    Log.e("Set Gender is ", rb_text);
+                    GlobalValues.student.setGender(rb_text);
+
+                    GlobalValues.student.setMobile(et_mobno.getText().toString());
+                    GlobalValues.student.setAltMobile(et_alternateno.getText().toString());
+
+                    GlobalValues.student.setEmail(et_emailid.getText().toString().trim());
+
+                    GlobalValues.student.setBoard_name(spinnerStreams.get(spin_stream.getSelectedItemPosition()).getBoard_name());
+
+                    try {
+                        if (spin_standard.getSelectedItemPosition() >= 0 && (spin_standard.getSelectedItemPosition() < spinnerStandards.size())) {
+                            GlobalValues.student.setSubboard_name(spinnerStandards.get(spin_standard.getSelectedItemPosition()).getStandard());
+                        } else {
+                            GlobalValues.student.setSubboard_name("");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+
+                    Log.e("roll no test: ", GlobalValues.student.getId());
+
+                    //Log.e("spinner state value ",spinnerStates.get(spin_state.getSelectedItemPosition()).getStatename());
+
+                    GlobalValues.student.setState(spinnerStates.get(spin_state.getSelectedItemPosition()).getStatename());
+
+                    try {
+
+                        if ((spin_city.getSelectedItemPosition() >= 0) && (spin_city.getSelectedItemPosition() < spinnerCities.size())) {
+                            GlobalValues.student.setCity(spinnerCities.get(spin_city.getSelectedItemPosition()).getCity_name());
+                        } else {
+                            GlobalValues.student.setCity("");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    tv_username.setText(GlobalValues.student.getFullname());
+
+                    GlobalValues.student.setCategoryId(spinnerStreams.get(spin_stream.getSelectedItemPosition()).getID());
+
+                    if (spinnerStandards != null) {
+                        GlobalValues.student.setSubCategoryId(spinnerStandards.get(spin_standard.getSelectedItemPosition()).getId());
+                    } else {
+                        GlobalValues.student.setSubCategoryId("0");
+                    }
+
+                    GlobalValues.student.setStateId(Integer.toString((int) Double.parseDouble(spinnerStates.get(spin_state.getSelectedItemPosition()).getState_id())));
+
+                    if (spinnerCities != null) {
+                        if (spin_city.getSelectedItemPosition() >= 0 && (spin_city.getSelectedItemPosition() < spinnerCities.size())) {
+                            GlobalValues.student.setCityId(Integer.toString((int) Double.parseDouble(spinnerCities.get(spin_city.getSelectedItemPosition()).getCity_id())));
+                        } else {
+                            GlobalValues.student.setCityId("0");
+                        }
+                    } else {
+                        GlobalValues.student.setCityId("0");
+                    }
+
+                    Log.e("selected student ", "selected student " + GlobalValues.student.getStateId() + " " + GlobalValues.student.getCityId());
+
+                    try {
+                        OutputStream fout = null;
+                        /*File f = File.createTempFile(Constants.PROFILE_PIC, Constants.FILE_NAME_EXT,
+                                new File(StructureClass.generate()));*/
+
+                        File f2= new File(StructureClass.generate());
+                        File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
+                        Log.e("File path ",f1.toString());
+                        //BufferedWriter out = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
+
+                        fout = new FileOutputStream(f1.getAbsoluteFile());
+
+                        selectedImage.compress(Bitmap.CompressFormat.JPEG, 85, fout);
+                        fout.flush();
+                        fout.close();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    Drawable d = new BitmapDrawable(getResources(), selectedImage);
+                    //GlobalValues.student.setProfile_pic(d);
+
+                    String jsonstudent = gson.toJson(GlobalValues.student);
+                    editor.putString("studentdetails", jsonstudent);
+                    editor.apply();
+
+
+
+                    /*Gson gson = new Gson();
                     GlobalValues.student.setDOB(date);
                     GlobalValues.student.setName(et_name.getText().toString().trim());
                     GlobalValues.student.setFatherName(et_fathersname.getText().toString().trim());
@@ -772,7 +841,7 @@ public class EditProfileActivity extends Activitycommon {
                     GlobalValues.student.setFullname(GlobalValues.student.getName() + " " + GlobalValues.student.getFatherName() + " " + GlobalValues.student.getSurname());
                     GlobalValues.student.setGender(rb_text);
                     GlobalValues.student.setBoard_name(spinnerStreams.get(spin_stream.getSelectedItemPosition()).getBoard_name());
-                    if(spinnerStandards!=null){
+                    if (spinnerStandards != null) {
                         GlobalValues.student.setSubboard_name(spinnerStandards.get(spin_standard.getSelectedItemPosition()).getStandard());
                     }
 
@@ -795,7 +864,7 @@ public class EditProfileActivity extends Activitycommon {
                     tv_username.setText(GlobalValues.student.getFullname());
                     String jsonstudentprofile = gson.toJson(GlobalValues.student);
                     editor.putString("studentprofiledetails", jsonstudentprofile);
-                    editor.apply();
+                    editor.apply();*/
                 }
             }
 

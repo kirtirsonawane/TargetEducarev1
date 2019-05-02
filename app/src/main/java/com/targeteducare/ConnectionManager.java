@@ -651,6 +651,7 @@ public class ConnectionManager {
         });
         thread.start();
     }
+
     public void getcourse(final String json) {
         Log.e("json ", "json " + json + " " + URLS.getcourse());
         Thread thread = new Thread(new Runnable() {
@@ -681,6 +682,7 @@ public class ConnectionManager {
         });
         thread.start();
     }
+
     private void publishBroadcast(final int code, final int ordinal) {
         try {
             Intent intent = new Intent(Constants.BROADCAST_WIZARD);

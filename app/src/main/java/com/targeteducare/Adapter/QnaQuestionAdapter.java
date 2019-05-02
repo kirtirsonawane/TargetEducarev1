@@ -44,7 +44,7 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QnaQuestionAdapter.MyViewHolder holder, final int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int i) {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);;
         holder.main_question.setText(dataSet.get(i).getMain_question());

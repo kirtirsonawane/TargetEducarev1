@@ -549,7 +549,7 @@ public class ExamListActivity extends Activitycommon {
 
     private void sendmail() {
         try {
-            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+            final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
             emailIntent.setType("text/plain");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Survey Data");
             String to[] = {"targeteducareapp@gmail.com"};
