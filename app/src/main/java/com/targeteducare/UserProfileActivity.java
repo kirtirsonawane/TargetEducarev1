@@ -102,6 +102,26 @@ public class UserProfileActivity extends Activitycommon {
     protected void onPostResume() {
         super.onPostResume();
         tv_username.setText(GlobalValues.student.getFullname());
-        //profile_image.setImageDrawable(GlobalValues.student.getProfile_pic());
+
+
+        StructureClass.defineContext(UserProfileActivity.this);
+
+        try {
+            File f2= new File(StructureClass.generate());
+            File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
+            if(f1.exists()){
+
+                Bitmap myBitmap = BitmapFactory.decodeFile(f1.getAbsolutePath());
+
+                profile_image.setImageBitmap(myBitmap);
+
+            }
+
+            Log.e("File path ",f1.toString());
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

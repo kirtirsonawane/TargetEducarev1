@@ -824,9 +824,6 @@ public class EditProfileActivity extends Activitycommon {
                         e.printStackTrace();
                     }
 
-                    Drawable d = new BitmapDrawable(getResources(), selectedImage);
-                    //GlobalValues.student.setProfile_pic(d);
-
                     String jsonstudent = gson.toJson(GlobalValues.student);
                     editor.putString("studentdetails", jsonstudent);
                     editor.apply();
@@ -867,6 +864,29 @@ public class EditProfileActivity extends Activitycommon {
                     editor.apply();*/
                 }
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        try {
+            File f2= new File(StructureClass.generate());
+            File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
+            if(f1.exists()){
+
+                Bitmap myBitmap = BitmapFactory.decodeFile(f1.getAbsolutePath());
+
+                profileimageupdate.setImageBitmap(myBitmap);
+
+            }
+
+            Log.e("File path ",f1.toString());
+
 
         } catch (Exception e) {
             e.printStackTrace();

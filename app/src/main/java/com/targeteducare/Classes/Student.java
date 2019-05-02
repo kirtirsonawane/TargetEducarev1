@@ -48,18 +48,6 @@ public class Student {
     String district = "";
 
 
-    /*public Drawable getProfile_pic() {
-        return profile_pic;
-    }
-
-    public void setProfile_pic(Drawable profile_pic) {
-        this.profile_pic = profile_pic;
-    }
-
-    Drawable profile_pic;*/
-
-
-
     public String getDistrict() {
         return district;
     }
