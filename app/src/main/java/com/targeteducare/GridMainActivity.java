@@ -146,6 +146,8 @@ public class GridMainActivity extends Activitycommon{
                 startActivity(ismppaper);
                 break;
             case 4:
+                Intent mypackage = new Intent(GridMainActivity.this, MyPackagesActivity.class);
+                startActivity(mypackage);
                 break;
             case 5:
                 break;

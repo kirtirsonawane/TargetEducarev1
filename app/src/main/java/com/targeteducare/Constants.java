@@ -24,7 +24,8 @@ public class Constants {
 	public static final String NO_INTERNET_MSG = "Please check the internet connention";
 	public static final String PACK_NAME = "com_ida_main_app";
 	public  static  int MAXTABCOUNT=4;
-
+	public static final String imagepath = "http://192.168.1.59:8097//images/Uploadvideos/Thumbnail/";
+	public static final String ippath = "http://192.168.1.59:8097/images/Uploadvideo";
 	public static final int REQUEST_CAMERA = 45;
 	public static final int REQUEST_CROP = 46;
 	public static final int REQUEST_GALLARY = 41;

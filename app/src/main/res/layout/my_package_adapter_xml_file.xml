@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp"
+    app:contentPadding="6dp">
+
+
+    <LinearLayout
+        android:id="@+id/package_linear_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:cardCornerRadius="15dp">
+
+            <ImageView
+                android:id="@+id/package_imageview_1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_weight="1"
+                android:maxWidth="2dp"
+                android:maxHeight="3dp"
+                android:scaleType="centerInside"
+                android:src="@mipmap/ic_launcher" />
+        </android.support.v7.widget.CardView>
+
+
+        <LinearLayout
+            android:id="@+id/package_linear_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <!--  <LinearLayout
+                  android:id="@+id/package_linear_5"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="5dp"
+                  android:includeFontPadding="false"
+                  android:orientation="horizontal">-->
+
+            <TextView
+                android:id="@+id/package_textview_course_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="Course Name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                />
+
+
+            <!--   </LinearLayout>-->
+            <!--<TextView
+                android:id="@+id/package_textview_viewmore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:gravity="top"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:text="MORE DETAILS"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />-->
+
+            <TextView
+                android:id="@+id/package_textview_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:includeFontPadding="false"
+                android:text="100"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#424949"
+                android:textStyle="bold"
+                />
+            <!--  <View
+                  android:layout_width="match_parent"
+                  android:layout_height="0.01sp"
+                  android:layout_gravity="center_vertical"
+                  android:padding="10dp"
+                  android:layout_marginTop="0.1sp"
+                  android:layout_marginLeft="10dp"
+                  android:background="#444" />
+  -->
+
+            <!-- <TextView
+                 android:id="@+id/package_textview_discription"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="left"
+                 android:layout_weight="1"
+                 android:gravity="left"
+                 android:maxLines="1"
+                 android:padding="5dp"
+                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                 android:textColor="#424949"
+                 android:textStyle="bold" />-->
+            -->
+
+
+            <CheckBox
+                android:id="@+id/package_checkbox_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@android:color/transparent"
+                android:drawablePadding="0dp"
+                android:includeFontPadding="false"
+                android:padding="0dp"
+                android:text="Add"
+                android:textColor="#424949" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/package_textview_viewmore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="right"
+                    android:background="@color/colorPrimary"
+                    android:text="MORE DETAILS"
+                   android:paddingTop="3dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/White"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+
+

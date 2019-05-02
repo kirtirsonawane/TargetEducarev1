@@ -651,7 +651,36 @@ public class ConnectionManager {
         });
         thread.start();
     }
-
+    public void getcourse(final String json) {
+        Log.e("json ", "json " + json + " " + URLS.getcourse());
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RequestBody body = RequestBody.create(Constants.JSON, json);
+                    Request request = new Request.Builder().url(URLS.getcourse()).post(body).build();
+                    Response response = client.newCall(request).execute();
+                    GlobalValues.TEMP_STR = response.body().string();
+                    Log.e("Globalvalues",GlobalValues.TEMP_STR);
+                    isDotNet();
+                    final int code = response.code();
+                    publishBroadcast(code, Connection.GETCOURSE.ordinal());
+                } catch (ConnectException exception) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.GETCOURSEEXCEPTION.ordinal());
+                } catch (UnknownHostException exception) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.GETCOURSEEXCEPTION.ordinal());
+                    Log.e("SocketTimeoutException ", "error " + exception.toString());
+                } catch (SocketTimeoutException exception) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.GETCOURSEEXCEPTION.ordinal());
+                    Log.e("SocketTimeoutException ", "error " + exception.toString());
+                } catch (Exception e) {
+                    Log.e("error ", "error " + e.toString());
+                    return;
+                }
+            }
+        });
+        thread.start();
+    }
     private void publishBroadcast(final int code, final int ordinal) {
         try {
             Intent intent = new Intent(Constants.BROADCAST_WIZARD);

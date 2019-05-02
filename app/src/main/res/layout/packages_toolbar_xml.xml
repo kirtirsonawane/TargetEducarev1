@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<!--<android.support.design.widget.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >-->
+
+
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/packages_toolbar_xm"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/abc_action_bar_default_height_material"
+    android:background="@color/colorPrimary"
+    app:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
+
+    <LinearLayout
+        android:id="@+id/package_toolbar_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/package_toolbar_textview_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Packges"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/White"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/package_toolbar_textview_amount_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/White"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/package_toolbar_textview_payment"
+            android:layout_width="wrap_content"
+android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/White"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/package_toolbar_button_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:text="Pay"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar><!--
+</android.support.design.widget.AppBarLayout>-->
