@@ -7,15 +7,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper mInstance = null;
     public static final String DATABASE_NAME = "com.eduexam";
     public static final String TABLE_MSTEXAMINATION = "mst_examination";
+    public static final String TABLE_MSTEXAMINATIONDETAILS = "mst_examinationdetails";
     public static final String TABLE_QUESTION = "mst_question";
     public static final String TABLE_QUESTION1 = "mst_question1";
     public static final String TABLE_QUESTIONURL = "mst_questionurl";
@@ -32,6 +36,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TYPE = "type";
     public static final String OFFLINEPATH = "offlinepath";
     public static final String IMAGESOURCE = "imagemainsource";
+
+    public static final String PROGRESS = "progress";
+    public static final String ANSWERED = "answered";
+    public static final String CORRECT = "correct";
+    public static final String WRONG = "wrong";
+    public static final String SKIPP = "skipp";
+    public static final String SPEED = "speed";
+    public static final String TIMETAKEN = "timetaken";
+    public static final String EXAMTYPE = "examtype";
+    public static final String QUESTION = "question";
+
 
     static Context mcontext;
 
@@ -55,6 +70,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + JSONDATA + " TEXT," + SAVEDTIME + " TEXT)";
         db.execSQL(query_examination);
 
+
+        String query_examinationdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_MSTEXAMINATIONDETAILS + "("
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + EXAMID + " TEXT,"+ PROGRESS + " TEXT," +ANSWERED + " TEXT," +CORRECT + " TEXT,"+ WRONG + " TEXT," +SKIPP + " TEXT," +SPEED + " TEXT," +TIMETAKEN + " TEXT,"+EXAMTYPE + " TEXT," +SAVEDTIME + " TEXT)";
+        db.execSQL(query_examinationdetails);
+
+
         String query_question = "CREATE TABLE IF NOT EXISTS " + TABLE_QUESTION + "("
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + LANGUAGE + " String," + EXAMID + " INTEGER," + JSONDATA + " TEXT," + SAVEDTIME + " TEXT)";
         db.execSQL(query_question);
@@ -70,6 +91,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query_questionurl);
     }
 
+    public  void createtableexaminationdetails(){
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+
+            String query_examinationdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_MSTEXAMINATIONDETAILS + "("
+                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + EXAMID + " TEXT," + PROGRESS + " TEXT," + ANSWERED + " TEXT," + CORRECT + " TEXT," + WRONG + " TEXT," + SKIPP + " TEXT," + SPEED + " TEXT," + TIMETAKEN + " TEXT," + EXAMTYPE + " TEXT," + SAVEDTIME + " TEXT)";
+            db.execSQL(query_examinationdetails);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveexaminationdetails(ContentValues c,int examid){
+        createtableexaminationdetails();
+        SQLiteDatabase db = getWritableDatabase();
+        String query="Select * from "+TABLE_MSTEXAMINATIONDETAILS+" where "+EXAMID+" = '"+examid+"'";
+        Cursor cursor=db.rawQuery(query,null);
+        if(cursor.getCount()>0)
+        {
+            db.update(TABLE_MSTEXAMINATIONDETAILS, c, EXAMID + " =?", new String[]{Integer.toString(examid)});
+        }else {
+            long id = db.insertWithOnConflict(TABLE_MSTEXAMINATIONDETAILS, null, c, SQLiteDatabase.CONFLICT_REPLACE);
+        }
+
+        getexaminationdata();
+    }
+
+    public JSONArray getexamdetails(int examid, String type) {
+        createtablequestionurl();
+        SQLiteDatabase db = getWritableDatabase();
+        String searchQuery = "SELECT  * FROM " + TABLE_MSTEXAMINATIONDETAILS + " where " + EXAMID + " = '" + examid + "' and " + EXAMTYPE + " = '" + type + "'";
+        Log.e("query ", "query " + searchQuery);
+        Cursor cursor = db.rawQuery(searchQuery, null);
+
+        JSONArray resultSet = new JSONArray();
+        cursor.moveToFirst();
+        Log.e("resultSet ", "resultSet " + cursor.getCount() + " " + examid + " " + type);
+        resultSet = convertcursorvaltoJSOnArray(cursor);
+        cursor.close();
+        return resultSet;
+    }
     public void createtablequestionurl() {
         SQLiteDatabase db = getWritableDatabase();
         String query_questionurl = "CREATE TABLE IF NOT EXISTS " + TABLE_QUESTIONURL + "(" + ID1 + " INTEGER PRIMARY KEY AUTOINCREMENT," + ID + " INTEGER," + TYPE + " TEXT," + IMAGESOURCE + " TEXT," + OFFLINEPATH + " TEXT," + SYNC + " INTEGER," + SAVEDTIME + " TEXT)";
@@ -281,6 +344,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createtablequestion();
         SQLiteDatabase db = getWritableDatabase();
         int i = db.update(TABLE_QUESTION, c, EXAMID + " = ? AND " + LANGUAGE + " = ? ", new String[]{Integer.toString(examid), language});
+        Log.e("i val ","i val "+i);
 /*
         long id = db.insertWithOnConflict(TABLE_QUESTION, null, c, SQLiteDatabase.CONFLICT_REPLACE);
         return  id;*/

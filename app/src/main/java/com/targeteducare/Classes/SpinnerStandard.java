@@ -2,9 +2,19 @@ package com.targeteducare.Classes;
 
 public class SpinnerStandard {
     String standard = "";
+    String id = "";
 
-    public SpinnerStandard(String subboard_name) {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public SpinnerStandard(String subboard_name, String id_subboard) {
         this.standard = subboard_name;
+        this.id = id_subboard;
     }
 
     public String getStandard() {

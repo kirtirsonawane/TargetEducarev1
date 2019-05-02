@@ -12,7 +12,7 @@ import com.targeteducare.Classes.QnaQuestionModel;
 
 import java.util.ArrayList;
 
-public class QnAFeed extends Activitycommon {
+public class QnAFeedActivity extends Activitycommon {
 
     private ArrayList<QnaQuestionModel> dataQuestionmodel;
     private QnaQuestionAdapter adapter;
@@ -49,7 +49,7 @@ public class QnAFeed extends Activitycommon {
             qdata.setQndataset(datamod);
             dataQuestionmodel.add(qdata);
         }
-        adapter = new QnaQuestionAdapter(QnAFeed.this,dataQuestionmodel);
+        adapter = new QnaQuestionAdapter(QnAFeedActivity.this,dataQuestionmodel);
         recyclerView.setAdapter(adapter);
     }
 }

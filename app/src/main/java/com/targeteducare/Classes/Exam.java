@@ -28,6 +28,78 @@ public class Exam implements Serializable {
     boolean isexamgiven = false;
     boolean issync = false;
     boolean isqdownloaded = false;
+    Double progress = 0.0;
+    int answered = 0;
+    int wrong = 0;
+    int skipp = 0;
+    int correct = 0;
+    long timetaken = 0;
+    String exam_type = "";
+    Double speed = 0.0;
+
+    public Double getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Double progress) {
+        this.progress = progress;
+    }
+
+    public int getAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(int answered) {
+        this.answered = answered;
+    }
+
+    public int getWrong() {
+        return wrong;
+    }
+
+    public void setWrong(int wrong) {
+        this.wrong = wrong;
+    }
+
+    public int getSkipp() {
+        return skipp;
+    }
+
+    public void setSkipp(int skipp) {
+        this.skipp = skipp;
+    }
+
+    public int getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(int correct) {
+        this.correct = correct;
+    }
+
+    public long getTimetaken() {
+        return timetaken;
+    }
+
+    public void setTimetaken(long timetaken) {
+        this.timetaken = timetaken;
+    }
+
+    public String getExam_type() {
+        return exam_type;
+    }
+
+    public void setExam_type(String exam_type) {
+        this.exam_type = exam_type;
+    }
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
 
     public boolean isIsqdownloaded() {
         return isqdownloaded;
@@ -227,5 +299,141 @@ public class Exam implements Serializable {
 
     public void setIsexamindatetimerange(int isexamindatetimerange) {
         this.isexamindatetimerange = isexamindatetimerange;
+    }
+
+
+
+    //For Different Test ACtivities
+    String topic_no = "";
+    String topic_name_select = "";
+    String total_questions = "";
+    String total_videos = "";
+    String total_concepts = "";
+    String covered_percentage = "";
+
+    /*public Exam(String topic_no, String topic_name_select, String total_videos, String total_goals,
+                             String total_concepts, String covered_percentage){
+        this.topic_no = topic_no;
+        this.topic_name_select = topic_name_select;
+        this.total_videos = total_videos;
+        this.total_goals = total_goals;
+        this.total_concepts = total_concepts;
+        this.covered_percentage = covered_percentage;
+    }*/
+
+    public String getTopic_no() {
+        return topic_no;
+    }
+
+    public void setTopic_no(String topic_no) {
+        this.topic_no = topic_no;
+    }
+
+    public String getTopic_name_select() {
+        return topic_name_select;
+    }
+
+    public void setTopic_name_select(String topic_name_select) {
+        this.topic_name_select = topic_name_select;
+    }
+
+    public String getTotal_questions() {
+        return total_questions;
+    }
+
+    public void setTotal_questions(String total_questions) {
+        this.total_questions = total_questions;
+    }
+
+    public String getTotal_videos() {
+        return total_videos;
+    }
+
+    public void setTotal_videos(String total_videos) {
+        this.total_videos = total_videos;
+    }
+
+    public String getTotal_concepts() {
+        return total_concepts;
+    }
+
+    public void setTotal_concepts(String total_concepts) {
+        this.total_concepts = total_concepts;
+    }
+
+    public String getCovered_percentage() {
+        return covered_percentage;
+    }
+
+    public void setCovered_percentage(String covered_percentage) {
+        this.covered_percentage = covered_percentage;
+    }
+
+
+
+    //For Progress Report
+
+    String current_progress = "";
+    String questions_exam = "";
+    String total_correct = "";
+    String total_skipped = "";
+    String total_wrong = "";
+    String total_speed = "";
+    String total_timetaken = "";
+
+    public String getCurrent_progress() {
+        return current_progress;
+    }
+
+    public void setCurrent_progress(String current_progress) {
+        this.current_progress = current_progress;
+    }
+
+    public String getQuestions_exam() {
+        return questions_exam;
+    }
+
+    public void setQuestions_exam(String questions_exam) {
+        this.questions_exam = questions_exam;
+    }
+
+    public String getTotal_correct() {
+        return total_correct;
+    }
+
+    public void setTotal_correct(String total_correct) {
+        this.total_correct = total_correct;
+    }
+
+    public String getTotal_skipped() {
+        return total_skipped;
+    }
+
+    public void setTotal_skipped(String total_skipped) {
+        this.total_skipped = total_skipped;
+    }
+
+    public String getTotal_wrong() {
+        return total_wrong;
+    }
+
+    public void setTotal_wrong(String total_wrong) {
+        this.total_wrong = total_wrong;
+    }
+
+    public String getTotal_speed() {
+        return total_speed;
+    }
+
+    public void setTotal_speed(String total_speed) {
+        this.total_speed = total_speed;
+    }
+
+    public String getTotal_timetaken() {
+        return total_timetaken;
+    }
+
+    public void setTotal_timetaken(String total_timetaken) {
+        this.total_timetaken = total_timetaken;
     }
 }

@@ -8,14 +8,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +34,7 @@ import android.widget.Toast;
 
 import com.targeteducare.Classes.Exam;
 import com.targeteducare.Classes.QuestionURL;
+import com.targeteducare.database.DatabaseHelper;
 import com.targeteducare.database.DatabaseHelper;
 
 import java.io.File;
@@ -54,11 +58,16 @@ public class Activitycommon extends AppCompatActivity {
     float mHeadingFontSize = 20.0f;
     float mValueFontSize = 20.0f;
 
+    //Context applicationContext = GridMainActivity.getContextOfApplication();
+    //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(ActivityCommon.this);
+    //SharedPreferences.Editor edit = preferences.edit();
+
+
     public void setmaterialDesign() {
         try {
             tag = "ActivityCommon";
             toolbar = findViewById(R.id.toolbar);
-            toolbar.setTitleTextColor(getResources().getColor(R.color.White));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
             setSupportActionBar(toolbar);
             toolbar.setLogo(R.mipmap.ic_launcher);
             //toolbar.addView();
@@ -81,6 +90,11 @@ public class Activitycommon extends AppCompatActivity {
 
     protected void back() {
         try {
+
+            final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp);
+            upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -97,10 +111,9 @@ public class Activitycommon extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        try{
+        try {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(responseRec);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         super.onDestroy();
@@ -167,7 +180,7 @@ public class Activitycommon extends AppCompatActivity {
     public void gotoexamActivity(Exam exam) {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-        }else {
+        } else {
             Calendar cal1 = Calendar.getInstance();
             Date date2 = DateUtils.parseDate(exam.getEnddate(), "dd MMM yyyy");
             Date date3 = DateUtils.parseDate(exam.getExamendtime(), "HH:mm:ss");
@@ -182,9 +195,66 @@ public class Activitycommon extends AppCompatActivity {
             date.setMinutes(date1.getMinutes());
             cal.setTime(date);
 
-            if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+
+            /*if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
                 opendialog(exam);
-            else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();
+            else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();*/
+
+
+            /*if (preferences.getBoolean("flagtestacivity", false)) {
+                if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                    opendialog(exam);
+                else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
+                intent.putExtra("exam", exam);
+                startActivity(intent);
+            }*/
+
+            Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
+            intent.putExtra("exam", exam);
+            startActivity(intent);
+
+
+        }
+    }
+
+    public void gotopracticeActivitytoAttempt(Exam exam) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+        } else {
+            Calendar cal1 = Calendar.getInstance();
+            Date date2 = DateUtils.parseDate(exam.getEnddate(), "dd MMM yyyy");
+            Date date3 = DateUtils.parseDate(exam.getExamendtime(), "HH:mm:ss");
+            date2.setHours(date3.getHours());
+            date2.setMinutes(date3.getMinutes());
+            cal1.setTime(date2);
+
+            Calendar cal = Calendar.getInstance();
+            Date date = DateUtils.parseDate(exam.getStartdate(), "dd MMM yyyy");
+            Date date1 = DateUtils.parseDate(exam.getExamstarttime(), "HH:mm:ss");
+            date.setHours(date1.getHours());
+            date.setMinutes(date1.getMinutes());
+            cal.setTime(date);
+
+
+            /*if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                opendialog(exam);
+            else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();*/
+
+
+            /*if (preferences.getBoolean("flagtestacivity", false)) {
+                if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                    opendialog(exam);
+                else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
+                intent.putExtra("exam", exam);
+                startActivity(intent);
+            }*/
+            Intent intent = new Intent(Activitycommon.this, PracticeActivity.class);
+            intent.putExtra("exam", exam);
+            startActivity(intent);
         }
     }
 
@@ -195,7 +265,7 @@ public class Activitycommon extends AppCompatActivity {
             View alertLayout = inflater.inflate(R.layout.dialog_terms, null);
             alert.setView(alertLayout);
             final TextView txt = (TextView) alertLayout.findViewById(R.id.textview_terms);
-          final CheckBox cb = (CheckBox) alertLayout.findViewById(R.id.checkbox_1);
+            final CheckBox cb = (CheckBox) alertLayout.findViewById(R.id.checkbox_1);
             cb.setVisibility(View.VISIBLE);
             Button bt = (Button) alertLayout.findViewById(R.id.button_start);
             Html.ImageGetter imggetter = new Html.ImageGetter() {
@@ -217,13 +287,13 @@ public class Activitycommon extends AppCompatActivity {
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(cb.isChecked()) {
+                    if (cb.isChecked()) {
                         Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
                         intent.putExtra("exam", exam);
                         startActivity(intent);
                         dialog.cancel();
-                    }else {
-                        Toast.makeText(getApplicationContext(),"Please accetpt Terms & Conditions", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please accetpt Terms & Conditions", Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -239,12 +309,55 @@ public class Activitycommon extends AppCompatActivity {
         dialog.cancel();
     }
 
-    public void downloaddata(ArrayList<QuestionURL> qdata , int examid, String language, String jsondata) {
-      new DownloadImage(qdata,examid,language,jsondata).execute(qdata);
+    public void downloaddata(ArrayList<QuestionURL> qdata, int examid, String language, String jsondata) {
+        new DownloadImage(qdata, examid, language, jsondata).execute(qdata);
+    }
+
+    public void gotopracticeActivitytoRetry(Exam exam) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+        } else {
+            Calendar cal1 = Calendar.getInstance();
+            Date date2 = DateUtils.parseDate(exam.getEnddate(), "dd MMM yyyy");
+            Date date3 = DateUtils.parseDate(exam.getExamendtime(), "HH:mm:ss");
+            date2.setHours(date3.getHours());
+            date2.setMinutes(date3.getMinutes());
+            cal1.setTime(date2);
+
+            Calendar cal = Calendar.getInstance();
+            Date date = DateUtils.parseDate(exam.getStartdate(), "dd MMM yyyy");
+            Date date1 = DateUtils.parseDate(exam.getExamstarttime(), "HH:mm:ss");
+            date.setHours(date1.getHours());
+            date.setMinutes(date1.getMinutes());
+            cal.setTime(date);
+
+
+            /*if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                opendialog(exam);
+            else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();*/
+
+
+            /*if (preferences.getBoolean("flagtestacivity", false)) {
+                if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                    opendialog(exam);
+                else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
+                intent.putExtra("exam", exam);
+                startActivity(intent);
+            }*/
+            Intent intent = new Intent(Activitycommon.this, PracticeActivity.class);
+            intent.putExtra("exam", exam);
+            startActivity(intent);
+        }
+    }
+
+    public void gotopracticeActivitytoResume(Exam exam) {
+
     }
 
     class LoadImage extends AsyncTask<Object, Void, Bitmap> {
-     //   private LevelListDrawable mDrawable;
+        //   private LevelListDrawable mDrawable;
         View v;
         int type;
 
@@ -258,7 +371,7 @@ public class Activitycommon extends AppCompatActivity {
         @Override
         protected Bitmap doInBackground(Object... params) {
             String source = (String) params[0];
-       //     mDrawable = (LevelListDrawable) params[1];
+            //     mDrawable = (LevelListDrawable) params[1];
             //Log.d("tag", "doInBackground " + source);
             try {
                 InputStream is = new URL(source).openStream();
@@ -300,21 +413,22 @@ public class Activitycommon extends AppCompatActivity {
         }
     }
 
-    public void downloadimage(Bitmap bitmap, String name){
+    public void downloadimage(Bitmap bitmap, String name) {
 
     }
 
     public class DownloadImage extends AsyncTask<ArrayList<QuestionURL>, Void, String> {
-        String name="";
-        ArrayList<QuestionURL> qdata=new ArrayList<>() ;
-        int examid=0;
-        String language="";
-        String jsondata="";
-        public DownloadImage(ArrayList<QuestionURL> qdata , int examid, String language, String jsondata){
-            this.qdata=qdata;
-            this.examid=examid;
-            this.language=language;
-            this.jsondata=jsondata;
+        String name = "";
+        ArrayList<QuestionURL> qdata = new ArrayList<>();
+        int examid = 0;
+        String language = "";
+        String jsondata = "";
+
+        public DownloadImage(ArrayList<QuestionURL> qdata, int examid, String language, String jsondata) {
+            this.qdata = qdata;
+            this.examid = examid;
+            this.language = language;
+            this.jsondata = jsondata;
         }
 
         @Override
@@ -324,10 +438,10 @@ public class Activitycommon extends AppCompatActivity {
 
         @Override
         protected String doInBackground(ArrayList<QuestionURL>... URL) {
-            ArrayList<QuestionURL> qdata= URL[0];
-            for (int i=0;i<qdata.size();i++) {
-                QuestionURL qurldata=qdata.get(i);
-                String imageURL=qdata.get(i).getImagemainsource();
+            ArrayList<QuestionURL> qdata = URL[0];
+            for (int i = 0; i < qdata.size(); i++) {
+                QuestionURL qurldata = qdata.get(i);
+                String imageURL = qdata.get(i).getImagemainsource();
                 int index = imageURL.lastIndexOf("/");
                 name = imageURL.substring((index + 1), imageURL.length());
 
@@ -364,9 +478,18 @@ public class Activitycommon extends AppCompatActivity {
                     c.put(DatabaseHelper.IMAGESOURCE, imageURL);
                     c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
                     c.put(DatabaseHelper.TYPE, qurldata.getType());
-                    c.put(DatabaseHelper.OFFLINEPATH,file.getAbsolutePath());
-                    DatabaseHelper.getInstance(context).savequestionurl(c, qurldata.getId(), qurldata.getType(),imageURL);
+                    c.put(DatabaseHelper.OFFLINEPATH, file.getAbsolutePath());
+                    DatabaseHelper.getInstance(context).savequestionurl(c, qurldata.getId(), qurldata.getType(), imageURL);
                     Log.e("filepath ", "filepath " + savedImageURI);
+
+                    /*ContentValues c1 = new ContentValues();
+                    c1.put(DatabaseHelper.ID, qurldata.getId());
+                    c1.put(DatabaseHelper.IMAGESOURCE, imageURL);
+                    c1.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                    c1.put(DatabaseHelper.TYPE, qurldata.getType());
+                    c1.put(DatabaseHelper.OFFLINEPATH, file.getAbsolutePath());
+                    DatabaseHelper.getInstance(context).savequestionurl(c1, qurldata.getId(), qurldata.getType(), imageURL);*/
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -383,7 +506,16 @@ public class Activitycommon extends AppCompatActivity {
             c.put(DatabaseHelper.EXAMID, examid);
             c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
             long id = DatabaseHelper.getInstance(context).saveqdata(c, examid, language);
+
+            /*ContentValues c1 = new ContentValues();
+            c1.put(DatabaseHelper.JSONDATA, jsondata.toString());
+            c1.put(DatabaseHelper.LANGUAGE, language);
+            c1.put(DatabaseHelper.ID, examid);
+            c1.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+            long id1 = DatabaseHelper.getInstance(context).saveqdata(c1, examid, language);*/
+
             Log.e("iddata", "idadata " + id);
+            //Log.e("iddata1 ","iddata1" +id1);
             try {
                 Intent intent = new Intent(Constants.BROADCAST_WIZARD);
                 intent.putExtra(Constants.BROADCAST_RESPONSE_CODE, 200);
@@ -392,7 +524,7 @@ public class Activitycommon extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-           // downloadimage(result,name);
+            // downloadimage(result,name);
         }
     }
 }

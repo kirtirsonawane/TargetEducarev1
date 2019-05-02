@@ -21,7 +21,7 @@ public class IPSettingActivity extends Activitycommon {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ipsetting);
         setmaterialDesign();
-        setTitle(GlobalValues.student.getInstituteName());
+        setTitle("");
         attachUI();
     }
 
@@ -39,7 +39,6 @@ public class IPSettingActivity extends Activitycommon {
                     Log.e("Global ip","Global IP "+GlobalValues.IP);
                     edit.putString("IP", e1.getText().toString());
                     edit.commit();
-
                     try {
                         Intent intent = new Intent(Constants.BROADCAST_WIZARD);
                         intent.putExtra(Constants.BROADCAST_RESPONSE_CODE, 200);

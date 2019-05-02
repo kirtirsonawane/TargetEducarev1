@@ -17,6 +17,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+import com.targeteducare.database.PracticeDatabaseHelper;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -113,15 +114,17 @@ public class ConnectionManager {
     }
 
     public void getexam(final String json) {
-        Log.e("json ", "json " + json + " " + URLS.GET_EXAMS());
+        Log.e("json ", "json " + json);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     RequestBody body = RequestBody.create(Constants.JSON, json);
+
                     Request request = new Request.Builder().url(URLS.GET_EXAMS()).post(body).build();
                     Response response = client.newCall(request).execute();
                     GlobalValues.TEMP_STR = response.body().string();
+                    Log.e("res ","res "+GlobalValues.TEMP_STR);
                     isDotNet();
                     final int code = response.code();
                     publishBroadcast(code, Connection.GET_EXAMS.ordinal());
@@ -143,6 +146,39 @@ public class ConnectionManager {
        /* } else {
             publishBroadcast(Constants.STATUS_OK, Connection.NO_INTERNET.ordinal());
         }*/
+    }
+
+    public void getotp(final String msg, final String otp){
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Request request = new Request.Builder().url(URLS.sendotp(msg,otp)).build();
+                    Response response = client.newCall(request).execute();
+                    Log.e("datares ","datares ");
+                    GlobalValues.TEMP_STR = response.body().string();
+                    Log.e("Globalvalues",GlobalValues.TEMP_STR);
+                    isDotNet();
+                    final int code = response.code();
+                    publishBroadcast(code, Connection.OTP.ordinal());
+                } catch (ConnectException exception) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.OTPEXCEPTION.ordinal());
+                } catch (UnknownHostException exception) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.OTPEXCEPTION.ordinal());
+                    Log.e("SocketTimeoutException ", "error " + exception.toString());
+                } catch (SocketTimeoutException exception) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.OTPEXCEPTION.ordinal());
+                    Log.e("SocketTimeoutException ", "error " + exception.toString());
+                } catch (Exception e) {
+                    publishBroadcast(Constants.STATUS_OK, Connection.OTPEXCEPTION.ordinal());
+
+                    Log.e("error ", "error " + e.toString());
+                    return;
+                }
+            }
+        });
+        thread.start();
+
     }
 
     public void getquestion(final String json, final int examid, final String language) {
@@ -265,6 +301,13 @@ public class ConnectionManager {
                                 c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
                                 c.put(DatabaseHelper.TYPE, qurldata.get(i).getType());
                                 DatabaseHelper.getInstance(context).savequestionurl(c, qurldata.get(i).getId(), qurldata.get(i).getType(),qurldata.get(i).getImagemainsource());
+
+                                /*ContentValues c1 = new ContentValues();
+                                c1.put(PracticeDatabaseHelper.PRACTICE_ID, qurldata.get(i).getId());
+                                c1.put(PracticeDatabaseHelper.PRACTICE_IMAGESOURCE, qurldata.get(i).getImagemainsource());
+                                c1.put(PracticeDatabaseHelper.PRACTICE_SAVEDTIME, DateUtils.getSqliteTime());
+                                c1.put(PracticeDatabaseHelper.PRACTICE_TYPE, qurldata.get(i).getType());
+                                PracticeDatabaseHelper.getInstance(context).savequestionurl(c1, qurldata.get(i).getId(), qurldata.get(i).getType(),qurldata.get(i).getImagemainsource());*/
                             }
                         }
                     } catch (Exception e) {

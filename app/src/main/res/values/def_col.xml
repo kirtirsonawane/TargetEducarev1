@@ -9,6 +9,7 @@
     <color name="Blue">#5677fc</color>
     <color name="BlueLight">#03a9f4</color>
     <color name="Green">#259b24</color>
+    <color name="lightgreen1">#00FF80</color>
     <color name="Gray">#9e9e9e</color>
     <color name="Gray500">#9E9E9E</color>
     <color name="Gray600">#757575</color>
@@ -61,4 +62,11 @@
     <color name="notanswered_questionlight">#4679BD</color>
     <color name="not_visited">#4679BD</color>
     <color name="darkblue">#362F70</color>
+
+    <color name="transparent">#00000000</color>
+    <!-- card colors -->
+    <color name="card_background">#ffffff</color>
+    <color name="card_shadow_1">#d4d4d4</color>
+    <color name="card_shadow_2">#dddddd</color>
+    <color name="card_detailing">#eee</color>
 </resources>

@@ -11,7 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.targeteducare.Adapter.CustomAdapter;
+import com.targeteducare.Adapter.CustomAdapterforGridMain;
 import com.targeteducare.Classes.ArrData;
 import com.targeteducare.Classes.Menu;
 import com.targeteducare.Classes.QnaQuestionModel;
@@ -21,14 +21,22 @@ import java.util.ArrayList;
 public class GridMainActivity extends Activitycommon{
     private static ArrayList<QnaQuestionModel> dataQuestionmodel;
     private static ArrayList<Menu> data;
-    private CustomAdapter adapter;
+    private CustomAdapterforGridMain adapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView1;
+    Intent itest;
+
+    //public static Context contextOfApplication;
+
 
     //TextView viewmore;
 
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
+
+   /* public static Context getContextOfApplication() {
+        return contextOfApplication;
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +47,7 @@ public class GridMainActivity extends Activitycommon{
         setTitle("Target Educare");
 
         //viewmore = findViewById(R.id.tv_viewmore);
+        //contextOfApplication = getApplicationContext();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(GridMainActivity.this);
         edit = preferences.edit();
@@ -51,7 +60,7 @@ public class GridMainActivity extends Activitycommon{
         /*viewmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent iqnafeed = new Intent(GridMainActivity.this, QnAFeed.class);
+                Intent iqnafeed = new Intent(GridMainActivity.this, QnAFeedActivity.class);
                 startActivity(iqnafeed);
             }
         });*/
@@ -69,7 +78,7 @@ public class GridMainActivity extends Activitycommon{
             Menu arrData = new Menu(ArrData.gridnames[i], ArrData.drawableArray[i]);
             data.add(arrData);
         }
-        adapter = new CustomAdapter(GridMainActivity.this,data);
+        adapter = new CustomAdapterforGridMain(GridMainActivity.this,data);
         recyclerView.setAdapter(adapter);
 
 
@@ -102,18 +111,33 @@ public class GridMainActivity extends Activitycommon{
 
 
     public void referto(int position) {
+
+        /*Test Names to pass
+        Mock Test
+        Monthly Practice Test
+        Practice Test
+        Context Test*/
         switch (position){
             case 0:
-                Intent ipractest = new Intent(GridMainActivity.this,PracticeTestActivity.class);
-                startActivity(ipractest);
+                itest = new Intent(GridMainActivity.this,PracticeTestActivity.class);
+                /*edit.putBoolean("flagtestacivity", false);
+                edit.apply();*/
+                itest.putExtra("testtype",data.get(position).getName());
+                startActivity(itest);
                 break;
             case 1:
-                Intent imocktest = new Intent(GridMainActivity.this,PracticeTestActivity.class);
-                startActivity(imocktest);
+                itest = new Intent(GridMainActivity.this,MockTestActivity.class);
+                /*edit.putBoolean("flagtestacivity", true);
+                edit.apply();*/
+                itest.putExtra("testtype",data.get(position).getName());
+                startActivity(itest);
                 break;
             case 2:
-                Intent imnthranktest = new Intent(GridMainActivity.this,PracticeTestActivity.class);
-                startActivity(imnthranktest);
+                itest = new Intent(GridMainActivity.this,LoginActivity.class);
+                itest.putExtra("testtype",data.get(position).getName());
+                /*edit.putBoolean("flagtestacivity", true);
+                edit.apply();*/
+                startActivity(itest);
                 /*Intent iexamlist = new Intent(GridMainActivity.this, LoginActivity.class);
                 startActivity(iexamlist);*/
                 break;
@@ -130,15 +154,15 @@ public class GridMainActivity extends Activitycommon{
                 startActivity(imainsubjselect);
                 break;
             case 7:
-                Intent iprof = new Intent(GridMainActivity.this, UserProfile.class);
+                Intent iprof = new Intent(GridMainActivity.this, UserProfileActivity.class);
                 startActivity(iprof);
                 break;
             case 8:
-                Intent iengcolg = new Intent(GridMainActivity.this, EngineeringColleges.class);
+                Intent iengcolg = new Intent(GridMainActivity.this, EngineeringCollegesActivity.class);
                 startActivity(iengcolg);
                 break;
             case 9:
-                Intent iqnafeed = new Intent(GridMainActivity.this, QnAFeed.class);
+                Intent iqnafeed = new Intent(GridMainActivity.this, QnAFeedActivity.class);
                 startActivity(iqnafeed);
                 break;
         }
@@ -152,7 +176,7 @@ public class GridMainActivity extends Activitycommon{
 
         Drawable icon_color_change = menu.getItem(0).getIcon(); // change 0 with 1,2 ...
         icon_color_change.mutate();
-        icon_color_change.setColorFilter(getResources().getColor(R.color.White), PorterDuff.Mode.SRC_IN);
+        icon_color_change.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
 
         MenuItem logout_button = menu.findItem(R.id.logout);
         logout_button.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -160,7 +184,7 @@ public class GridMainActivity extends Activitycommon{
             public boolean onMenuItemClick(MenuItem menuItem) {
                 edit.putBoolean("isloginv1",false);
                 edit.apply();
-                Intent login = new Intent(GridMainActivity.this,LoginV1.class);
+                Intent login = new Intent(GridMainActivity.this, LoginV1Activity.class);
                 startActivity(login);
                 finish();
                 return false;

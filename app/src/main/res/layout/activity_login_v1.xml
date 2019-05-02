@@ -10,7 +10,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity">
+    tools:context=".LoginV1Activity">
 
 
     <ScrollView
@@ -57,6 +57,18 @@
                 android:inputType="number"
                 android:maxLength="10"/>
 
+            <EditText
+                android:id="@+id/enter_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:hint="Enter OTP"
+                android:layout_marginTop="12dp"
+                android:padding="10dp"
+                android:inputType="number"
+                android:maxLength="6"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/button_submit"
                 style="?android:textAppearanceSmall"
@@ -74,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:text="New User? Sign up"
                 android:gravity="center"
+                android:layout_marginTop="20dp"
                 android:padding="10dp"/>
         </LinearLayout>
     </ScrollView>

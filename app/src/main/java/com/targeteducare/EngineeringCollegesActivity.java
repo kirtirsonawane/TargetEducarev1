@@ -1,6 +1,8 @@
 package com.targeteducare;
 
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +18,7 @@ import com.targeteducare.Classes.EngColgDataModel;
 
 import java.util.ArrayList;
 
-public class EngineeringColleges extends Activitycommon {
+public class EngineeringCollegesActivity extends Activitycommon {
 
     private ArrayList<EngColgDataModel> data;
     private CustomAdapterEngColg adapter;
@@ -45,7 +47,7 @@ public class EngineeringColleges extends Activitycommon {
                     EngColgData.established_year[i],EngColgData.courses[i],EngColgData.institute_type[i],EngColgData.exam_name[i]
             ));
         }
-        adapter = new CustomAdapterEngColg(EngineeringColleges.this,data);
+        adapter = new CustomAdapterEngColg(EngineeringCollegesActivity.this,data);
         recyclerView.setAdapter(adapter);
     }
 
@@ -56,6 +58,10 @@ public class EngineeringColleges extends Activitycommon {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+
+        Drawable icon_color_change = menu.getItem(0).getIcon(); // change 0 with 1,2 ...
+        icon_color_change.mutate();
+        icon_color_change.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
 
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 

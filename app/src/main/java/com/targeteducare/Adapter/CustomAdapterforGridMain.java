@@ -8,19 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.targeteducare.Classes.Menu;
 import com.targeteducare.GridMainActivity;
 import com.targeteducare.R;
-
 import java.util.ArrayList;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+public class CustomAdapterforGridMain extends RecyclerView.Adapter<CustomAdapterforGridMain.MyViewHolder> {
 
     Context context;
     private ArrayList<Menu> dataSet;
 
-    public CustomAdapter(Context context, ArrayList<Menu> data) {
+    public CustomAdapterforGridMain(Context context, ArrayList<Menu> data) {
         this.dataSet = data;
         this.context = context;
     }
@@ -35,7 +33,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull CustomAdapterforGridMain.MyViewHolder holder, final int position) {
         // set the data in items
         holder.name.setText(dataSet.get(position).getName());
         holder.image.setImageResource(dataSet.get(position).getIcon());

@@ -8,24 +8,27 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.design.widget.NavigationView;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ExamActivity extends Activitycommon implements NavigationView.OnNavigationItemSelectedListener, ItemClickListener, Html.ImageGetter {
     RecyclerView mRecyclerView;
@@ -66,16 +71,73 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
     int alertbefore = 10;
     ImageView imgright;
     TextView title;
+    ImageView icback;
+    TextView result;
+    ProgressBar progress;
+    TextView progresstext, timertxt;
+    ImageView resumebtn;
+    Timer t;
+    boolean isresume = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_exam);
         qdata = new ArrayList<>();
         registerreceiver();
+        progress = (ProgressBar) findViewById(R.id.progressBar);
+        progresstext = (TextView) findViewById(R.id.pregressupdates);
+        timertxt = (TextView) findViewById(R.id.timertxt);
+        resumebtn = (ImageView) findViewById(R.id.timeview);
+        startTime = SystemClock.uptimeMillis();
+        customHandler.postDelayed(updateTimerThread, 0);
 
+        t = new Timer();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                t.scheduleAtFixedRate(new TimerTask() {
+                                          @Override
+                                          public void run() {
+                                              runOnUiThread(new Runnable() {
+                                                  @Override
+                                                  public void run() {
+                                                    /*  timeused=timeused+1000;
+                                                      long hour = (((timeused / 1000) / 60)) / 60;
+                                                      long   min = (((timeused / 1000) / 60)) % 60;
+                                                      long sec = ((timeused / 1000) % 60);
+                                                      timertxt.setText(hour+":"+min+":"+sec);*/
+                                                  }
+                                              });
+
+                                          }
+                                      },
+                        //Set how long before to start calling the TimerTask (in milliseconds)
+                        0,
+                        //Set the amount of time between each execution (in milliseconds)
+                        1000);
+            }
+        });
+
+
+        resumebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isresume) {
+                    isresume = false;
+                    startTime = SystemClock.uptimeMillis();
+                    customHandler.postDelayed(updateTimerThread, 0);
+                    resumebtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_pause));
+                } else {
+                    isresume = true;
+                    timeSwapBuff += timeInMilliseconds;
+                    customHandler.removeCallbacks(updateTimerThread);
+                    resumebtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_resume));
+                }
+            }
+        });
+        result = (TextView) findViewById(R.id.textview_result);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         Log.e("examactivity ", "examactivity");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,6 +149,7 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                 setTitle(exam.getExamname());
                 title = (TextView) findViewById(R.id.title);
                 title.setText(exam.getExamname());
+                result.setText(exam.getExamname());
             }
         }
         /*ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -125,10 +188,10 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
 
             @Override
             public void onClick(View v) {
-                if (drawer.isDrawerOpen(GravityCompat.END)) {
-                    drawer.closeDrawer(GravityCompat.END);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
                 } else {
-                    drawer.openDrawer(GravityCompat.END);
+                    drawer.openDrawer(GravityCompat.START);
                 }
             }
         });
@@ -143,6 +206,20 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                 }
             }
         });
+        icback = (ImageView) findViewById(R.id.menuback);
+        icback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                } else {
+                    ExamActivity.this.finish();
+                }
+            }
+        });
+
         bt1 = (Button) findViewById(R.id.first);
         bt2 = (Button) findViewById(R.id.previous);
         bt3 = (Button) findViewById(R.id.next);
@@ -237,12 +314,12 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
         txt10.setTypeface(Fonter.getTypefacebold(ExamActivity.this));
         txt11.setTypeface(Fonter.getTypefacebold(ExamActivity.this));
         txt12.setTypeface(Fonter.getTypefacebold(ExamActivity.this));
-        txt4.setText("Duration : " + exam.getDurationinMin() + " Mins");
-        txt9.setText("Negative Marks per question : " + exam.getNeagativemarks());
-        txt8.setText("Total Marks : " + exam.getMarks());
-        txt10.setText("Total Attempted Questions: " + answered);
-        txt11.setText("Total Not Attempted Questions: " + notanswered);
-        txt12.setText("Total Review Question: " + review);
+        txt4.setText(": " + exam.getDurationinMin() + " Mins");
+        txt9.setText(": " + exam.getNeagativemarks());
+        txt8.setText(": " + exam.getMarks());
+        txt10.setText(": " + answered);
+        txt11.setText(": " + notanswered);
+        txt12.setText(": " + review);
         txt3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -260,6 +337,14 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                 //  if (qdata.get(mPager.getCurrentItem()).isIsanswered()) {
                 qdata.get(mPager.getCurrentItem()).setIsreview(!qdata.get(mPager.getCurrentItem()).isIsreview());
                 if (qdata.get(mPager.getCurrentItem()).isIsreview()) {
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i).getSubjectid() == qdata.get(mPager.getCurrentItem()).getSubjectid()) {
+                            items.get(i).setReview(items.get(i).getReview() + 1);
+                            // items.get(i).setTotal(items.get(i).getTotalnotanswered()-1);
+                            //   sectionedExpandableLayoutHelper.notifyDataSetChanged();
+                        }
+                    }
+
                     txt1.setText("Remove Review");
                     review = review + 1;
                     if (qdata.get(mPager.getCurrentItem()).isIsanswered()) {
@@ -268,6 +353,14 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                         qdata.get(mPager.getCurrentItem()).setIsanswered(false);
                         for (int i = 0; i < qdata.get(mPager.getCurrentItem()).getOptions().size(); i++) {
                             qdata.get(mPager.getCurrentItem()).getOptions().get(i).setSelected(false);
+                        }
+
+                        for (int i = 0; i < items.size(); i++) {
+                            if (items.get(i).getSubjectid() == qdata.get(mPager.getCurrentItem()).getSubjectid()) {
+                                items.get(i).setTotalnotanswered(items.get(i).getTotalnotanswered() + 1);
+                                // items.get(i).setTotal(items.get(i).getTotalnotanswered()-1);
+                                //   sectionedExpandableLayoutHelper.notifyDataSetChanged();
+                            }
                         }
                     }
                     mAdapter.notifyDataSetChanged();
@@ -280,6 +373,13 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                     }
 
                 } else {
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i).getSubjectid() == qdata.get(mPager.getCurrentItem()).getSubjectid()) {
+                            items.get(i).setReview(items.get(i).getReview() - 1);
+                            // items.get(i).setTotal(items.get(i).getTotalnotanswered()-1);
+                            //   sectionedExpandableLayoutHelper.notifyDataSetChanged();
+                        }
+                    }
                     txt1.setText("Review");
                     if (review > 0)
                         review = review - 1;
@@ -287,9 +387,9 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                         answered = answered + 1;*/
                 }
                 sectionedExpandableLayoutHelper.notifyDataSetChanged();
-                txt10.setText("Total Attempted Questions: " + answered);
-                txt11.setText("Total Not Attempted Questions: " + notanswered);
-                txt12.setText("Total Review Question: " + review);
+                txt10.setText(": " + answered);
+                txt11.setText(": " + notanswered);
+                txt12.setText(": " + review);
               /*  } else {
                     if (!((Activity) context).isFinishing()) {
                         Toast.makeText(getApplicationContext(), "Not answered", Toast.LENGTH_LONG).show();
@@ -317,13 +417,13 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                 txt2.setText(s);
 
                 txt2.setText(hour + ":" + min + ":" + sec);
-                txt5.setText("Time left : " + hour + ":" + min + ":" + sec);
+                txt5.setText(": " + hour + ":" + min + ":" + sec);
 
                 long hour1 = (((l1 / 1000) / 60)) / 60;
                 long min1 = (((l1 / 1000) / 60)) % 60;
                 long sec1 = ((l1 / 1000) % 60);
 
-                txt6.setText("Time Expended : " + hour1 + ":" + min1 + ":" + sec1);
+                txt6.setText(": " + hour1 + ":" + min1 + ":" + sec1);
                 if (l <= (alertbefore * 60000)) {
                     if (!isshown) {
                         opendialog("This exam will be submitting after " + alertbefore + " min automatically. Please Review and compile your exam.", 0);
@@ -413,11 +513,19 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
             review = review - 1;
             q.setIsreview(false);
             txt1.setText("Review");
+
+            for (int i = 0; i < items.size(); i++) {
+                if (items.get(i).getSubjectid() == qdata.get(mPager.getCurrentItem()).getSubjectid()) {
+                    items.get(i).setReview(items.get(i).getReview() - 1);
+                    // items.get(i).setTotal(items.get(i).getTotalnotanswered()-1);
+                    //   sectionedExpandableLayoutHelper.notifyDataSetChanged();
+                }
+            }
         }
 
-        txt10.setText("Total Attempted Questions: " + answered);
-        txt11.setText("Total Not Attempted Questions: " + notanswered);
-        txt12.setText("Total Review Question: " + review);
+        txt10.setText(": " + answered);
+        txt11.setText(": " + notanswered);
+        txt12.setText(": " + review);
         sectionedExpandableLayoutHelper.notifyDataSetChanged();
 
         for (int i = 0; i < items.size(); i++) {
@@ -427,6 +535,9 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                 sectionedExpandableLayoutHelper.notifyDataSetChanged();
             }
         }
+        int x = (int) (((double) answered / (double) qdata.size()) * 100);
+        progresstext.setText(x + "%");
+        progress.setProgress(x);
     }
 
     boolean flag = false;
@@ -621,11 +732,11 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
                 sectionedExpandableLayoutHelper.notifyDataSetChanged();
             }
 
-            txt7.setText("Questions: " + qdata.size());
+            txt7.setText(": " + qdata.size());
             notanswered = qdata.size();
-            txt10.setText("Total Attempted Questions: " + answered);
-            txt11.setText("Total Not Attempted Questions: " + notanswered);
-            txt12.setText("Total Review Question: " + review);
+            txt10.setText(": " + answered);
+            txt11.setText(": " + notanswered);
+            txt12.setText(": " + review);
 
             Calendar cal = Calendar.getInstance();
             starttime = DateUtils.getSqliteTime();
@@ -642,11 +753,35 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-
-        if (drawer.isDrawerOpen(Gravity.RIGHT)) {
-            drawer.closeDrawer(Gravity.RIGHT);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
         } else {
-            super.onBackPressed();
+            Log.e("backpress ", "backpress ");
+            ContentValues c = new ContentValues();
+            c.put(DatabaseHelper.EXAMID, exam.getExamid());
+            c.put(DatabaseHelper.TIMETAKEN, updatedTime);
+            c.put(DatabaseHelper.ANSWERED, answered);
+            c.put(DatabaseHelper.SKIPP, 0);
+            c.put(DatabaseHelper.CORRECT, answered);
+            c.put(DatabaseHelper.WRONG, 0);
+            c.put(DatabaseHelper.EXAMTYPE, exam.getExam_type());
+            c.put(DatabaseHelper.PROGRESS, progresstext.getText().toString().replace("%", ""));
+            long sec = 1;
+            long sp = 1;
+            if (answered != 0) {
+                sp = ((long) updatedTime / (long) answered);
+                sec = ((sp / 1000) % 60);
+            }
+            else{
+                //Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+            }
+
+            c.put(DatabaseHelper.SPEED, Long.toString(sec));
+            Log.e("data ", "data " + c.toString());
+            DatabaseHelper.getInstance(ExamActivity.this).saveexaminationdetails(c, exam.getExamid());
+            ExamActivity.this.finish();
         }
     }
 
@@ -657,7 +792,7 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
         return true;
     }
 
-    @Override
+   /* @Override
     public void itemClicked(Question item) {
         try {
             if (!((Activity) context).isFinishing()) {
@@ -667,21 +802,13 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
             }
             if (qdata.size() > (item.getSrno() - 1)) {
                 mPager.setCurrentItem(item.getSrno() - 1);
-                drawer.closeDrawer(GravityCompat.END);
+                drawer.closeDrawer(GravityCompat.START);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    @Override
-    public void itemClicked(Section section) {
-        if (!((Activity) context).isFinishing()) {
-            // Toast.makeText(this, "Section: " + section.getItem().getName() + " clicked", Toast.LENGTH_SHORT).show();
-        } else {
-            Log.e("no activity", "no activity ");
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -696,6 +823,31 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
     }
 
     public void submitdata() {
+
+        ContentValues c1 = new ContentValues();
+        Log.e("content value check", c1.toString());
+        c1.put(DatabaseHelper.EXAMID, exam.getExamid());
+        c1.put(DatabaseHelper.TIMETAKEN, updatedTime);
+        c1.put(DatabaseHelper.ANSWERED, answered);
+        c1.put(DatabaseHelper.SKIPP, 0);
+        c1.put(DatabaseHelper.CORRECT, answered);
+        c1.put(DatabaseHelper.WRONG, 0);
+        c1.put(DatabaseHelper.EXAMTYPE, exam.getExam_type());
+        c1.put(DatabaseHelper.PROGRESS, progresstext.getText().toString().replace("%", ""));
+        long sec = 1;
+        long sp = 1;
+        if (answered != 0) {
+            sp = ((long) updatedTime / (long) answered);
+            sec = ((sp / 1000) % 60);
+        }
+        else{
+            opendialog("You haven't attempted a single question, do you still want to submit?", 1);
+        }
+
+        c1.put(DatabaseHelper.SPEED, Long.toString(sec));
+        Log.e("data ", "data " + c1.toString());
+        DatabaseHelper.getInstance(ExamActivity.this).saveexaminationdetails(c1, exam.getExamid());
+        ExamActivity.this.finish();
         if (dialog != null)
             dialog.dismiss();
         if (timer != null)
@@ -736,6 +888,7 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
             JSONObject obj = new JSONObject();
             obj.put("examid", exam.getExamid());
             obj.put("language", exam.getLanguages());
+            //obj.put("castecategory", GlobalValues.student.getCasteCategory());
             obj.put("castecategory", GlobalValues.student.getCasteCategory());
             obj.put("userid", GlobalValues.student.getId());
             obj.put("FilterParameter", array.toString());
@@ -821,5 +974,55 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
         }
 
     }
+
+    @Override
+    public void itemClicked(Question item) {
+        try {
+            //  Toast.makeText(this, "Item: " + item.getSrno() + " clicked", Toast.LENGTH_SHORT).show();
+            if (qdata.size() > (item.getSrno() - 1)) {
+                mPager.setCurrentItem(item.getSrno() - 1);
+
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else if (drawer.isDrawerOpen(GravityCompat.END)) {
+                    drawer.closeDrawer(GravityCompat.END);
+                }
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void itemClicked(Section section) {
+
+    }
+
+    private long startTime = 0L;
+    private Handler customHandler = new Handler();
+    long timeInMilliseconds = 0L;
+    long timeSwapBuff = 0L;
+    long updatedTime = 0L;
+    private Runnable updateTimerThread = new Runnable() {
+        public void run() {
+            timeInMilliseconds = SystemClock.uptimeMillis() - startTime;
+            updatedTime = timeSwapBuff + timeInMilliseconds;
+            long hour = (((updatedTime / 1000) / 60)) / 60;
+            long min = (((updatedTime / 1000) / 60)) % 60;
+            long sec = ((updatedTime / 1000) % 60);
+            timertxt.setText(hour + ":" + min + ":" + sec);
+           /* int secs = (int) (updatedTime / 1000);
+            int mins = secs / 60;
+            secs = secs % 60;
+            int milliseconds = (int) (updatedTime % 1000);
+            timertxt.setText("" + mins + ":"
+                    + String.format("%02d", secs) + ":"
+                    + String.format("%03d", milliseconds));*/
+            customHandler.postDelayed(this, 0);
+        }
+
+    };
 
 }
