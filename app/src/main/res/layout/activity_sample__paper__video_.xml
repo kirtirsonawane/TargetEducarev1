@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Sample_Paper_Video_Activity"
+    android:orientation="vertical">
+    <include
+        layout="@layout/toolbar"/>
+
+
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/sample_papers_video_view_text"
+       android:text="Phy"
+       android:layout_margin="5dp"
+       android:padding="2dp"
+       android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+       />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        >
+    <VideoView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sample_papers_video_view"
+        />
+    </FrameLayout>
+
+
+
+
+</LinearLayout>

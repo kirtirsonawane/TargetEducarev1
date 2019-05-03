@@ -17,19 +17,19 @@
         android:weightSum="3">
 
         <CheckBox
-            android:id="@+id/question"
+            android:id="@+id/sample_papers_e_books"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search Text1"
+            android:text="EBook"
             android:padding="10dp"
             android:imeOptions="actionSearch"
             android:layout_weight="1"/>
 
         <CheckBox
-            android:id="@+id/course"
+            android:id="@+id/sample_papers_videos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search Text2"
+            android:text="Video"
             android:padding="10dp"
             android:layout_weight="1"/>
 
@@ -39,7 +39,8 @@
             android:layout_height="wrap_content"
             android:text="Search Text3"
             android:padding="10dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
@@ -47,7 +48,8 @@
         android:id="@+id/recyclerviewforsamplepaper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+       >
 
     </android.support.v7.widget.RecyclerView>
 

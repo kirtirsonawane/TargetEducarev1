@@ -190,25 +190,16 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
 
 
         holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
-
-        // /images/Uploadvideos/20190417150559_download (1).jpg+arrayList.get(i).getImageurl();/images/Uploadvideos/Thumbnail/
-        // holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
         holder.Packages_TextView_Course_Name.setText(Html.fromHtml(arrayList.get(i).getName()));
-
          /*  holder.Packages_TextView_Discription.setText(Html.fromHtml( arrayList.get(i).getDescription()));
             Log.e("Discription::holder@ ::",arrayList.get(i).getDescription());*/
-
-
-        holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
-        // holder.Packages_TextView_Amount.setTypeface(Fonter.getTypefaceregular(context));
+         holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
         holder.Packages_TextView_Amount.setText("₹ " + arrayList.get(i).getAmount());
-        //  Log.e("Image:::",String.valueOf(arrayList.get(j).getAmount()));
-
 
         holder.Packages_CheckBox.setTypeface(Fonter.getTypefaceregular(context));
-        holder.Packages_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                holder.Packages_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 Log.e("is Checked", String.valueOf((isChecked)));
 

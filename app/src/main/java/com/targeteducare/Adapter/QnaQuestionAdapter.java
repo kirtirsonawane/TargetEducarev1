@@ -80,7 +80,7 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
         TextView followers;
         TextView answers;
         RecyclerView recyclerView;
-        CheckBox cb_engineeringcollege, cb_course, cb_branch;
+       // CheckBox cb_engineeringcollege, cb_course, cb_branch;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -89,9 +89,9 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
             answers = itemView.findViewById(R.id.answers);
             recyclerView = itemView.findViewById(R.id.recyclerviewfollowers);
             recyclerView.setHasFixedSize(true);
-            cb_engineeringcollege = itemView.findViewById(R.id.question);
-            cb_course = itemView.findViewById(R.id.course);
-            cb_branch = itemView.findViewById(R.id.branch);
+           // cb_engineeringcollege = itemView.findViewById(R.id.question);
+          //  cb_course = itemView.findViewById(R.id.course);
+          //  cb_branch = itemView.findViewById(R.id.branch);
         }
     }
 

@@ -14,9 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".Sample_Paper_Webview_Activity"></activity>
+        <activity android:name=".Sample_Paper_Video_Activity" />
+        <activity android:name=".College_Comparision" />
         <activity
             android:name=".MyPackagesActivity"
-            android:largeHeap="true"></activity>
+            android:largeHeap="true" />
         <activity android:name=".ProgressReport" />
         <activity android:name=".PracticeTestActivity" />
         <activity android:name=".MainSubjectSelectionActivity" />

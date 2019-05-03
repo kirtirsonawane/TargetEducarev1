@@ -72,12 +72,13 @@ public class MyPackagesActivity extends Activitycommon {
         Packages_RecyclerView.setItemAnimator(new DefaultItemAnimator());
         Packages_RecyclerView.setAdapter(getMyPackagesAdapter);
 
+       // {"FilterParameter":"{\"PageNo\":\"1\",\"NoofRecords\":\"1000000\",\"CategoryId\":\"0\",\"SubCategoryId\":\"0\"}"}
 
         try {
-            jsonObject.put("PageNo", "1");
-            jsonObject.put("NoofRecords", "1000000");
-            jsonObject.put("CategoryId", "343");
-            jsonObject.put("SubCategoryId", "344");
+            jsonObject.put("PageNo", Constants.Packages_page_no);
+            jsonObject.put("NoofRecords", Constants.Packages_no_of_records);
+            jsonObject.put("CategoryId", Constants.Packages_Category_id);
+            jsonObject.put("SubCategoryId", Constants.Packages_Subcategory_id);
             jsonObject1.put("FilterParameter", jsonObject.toString());
             Log.e("parameters ::  :: ", jsonObject1.toString());
             ConnectionManager.getInstance(MyPackagesActivity.this).getcourse(jsonObject1.toString());
