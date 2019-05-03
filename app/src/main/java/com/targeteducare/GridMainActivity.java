@@ -2,10 +2,12 @@ package com.targeteducare;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuInflater;
@@ -48,7 +50,9 @@ public class GridMainActivity extends Activitycommon{
 
         //viewmore = findViewById(R.id.tv_viewmore);
         //contextOfApplication = getApplicationContext();
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+        }
         preferences = PreferenceManager.getDefaultSharedPreferences(GridMainActivity.this);
         edit = preferences.edit();
 

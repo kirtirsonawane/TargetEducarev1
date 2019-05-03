@@ -126,6 +126,8 @@ public class LoginV1Activity extends Activitycommon {
                     Log.e("Entered otp is ",enter_otp.getText().toString());
                     Log.e("Sent otp is ",otp);
 
+                    flag = true;
+
                     if(flag == true){
                         Log.e("I am into ","flag == true");
                         if (!(enter_otp.getText().toString().trim().equals(""))) {
@@ -212,7 +214,7 @@ public class LoginV1Activity extends Activitycommon {
                             enter_otp.setVisibility(View.VISIBLE);
                             final int random = new Random().nextInt(899999) + 100000;
                             otp = Integer.toString(random);
-                            ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, otp);
+                            //ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, otp);
                             Toast.makeText(context, "We have sent an OTP to the registered mobile number " + et_mobileno + ". Please Verify the same", Toast.LENGTH_SHORT).show();
                             Log.e("OTP is ",otp);
 

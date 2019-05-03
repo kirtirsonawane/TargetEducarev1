@@ -2,11 +2,13 @@ package com.targeteducare;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -103,18 +105,23 @@ public class UserProfileActivity extends Activitycommon {
         super.onPostResume();
         tv_username.setText(GlobalValues.student.getFullname());
 
-
         StructureClass.defineContext(UserProfileActivity.this);
 
         try {
             File f2= new File(StructureClass.generate());
             File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
-            if(f1.exists()){
+            if((f1.exists()) && (ActivityCompat.checkSelfPermission(UserProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
 
                 Bitmap myBitmap = BitmapFactory.decodeFile(f1.getAbsolutePath());
 
                 profile_image.setImageBitmap(myBitmap);
 
+            }
+            else if(ActivityCompat.checkSelfPermission(UserProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                profile_image.setImageResource(R.mipmap.profile);
+            }
+            else{
+                profile_image.setImageResource(R.mipmap.profile);
             }
 
             Log.e("File path ",f1.toString());
