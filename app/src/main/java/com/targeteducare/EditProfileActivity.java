@@ -1,8 +1,10 @@
 package com.targeteducare;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,7 +13,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,6 +48,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
@@ -69,6 +76,8 @@ public class EditProfileActivity extends Activitycommon {
     JSONArray subrootboard;
     View vstandard, vcity;
     TextView tv_standard, tv_city;
+
+    int flag_permission = 0;
 
     Bitmap selectedImage;
 
@@ -108,7 +117,6 @@ public class EditProfileActivity extends Activitycommon {
         StructureClass.defineContext(EditProfileActivity.this);
         try {
             Log.e("in profile ", "in profile");
-
 
             spin_state = findViewById(R.id.spinner_state);
             spin_city = findViewById(R.id.spinner_city);
@@ -259,20 +267,16 @@ public class EditProfileActivity extends Activitycommon {
             profileimageupdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
-
-                /*Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                imagepath = Environment.getExternalStorageDirectory()+"/sharedresources/"+HelperFunctions.getDateTimeForFileName()+".png";
-                uriImagePath = Uri.fromFile(new File(imagepath));
-                photoPickerIntent.setType("image/*");
-                photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT,uriImagePath);
-                photoPickerIntent.putExtra("outputFormat",Bitmap.CompressFormat.PNG.name());
-                photoPickerIntent.putExtra("return-data", true);
-                startActivityForResult(photoPickerIntent, REQUEST_CODE_CHOOSE_PICTURE_FROM_GALLARY);*/
-
-                    Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                    photoPickerIntent.setType("image/*");
-                    startActivityForResult(photoPickerIntent, PICK_IMAGE_REQUEST);
+                    Log.e("Permission Denied "," in onClick image");
+                    if (ActivityCompat.checkSelfPermission(EditProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(EditProfileActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                        flag_permission = 1;
+                    }
+                    else {
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        startActivityForResult(photoPickerIntent, PICK_IMAGE_REQUEST);
+                    }
                 }
             });
 
@@ -509,7 +513,6 @@ public class EditProfileActivity extends Activitycommon {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             if (resultCode == RESULT_OK) {
                 try {
@@ -517,11 +520,29 @@ public class EditProfileActivity extends Activitycommon {
                     final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                     selectedImage = BitmapFactory.decodeStream(imageStream);
 
-                    profileimageupdate.setImageBitmap(selectedImage);
+                    OutputStream fout = null;
+                    /*File f = File.createTempFile(Constants.PROFILE_PIC, Constants.FILE_NAME_EXT,
+                            new File(StructureClass.generate()));*/
+                    Log.e("Permission Denied "," in onActivityResult");
+                    File f2= new File(StructureClass.generate());
+                    File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
+                    if((f1.exists()) && (ActivityCompat.checkSelfPermission(EditProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
+
+                        fout = new FileOutputStream(f1.getAbsoluteFile());
+                        selectedImage.compress(Bitmap.CompressFormat.JPEG, 85, fout);
+                        profileimageupdate.setImageBitmap(selectedImage);
+
+                        Log.e("File path ",f1.toString());
+                        fout.flush();
+                        fout.close();
+
+                    }
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     //Toast.makeText(EditProfileActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
 
             } else {
@@ -804,64 +825,12 @@ public class EditProfileActivity extends Activitycommon {
 
                     Log.e("selected student ", "selected student " + GlobalValues.student.getStateId() + " " + GlobalValues.student.getCityId());
 
-                    try {
-                        OutputStream fout = null;
-                        /*File f = File.createTempFile(Constants.PROFILE_PIC, Constants.FILE_NAME_EXT,
-                                new File(StructureClass.generate()));*/
-
-                        File f2= new File(StructureClass.generate());
-                        File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
-                        Log.e("File path ",f1.toString());
-                        //BufferedWriter out = new BufferedWriter(new FileWriter(f.getAbsolutePath()));
-
-                        fout = new FileOutputStream(f1.getAbsoluteFile());
-
-                        selectedImage.compress(Bitmap.CompressFormat.JPEG, 85, fout);
-                        fout.flush();
-                        fout.close();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    //profile update
 
                     String jsonstudent = gson.toJson(GlobalValues.student);
                     editor.putString("studentdetails", jsonstudent);
                     editor.apply();
 
-
-
-                    /*Gson gson = new Gson();
-                    GlobalValues.student.setDOB(date);
-                    GlobalValues.student.setName(et_name.getText().toString().trim());
-                    GlobalValues.student.setFatherName(et_fathersname.getText().toString().trim());
-                    GlobalValues.student.setSurname(et_surname.getText().toString().trim());
-                    GlobalValues.student.setFullname(GlobalValues.student.getName() + " " + GlobalValues.student.getFatherName() + " " + GlobalValues.student.getSurname());
-                    GlobalValues.student.setGender(rb_text);
-                    GlobalValues.student.setBoard_name(spinnerStreams.get(spin_stream.getSelectedItemPosition()).getBoard_name());
-                    if (spinnerStandards != null) {
-                        GlobalValues.student.setSubboard_name(spinnerStandards.get(spin_standard.getSelectedItemPosition()).getStandard());
-                    }
-
-                    GlobalValues.student.setEmail(et_emailid.getText().toString().trim());
-                    Log.e("roll no test: ", GlobalValues.student.getId());
-                    //Log.e("spinner state value ",spinnerStates.get(spin_state.getSelectedItemPosition()).getStatename());
-
-                    GlobalValues.student.setState(spinnerStates.get(spin_state.getSelectedItemPosition()).getStatename());
-
-                    try {
-                        if ((spin_city.getSelectedItemPosition() >= 0) && (spin_city.getSelectedItemPosition() < spinnerCities.size())) {
-                            GlobalValues.student.setCity(spinnerCities.get(spin_city.getSelectedItemPosition()).getCity_name());
-                        } else {
-                            GlobalValues.student.setCity("");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    tv_username.setText(GlobalValues.student.getFullname());
-                    String jsonstudentprofile = gson.toJson(GlobalValues.student);
-                    editor.putString("studentprofiledetails", jsonstudentprofile);
-                    editor.apply();*/
                 }
             }
 
@@ -871,26 +840,73 @@ public class EditProfileActivity extends Activitycommon {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 101:
+                if (flag_permission == 1) {
+                    if (ActivityCompat.checkSelfPermission(EditProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.shouldShowRequestPermissionRationale(EditProfileActivity.this, Manifest.permission.READ_CONTACTS);
+                        flag_permission = 1;
+                    } else {
+                        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                        photoPickerIntent.setType("image/*");
+                        startActivityForResult(photoPickerIntent, PICK_IMAGE_REQUEST);
+                    }
+                } else {
+
+                    try {
+                        OutputStream fout = null;
+                        /*File f = File.createTempFile(Constants.PROFILE_PIC, Constants.FILE_NAME_EXT,
+                                new File(StructureClass.generate()));*/
+                        Log.e("Permission Denied "," in onRequestPermissionsResult");
+                        File f2= new File(StructureClass.generate());
+                        File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
+                        if((f1.exists()) && (ActivityCompat.checkSelfPermission(EditProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
+                            fout = new FileOutputStream(f1.getAbsoluteFile());
+                            selectedImage.compress(Bitmap.CompressFormat.JPEG, 85, fout);
+                            profileimageupdate.setImageBitmap(selectedImage);
+                        }
+                        else if(ActivityCompat.checkSelfPermission(EditProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            profileimageupdate.setImageResource(R.mipmap.profile);
+                        }
+                        else{
+                            profileimageupdate.setImageResource(R.mipmap.profile);
+                        }
+
+                        Log.e("File path ",f1.toString());
+
+                        fout.flush();
+                        fout.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
+        return;
+    }
+
+    @Override
+    protected void onResume() {
+        profileimageupdate.setImageResource(R.mipmap.profile);
 
         try {
+            Log.e("Permission Denied "," in onPostResume()");
             File f2= new File(StructureClass.generate());
             File f1=new File(f2.getAbsolutePath()+"/"+GlobalValues.student.getId()+Constants.PROFILE_PIC+Constants.FILE_NAME_EXT);
-            if(f1.exists()){
+
+            if((f1.exists()) && (ActivityCompat.checkSelfPermission(EditProfileActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)){
 
                 Bitmap myBitmap = BitmapFactory.decodeFile(f1.getAbsolutePath());
 
                 profileimageupdate.setImageBitmap(myBitmap);
 
             }
-
-            Log.e("File path ",f1.toString());
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+        super.onResume();
     }
 }
+
+
 

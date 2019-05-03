@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CollegeComparisionActivity"
+    android:orientation="vertical"
+    android:id="@+id/layout"
+    >
+    <include
+        layout="@layout/toolbar">
+    </include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/horizontal_linear"
+        android:layout_margin="5dp">
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fixed_scrollview">
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fixed_table">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/row1"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="College Name"
+                    android:id="@+id/fixed_college_name"
+                    android:background="@drawable/comparision_table_shape_xml"
+                    android:padding="5dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/row2"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="No. of Courses"
+                    android:id="@+id/fixed_course"
+                    android:background="@drawable/comparision_table_shape_xml"
+                    android:padding="5dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/row3"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="Institute Name"
+                    android:id="@+id/fixed_institue_name"
+                    android:background="@drawable/comparision_table_shape_xml"
+                    android:padding="5dp"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/row4"
+                >
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="Exam Name"
+                    android:id="@+id/fixed_exam_name"
+                    android:background="@drawable/comparision_table_shape_xml"
+                    android:padding="5dp"/>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+
+                android:id="@+id/row5"
+                android:layout_height="50dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="Ratings"
+                    android:id="@+id/fixed_ratings"
+                    android:background="@drawable/comparision_table_shape_xml"
+                    android:padding="5dp"/>
+            </TableRow>
+
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:id="@+id/row6"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:text="Reviews"
+                    android:id="@+id/fixed_reviews"
+                    android:background="@drawable/comparision_table_shape_xml"
+                    android:padding="5dp"/>
+            </TableRow>
+
+
+        </TableLayout>
+        </ScrollView>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sv">
+    <HorizontalScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/hsv">
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:id="@+id/table"
+    android:layout_height="wrap_content">
+    </TableLayout>
+</HorizontalScrollView>
+    </ScrollView>
+    </LinearLayout>
+    </LinearLayout>

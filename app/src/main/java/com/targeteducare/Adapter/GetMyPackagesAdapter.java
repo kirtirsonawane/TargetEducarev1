@@ -3,11 +3,8 @@ package com.targeteducare.Adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-
-
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
@@ -16,24 +13,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/*import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;*/
 import com.squareup.picasso.Picasso;
 import com.targeteducare.Classes.MyPackages;
 import com.targeteducare.Constants;
 import com.targeteducare.Fonter;
 import com.targeteducare.MyPackagesActivity;
 import com.targeteducare.R;
-import com.targeteducare.URLS;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/*import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;*/
 
 public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdapter.Holder> {
     ArrayList<MyPackages> arrayList;
@@ -190,25 +186,16 @@ public class GetMyPackagesAdapter extends RecyclerView.Adapter<GetMyPackagesAdap
 
 
         holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
-
-        // /images/Uploadvideos/20190417150559_download (1).jpg+arrayList.get(i).getImageurl();/images/Uploadvideos/Thumbnail/
-        // holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
         holder.Packages_TextView_Course_Name.setText(Html.fromHtml(arrayList.get(i).getName()));
-
          /*  holder.Packages_TextView_Discription.setText(Html.fromHtml( arrayList.get(i).getDescription()));
             Log.e("Discription::holder@ ::",arrayList.get(i).getDescription());*/
-
-
-        holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
-        // holder.Packages_TextView_Amount.setTypeface(Fonter.getTypefaceregular(context));
+         holder.Packages_TextView_Course_Name.setTypeface(Fonter.getTypefacebold(context));
         holder.Packages_TextView_Amount.setText("₹ " + arrayList.get(i).getAmount());
-        //  Log.e("Image:::",String.valueOf(arrayList.get(j).getAmount()));
-
 
         holder.Packages_CheckBox.setTypeface(Fonter.getTypefaceregular(context));
-        holder.Packages_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                holder.Packages_CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 Log.e("is Checked", String.valueOf((isChecked)));
 

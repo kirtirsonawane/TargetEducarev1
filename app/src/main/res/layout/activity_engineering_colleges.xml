@@ -5,11 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+   >
 
     <include
         layout="@layout/toolbar">
     </include>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerviewforengcolg"
@@ -18,4 +24,14 @@
         android:scrollbars="vertical">
 
     </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/college_compare_button"
+        android:text="Compare"
+        android:textColor="@color/White"
+        android:background="@drawable/rounded_button1"
+        android:layout_margin="8dp"
+        android:visibility="gone"/>
 </LinearLayout>

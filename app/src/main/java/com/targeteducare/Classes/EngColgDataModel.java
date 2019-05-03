@@ -1,6 +1,8 @@
 package com.targeteducare.Classes;
 
-public class EngColgDataModel {
+import java.io.Serializable;
+
+public class EngColgDataModel implements Serializable {
      int logo_img=0;
      float rating;
      int reviews;
@@ -9,6 +11,8 @@ public class EngColgDataModel {
      int courses;
      String institute_type;
      String exam_name;
+
+
 
     public  int getLogo_img() {
         return logo_img;
@@ -85,4 +89,6 @@ public class EngColgDataModel {
         this.institute_type = institute_type;
         this.exam_name = exam_name;
     }
+
+
 }

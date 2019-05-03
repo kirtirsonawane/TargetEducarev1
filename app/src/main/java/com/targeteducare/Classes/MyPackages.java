@@ -7,8 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.jar.Attributes;
 
 public class MyPackages {
     int TotalRecord;
@@ -123,7 +121,7 @@ public class MyPackages {
             } else {
                 MyPackages myPackages = new MyPackages();
 //                Log.e("Array data  ::: ", jsonArray.toString());
-                // jsonArray = jsonObject3.optJSONArray("subroot");
+               // jsonArray = jsonObject3.optJSONArray("subroot");
 
 
 

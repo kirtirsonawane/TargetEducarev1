@@ -35,9 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SamplePapers" />
+        <activity android:name=".SamplePapersActivity" />
         <activity android:name=".QnAFeedActivity" />
         <activity android:name=".EngineeringCollegesActivity" />
+        <activity android:name=".EngineeringCollegesActivity1"/>
         <activity android:name=".GridMainActivity" />
         <activity android:name=".LoginActivity" />
         <activity
@@ -49,6 +50,9 @@
         <activity android:name=".AnswersheetActivity" />
         <activity android:name=".IPSettingActivity" />
         <activity android:name=".MyPackagesActivity"/>
+        <activity android:name=".Sample_Paper_Webview_Activity"/>
+        <activity android:name=".Sample_Paper_Video_Activity"/>
+        <activity android:name=".CollegeComparisionActivity"/>
     </application>
 
 </manifest>

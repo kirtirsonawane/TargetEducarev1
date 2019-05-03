@@ -16,6 +16,7 @@ public class URLS {
         return  "http://192.168.1.59:8097/CommonRoute/";
     }
     public static String getBaseUrlup(){ return "http://192.168.1.59:8097/ExamRoute/";}
+    public static String getBaseUrlimg(){return "http://192.168.1.59:8097/images/";}
 
     public static String LOGIN() {
         Log.e("urldata",getBaseUrl() +"Login_Api");
@@ -75,5 +76,13 @@ public class URLS {
 
     public static String getcourse() {
         return getBaseUrv1() + "Api_Course_Get";
+    }
+
+    public static String getsamplepaper() {
+        return getBaseUrv1() + "Api_Student_Ebook_Get";
+    }
+
+    public static String getmy_package_image() {
+        return getBaseUrlimg() + "uploadimages/20190411181207_red-2014577_1280.png";
     }
 }

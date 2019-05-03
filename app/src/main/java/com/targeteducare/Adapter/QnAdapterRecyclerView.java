@@ -26,7 +26,7 @@ public class QnAdapterRecyclerView extends RecyclerView.Adapter<QnAdapterRecycle
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_details, parent, false);
 
-        //view.setOnClickListener(EngineeringCollegesActivity.myOnClickListener);
+        //view.setOnClickListener(EngineeringCollegesActivity1.myOnClickListener);
 
         MyViewHolder vh = new MyViewHolder(view);
         return vh;

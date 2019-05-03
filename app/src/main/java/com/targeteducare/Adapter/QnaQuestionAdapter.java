@@ -37,7 +37,7 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_details, parent, false);
 
-        //view.setOnClickListener(EngineeringCollegesActivity.myOnClickListener);
+        //view.setOnClickListener(EngineeringCollegesActivity1.myOnClickListener);
 
         MyViewHolder vh = new MyViewHolder(view);
         return vh;
@@ -89,8 +89,8 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
             answers = itemView.findViewById(R.id.answers);
             recyclerView = itemView.findViewById(R.id.recyclerviewfollowers);
             recyclerView.setHasFixedSize(true);
-            cb_engineeringcollege = itemView.findViewById(R.id.question);
-            cb_course = itemView.findViewById(R.id.course);
+            /*cb_engineeringcollege = itemView.findViewById(R.id.question);
+            cb_course = itemView.findViewById(R.id.course);*/
             cb_branch = itemView.findViewById(R.id.branch);
         }
     }

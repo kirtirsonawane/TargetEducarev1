@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background"
+    android:layout_margin="5dp"
+    >
+
+    <LinearLayout
+        android:id="@+id/dialog_layout_hori_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/sample_papers_dialog_heading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" heading"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:layout_margin="5dp"/>
+
+        <ImageView
+            android:id="@+id/dialog_close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="top|right|end"
+            android:src="@drawable/close_dialog_one" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sample_papers_dialog_discription"
+        android:text=" discription"
+        android:padding="5dp"
+        android:layout_margin="5dp"/>
+
+
+
+
+
+</LinearLayout>
