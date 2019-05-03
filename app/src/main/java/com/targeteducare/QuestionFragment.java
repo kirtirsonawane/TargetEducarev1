@@ -63,7 +63,8 @@ import java.util.regex.Pattern;
  * create an instance of this fragment.
  */
 
-public class QuestionFragment extends Fragment implements Html.ImageGetter {
+public class
+QuestionFragment extends Fragment implements Html.ImageGetter {
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

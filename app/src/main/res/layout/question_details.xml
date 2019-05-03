@@ -14,7 +14,7 @@
             android:id="@+id/mainquestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="                     Main Question"
+            android:text="Main Question"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
 
         <LinearLayout

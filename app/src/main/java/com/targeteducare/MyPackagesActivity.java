@@ -1,20 +1,31 @@
 package com.targeteducare;
 
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.targeteducare.Adapter.GetMyPackagesAdapter;
 import com.targeteducare.Classes.MyPackages;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyPackagesActivity extends Activitycommon {
 
@@ -61,7 +72,7 @@ public class MyPackagesActivity extends Activitycommon {
         Packages_RecyclerView.setItemAnimator(new DefaultItemAnimator());
         Packages_RecyclerView.setAdapter(getMyPackagesAdapter);
 
-       // {"FilterParameter":"{\"PageNo\":\"1\",\"NoofRecords\":\"1000000\",\"CategoryId\":\"0\",\"SubCategoryId\":\"0\"}"}
+        // {"FilterParameter":"{\"PageNo\":\"1\",\"NoofRecords\":\"1000000\",\"CategoryId\":\"0\",\"SubCategoryId\":\"0\"}"}
 
         try {
             jsonObject.put("PageNo", Constants.Packages_page_no);

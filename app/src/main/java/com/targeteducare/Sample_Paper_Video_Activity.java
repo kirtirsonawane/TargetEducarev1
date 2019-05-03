@@ -2,6 +2,10 @@ package com.targeteducare;
 
 import android.content.Intent;
 import android.net.Uri;
+<<<<<<< HEAD
+=======
+import android.support.v7.app.AppCompatActivity;
+>>>>>>> origin/master
 import android.os.Bundle;
 import android.widget.MediaController;
 import android.widget.TextView;

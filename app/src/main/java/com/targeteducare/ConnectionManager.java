@@ -683,45 +683,6 @@ public class ConnectionManager {
         thread.start();
     }
 
-    public void getsamplepapers(final String samplejson) {
-
-        Thread thread = new Thread(new Runnable() {
-
-
-            @Override
-            public void run() {
-                RequestBody body = RequestBody.create(Constants.JSON, samplejson);
-
-                Request request = new Request.Builder().url(URLS.getsamplepaper()).post(body).build();
-                Log.e("Body :: ",body.toString());
-                Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                    GlobalValues.TEMP_STR = response.body().string();
-                    Log.e("GlobalValues:: ",GlobalValues.TEMP_STR);
-                    isDotNet();
-                    final int code = response.code();
-                    publishBroadcast(code, Connection.SAMPLEPAPERS.ordinal());
-                } catch (ConnectException exception) {
-                    publishBroadcast(Constants.STATUS_OK, Connection.SAMPLEPAPERSEXCEPTION.ordinal());
-                } catch (UnknownHostException exception) {
-                    publishBroadcast(Constants.STATUS_OK, Connection.SAMPLEPAPERSEXCEPTION.ordinal());
-                    Log.e("SocketTimeoutException ", "error " + exception.toString());
-                } catch (SocketTimeoutException exception) {
-                    publishBroadcast(Constants.STATUS_OK, Connection.SAMPLEPAPERSEXCEPTION.ordinal());
-                    Log.e("SocketTimeoutException ", "error " + exception.toString());
-                } catch (Exception e) {
-                    Log.e("error ", "error " + e.toString());
-                    return;
-
-                }
-            }
-        });
-        thread.start();
-    }
-
-
-
     private void publishBroadcast(final int code, final int ordinal) {
         try {
             Intent intent = new Intent(Constants.BROADCAST_WIZARD);
