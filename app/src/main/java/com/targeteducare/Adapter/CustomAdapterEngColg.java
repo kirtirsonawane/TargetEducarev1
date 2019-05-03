@@ -9,15 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.targeteducare.Classes.EngColgDataModel;
-import com.targeteducare.EngineeringColleges;
-import com.targeteducare.MyPackagesActivity;
 import com.targeteducare.R;
 
 import java.util.ArrayList;
@@ -49,10 +46,9 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  CustomAdapterEngColg.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull CustomAdapterEngColg.MyViewHolder holder, final int position) {
 
-
-       holder.icon.setImageResource(dataSet.get(position).getLogo_img());
+        holder.icon.setImageResource(dataSet.get(position).getLogo_img());
         holder.ratings.setText(dataSet.get(position).getRating()+"/5");
         holder.reviews.setText(dataSet.get(position).getReviews()+" reviews");
         holder.collegename.setText(dataSet.get(position).getCollege_name());
@@ -60,32 +56,7 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
         holder.noofcourses.setText(""+dataSet.get(position).getCourses());
         holder.institutetype.setText(dataSet.get(position).getInstitute_type());
         holder.examtype.setText(dataSet.get(position).getExam_name());
-
-
-        holder.cb_compare.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                Log.e("is Checked", String.valueOf((isChecked)));
-
-
-                if (isChecked == true) {
-                    Log.e("is Checked in if", String.valueOf((isChecked)));
-                    ((EngineeringColleges) context).gotocompare_function( 1,position);
-
-
-                } else if (isChecked == false) {
-                    ((EngineeringColleges) context).gotocompare_function( 0,position);
-
-                }
-
-
-            }
-        });
-
     }
-
-
 
 
 
@@ -112,11 +83,8 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
                 String filterPattern = constraint.toString().toLowerCase().trim();
 
                 for (EngColgDataModel item : datasetFilter) {
-
-
                     if ((item.getExam_name().toLowerCase().contains(filterPattern)) || (item.getCollege_name().toLowerCase().contains(filterPattern)) ||
-                            (Integer.toString(item.getCourses()).toLowerCase().contains(filterPattern)))
-                    {
+                            (Integer.toString(item.getCourses()).toLowerCase().contains(filterPattern))) {
                         filteredList.add(item);
                     }
                 }
@@ -151,7 +119,6 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
         TextView examtype;
         Button btn_getcontact;
         CheckBox cb_compare;
-        Button college_compare_button;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -165,11 +132,7 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
             examtype = itemView.findViewById(R.id.examtogiveview);
             btn_getcontact = itemView.findViewById(R.id.btn_getcontact);
             cb_compare = itemView.findViewById(R.id.cb_compare);
-            college_compare_button=itemView.findViewById(R.id.college_compare_button);
         }
-
-
-
     }
 
 }

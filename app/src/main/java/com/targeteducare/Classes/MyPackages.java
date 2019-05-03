@@ -77,90 +77,48 @@ public class MyPackages {
 
             JSONArray jsonArray = null;
 
-            jsonArray = jsonObject3.optJSONArray("subroot");
-            if (jsonArray != null) {
-                int i = 0;
+            jsonArray = jsonObject3.getJSONArray("subroot");
 
-                Log.e("json array len ", String.valueOf(jsonArray.length()));
-                for (i = 0; i < jsonArray.length(); i++) {
+            int i = 0;
 
-                    MyPackages myPackages = new MyPackages();
-                    Log.e("Array data  ::: ", jsonArray.toString());
-                    jsonObject4 = jsonArray.getJSONObject(i);
-                    Log.e("Msg  : ", jsonObject4.toString());
+            Log.e("json array len ", String.valueOf(jsonArray.length()));
+            for (i = 0; i < jsonArray.length(); i++) {
 
-                    myPackages.setId(Integer.parseInt(jsonObject4.getString("Id")));
-                    myPackages.setName(jsonObject4.getString("Name"));
-                    myPackages.setTotalRecord(Integer.parseInt(jsonObject4.getString("TotalRecord")));
-                    myPackages.setAmount(Double.parseDouble((jsonObject4.getString("Amount"))));
-                    myPackages.setNameAmount(jsonObject4.getString("NameAmount"));
-                    myPackages.setCategoryId(Integer.parseInt((jsonObject4.getString("CategoryId"))));
-                    myPackages.setCategoryName((jsonObject4.getString("CategoryName")));
-                    myPackages.setDeleted(Integer.parseInt(jsonObject4.getString("Deleted")));
-                    myPackages.setDescription((jsonObject4.getString("Description")));
-                    myPackages.setEBook(Integer.parseInt(jsonObject4.getString("EBook")));
-
-                    Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
-                    //myPackages.setExamassignedIds(jsonObject4.getString("ExamassignedIds"));
-                    //  myPackages.setExamassignedNames((jsonObject4.getString("ExamassignedNames")));
-                    myPackages.setLiveStreaming(Integer.parseInt((jsonObject4.getString("LiveStreaming"))));
-                    myPackages.setMockTest(Integer.parseInt((jsonObject4.getString("MockTest"))));
-                    myPackages.setPBook(Integer.parseInt((jsonObject4.getString("PBook"))));
-                    myPackages.setValidFor(Integer.parseInt(jsonObject4.getString("ValidFor")));
-                    myPackages.setValidForType(jsonObject4.getString("ValidForType"));
-                    myPackages.setVideoOnDemand(Integer.parseInt(jsonObject4.getString("VideoOnDemand")));
-                    myPackages.setSubCategoryId(Integer.parseInt(jsonObject4.getString("SubCategoryId")));
-                    myPackages.setRenewAmount(Double.parseDouble((jsonObject4.getString("RenewAmount"))));
-                    myPackages.setImageurl(jsonObject4.getString("Imageurl"));
-
-                    Log.e("list 1 ::: ", myPackages.getName());
-
-                    Log.e("list 1 ::: ", list.toString());
-
-                    list.add(myPackages);
-                    Log.e("list  ::: ", String.valueOf(list.size()));
-                }
-            } else {
                 MyPackages myPackages = new MyPackages();
-//                Log.e("Array data  ::: ", jsonArray.toString());
-               // jsonArray = jsonObject3.optJSONArray("subroot");
-
-
-
-
-                jsonObject4 = jsonObject3.getJSONObject("subroot");
+                Log.e("Array data  ::: ", jsonArray.toString());
+                jsonObject4 = jsonArray.getJSONObject(i);
                 Log.e("Msg  : ", jsonObject4.toString());
-                if (jsonObject4 != null) {
-                    myPackages.setId(Integer.parseInt(jsonObject4.getString("Id")));
-                    myPackages.setName(jsonObject4.getString("Name"));
-                    myPackages.setTotalRecord(Integer.parseInt(jsonObject4.getString("TotalRecord")));
-                    myPackages.setAmount(Double.parseDouble((jsonObject4.getString("Amount"))));
-                    myPackages.setNameAmount(jsonObject4.getString("NameAmount"));
-                    myPackages.setCategoryId(Integer.parseInt((jsonObject4.getString("CategoryId"))));
-                    myPackages.setCategoryName((jsonObject4.getString("CategoryName")));
-                    myPackages.setDeleted(Integer.parseInt(jsonObject4.getString("Deleted")));
-                    myPackages.setDescription((jsonObject4.getString("Description")));
-                    myPackages.setEBook(Integer.parseInt(jsonObject4.getString("EBook")));
 
-                    Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
-                    //myPackages.setExamassignedIds(jsonObject4.getString("ExamassignedIds"));
-                    //  myPackages.setExamassignedNames((jsonObject4.getString("ExamassignedNames")));
-                    myPackages.setLiveStreaming(Integer.parseInt((jsonObject4.getString("LiveStreaming"))));
-                    myPackages.setMockTest(Integer.parseInt((jsonObject4.getString("MockTest"))));
-                    myPackages.setPBook(Integer.parseInt((jsonObject4.getString("PBook"))));
-                    myPackages.setValidFor(Integer.parseInt(jsonObject4.getString("ValidFor")));
-                    myPackages.setValidForType(jsonObject4.getString("ValidForType"));
-                    myPackages.setVideoOnDemand(Integer.parseInt(jsonObject4.getString("VideoOnDemand")));
-                    myPackages.setSubCategoryId(Integer.parseInt(jsonObject4.getString("SubCategoryId")));
-                    myPackages.setRenewAmount(Double.parseDouble((jsonObject4.getString("RenewAmount"))));
-                    myPackages.setImageurl(jsonObject4.getString("Imageurl"));
+                myPackages.setId(Integer.parseInt(jsonObject4.getString("Id")));
+                myPackages.setName(jsonObject4.getString("Name"));
+                myPackages.setTotalRecord(Integer.parseInt(jsonObject4.getString("TotalRecord")));
+                myPackages.setAmount(Double.parseDouble((jsonObject4.getString("Amount"))));
+                myPackages.setNameAmount(jsonObject4.getString("NameAmount"));
+                myPackages.setCategoryId(Integer.parseInt((jsonObject4.getString("CategoryId"))));
+                myPackages.setCategoryName((jsonObject4.getString("CategoryName")));
+                myPackages.setDeleted(Integer.parseInt(jsonObject4.getString("Deleted")));
+                myPackages.setDescription((jsonObject4.getString("Description")));
+                myPackages.setEBook(Integer.parseInt(jsonObject4.getString("EBook")));
 
-                    Log.e("list 1 ::: ", myPackages.getName());
+                Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
+                //myPackages.setExamassignedIds(jsonObject4.getString("ExamassignedIds"));
+                //  myPackages.setExamassignedNames((jsonObject4.getString("ExamassignedNames")));
+                myPackages.setLiveStreaming(Integer.parseInt((jsonObject4.getString("LiveStreaming"))));
+                myPackages.setMockTest(Integer.parseInt((jsonObject4.getString("MockTest"))));
+                myPackages.setPBook(Integer.parseInt((jsonObject4.getString("PBook"))));
+                myPackages.setValidFor(Integer.parseInt(jsonObject4.getString("ValidFor")));
+                myPackages.setValidForType(jsonObject4.getString("ValidForType"));
+                myPackages.setVideoOnDemand(Integer.parseInt(jsonObject4.getString("VideoOnDemand")));
+                myPackages.setSubCategoryId(Integer.parseInt(jsonObject4.getString("SubCategoryId")));
+                myPackages.setRenewAmount(Double.parseDouble((jsonObject4.getString("RenewAmount"))));
+                myPackages.setImageurl(jsonObject4.getString("Imageurl"));
 
-                    Log.e("list 1 ::: ", list.toString());
+                Log.e("list 1 ::: ", myPackages.getName());
 
-                    list.add(myPackages);
-                }
+                Log.e("list 1 ::: ", list.toString());
+
+                list.add(myPackages);
+                Log.e("list  ::: ", String.valueOf(list.size()));
             }
         } catch (JSONException e) {
             e.printStackTrace();

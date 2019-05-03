@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.targeteducare.Classes.SelectBoardModel;
 import com.targeteducare.R;
-import com.targeteducare.SelectBoard;
+import com.targeteducare.SelectBoardActivity;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class SelectBoardAdapter extends RecyclerView.Adapter<SelectBoardAdapter.
             @Override
             public void onClick(View view) {
                 boardvalue = board.get(position).getBoard();
-                ((SelectBoard)context).referTo(position,boardvalue);
+                ((SelectBoardActivity)context).referTo(position,boardvalue);
                 //Toast.makeText(context, boardvalue+" "+Integer.toString(position), Toast.LENGTH_SHORT).show();
             }
         });

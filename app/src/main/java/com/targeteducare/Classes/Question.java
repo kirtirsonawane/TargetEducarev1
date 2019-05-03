@@ -37,9 +37,30 @@ public class Question implements Serializable, Parcelable {
     String optiontypename = "";
     boolean isanswered = false;
     boolean isreview = false;
+
+    int timeperquestion = 0;
+
+    public int getTimeperquestion() {
+        return timeperquestion;
+    }
+
+    public void setTimeperquestion(int timeperquetion) {
+        this.timeperquestion = timeperquetion;
+    }
+
+    public boolean isIsskipped() {
+        return isskipped;
+    }
+
+    public void setIsskipped(boolean isskipped) {
+        this.isskipped = isskipped;
+    }
+
     boolean isvisited = false;
     JSONObject QuestionType = new JSONObject();
     boolean IswrongAnswer=false;
+
+    boolean isskipped = false;
 
     public JSONObject getQuestionType() {
         return QuestionType;
@@ -80,6 +101,9 @@ public class Question implements Serializable, Parcelable {
         isanswered = in.readByte() != 0;
         isreview = in.readByte() != 0;
         isvisited = in.readByte() != 0;
+        isskipped = in.readByte() != 0;
+
+        timeperquestion = in.readInt();
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -161,6 +185,9 @@ public class Question implements Serializable, Parcelable {
             }
             if (obj.has("hint")) {
                 this.hint = obj.getString("hint");
+            }
+            if (obj.has("isskipped")) {
+                this.isskipped = obj.getBoolean("isskipped");
             }
             if (obj.has("explanation")) {
                 this.explanation = obj.getString("explanation");
@@ -456,5 +483,9 @@ public class Question implements Serializable, Parcelable {
         parcel.writeByte((byte) (isanswered ? 1 : 0));
         parcel.writeByte((byte) (isreview ? 1 : 0));
         parcel.writeByte((byte) (isvisited ? 1 : 0));
+
+        parcel.writeByte((byte) (isskipped ? 1 : 0));
+        parcel.writeInt(timeperquestion);
+
     }
 }

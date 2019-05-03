@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class SelectBoard extends Activitycommon {
+public class SelectBoardActivity extends Activitycommon {
 
     private GetCategoryBoardAdapter getCategoryBoardAdapter;
 
@@ -40,7 +40,7 @@ public class SelectBoard extends Activitycommon {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_board);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(SelectBoard.this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(SelectBoardActivity.this);
         editor = preferences.edit();
 
         registerreceiver();
@@ -51,7 +51,7 @@ public class SelectBoard extends Activitycommon {
 
         getCategoryBoardsdata = new ArrayList<GetCategoryBoard>();
 
-        getCategoryBoardAdapter = new GetCategoryBoardAdapter(SelectBoard.this, getCategoryBoardsdata);
+        getCategoryBoardAdapter = new GetCategoryBoardAdapter(SelectBoardActivity.this, getCategoryBoardsdata);
         recyclerView.setAdapter(getCategoryBoardAdapter);
 
 
@@ -69,7 +69,7 @@ public class SelectBoard extends Activitycommon {
             data.setSubBoards(subBoardDataModels);
             selectBoardModels.add(data);
         }
-        adapter = new SelectBoardAdapter(SelectBoard.this,selectBoardModels);
+        adapter = new SelectBoardAdapter(SelectBoardActivity.this,selectBoardModels);
         recyclerView.setAdapter(adapter);*/
 
         JSONObject obj = new JSONObject();
@@ -80,7 +80,7 @@ public class SelectBoard extends Activitycommon {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ConnectionManager.getInstance(SelectBoard.this).getcategory(mainobj.toString());
+        ConnectionManager.getInstance(SelectBoardActivity.this).getcategory(mainobj.toString());
     }
 
 
@@ -172,7 +172,7 @@ public class SelectBoard extends Activitycommon {
         editor.apply();
 
         if (getCategoryBoardsdata.get(position).getGetCategorySubBoard().size() != 0) {
-            Intent ipassboard = new Intent(SelectBoard.this, BoardSubtypeSelection.class);
+            Intent ipassboard = new Intent(SelectBoardActivity.this, BoardSubtypeSelection.class);
             ipassboard.putExtra("textviewname", boardvalue);
 
             String temp = GlobalValues.studentProfile.getBoard_name();
@@ -181,7 +181,7 @@ public class SelectBoard extends Activitycommon {
             startActivity(ipassboard);
             finish();
         } else {
-            Intent igridmain = new Intent(SelectBoard.this, GridMainActivity.class);
+            Intent igridmain = new Intent(SelectBoardActivity.this, GridMainActivity.class);
             igridmain.putExtra("textviewname", boardvalue);
 
             String temp = GlobalValues.studentProfile.getBoard_name();

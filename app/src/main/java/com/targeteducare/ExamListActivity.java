@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.targeteducare.Adapter.ExamAdapter;
@@ -41,14 +43,24 @@ public class ExamListActivity extends Activitycommon {
     ArrayList<Exam> mdataset;
     ArrayList<Uri> filesdata;
    int  sendmailselectedpos=-1;
+
+    Bundle b1;
+
+   TextView tv_notest;
  //  ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_list);
+
+        tv_notest = findViewById(R.id.notestavailable);
+
+
+
         setmaterialDesign();
+        setTitle("Monthly Ranking Test");
         back();
-        setTitle(GlobalValues.student.getInstituteName());
+        setTitle("");
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         attachUI();
@@ -77,8 +89,15 @@ public class ExamListActivity extends Activitycommon {
         try {
             //if (InternetUtils.getInstance(ExamListActivity.this).available()) {
             JSONObject obj = new JSONObject();
-            obj.put("studentid", GlobalValues.student.getId());
+            //obj.put("studentid", GlobalValues.studentProfile.getId());
+            obj.put("studentid", "1");
             obj.put("type", "current");
+
+            //newly added
+            b1 = getIntent().getExtras();
+            //obj.put("test_type",b1.getString("testtype"));
+            obj.put("test_type","Monthly Ranking Test");
+
             Calendar cal = Calendar.getInstance();
             obj.put("year", cal.get(Calendar.YEAR));
             JSONObject mainobj = new JSONObject();
@@ -193,7 +212,8 @@ public class ExamListActivity extends Activitycommon {
                 try {
                     // if (InternetUtils.getInstance(ExamListActivity.this).available()) {
                     JSONObject obj = new JSONObject();
-                    obj.put("studentid", GlobalValues.student.getId());
+                    obj.put("studentid", "1");
+                    //obj.put("studentid", GlobalValues.studentProfile.getId());
                     obj.put("type", "current");
                     Calendar cal = Calendar.getInstance();
                     obj.put("year", cal.get(Calendar.YEAR));
@@ -327,8 +347,17 @@ public class ExamListActivity extends Activitycommon {
                 }.getType();
                 ArrayList<Exam> dataset = gson.fromJson(array1.toString(), type);
                 if (dataset != null) {
-                    mdataset.addAll(dataset);
-                    Log.e("mdataset size ", "mdataset size " + mdataset.size());
+
+                    if(dataset.size()>=0){
+                        tv_notest.setVisibility(View.GONE);
+                        mdataset.addAll(dataset);
+                        Log.e("mdataset size ", "mdataset size " + mdataset.size());
+                    }
+                    else{
+                        tv_notest.setVisibility(View.VISIBLE);
+                        tv_notest.setText("Sorry, we have no TESTS available at the moment! \n\nWe'll update you soon. Keep checking for updates.");
+                    }
+
                     adapter.notifyDataSetChanged();
                 }
             } else {
@@ -361,6 +390,18 @@ public class ExamListActivity extends Activitycommon {
                 } else {
                     Log.e("sync ", "sync " + synccount);
                     mdataset.get(i).setIsqdownloaded(false);
+                }
+
+                JSONArray array = DatabaseHelper.getInstance(ExamListActivity.this).getexamdetails(mdataset.get(i).getExamid(), mdataset.get(i).getExam_type());
+                if (array.length() > 0) {
+                    JSONObject obj = array.getJSONObject(0);
+                    mdataset.get(i).setSkipp(obj.getInt(DatabaseHelper.SKIPP));
+                    mdataset.get(i).setAnswered(obj.getInt(DatabaseHelper.ANSWERED));
+                    mdataset.get(i).setWrong(obj.getInt(DatabaseHelper.WRONG));
+                    mdataset.get(i).setCorrect(obj.getInt(DatabaseHelper.CORRECT));
+                    mdataset.get(i).setProgress(obj.getDouble(DatabaseHelper.PROGRESS));
+                    mdataset.get(i).setTimetaken(obj.getLong(DatabaseHelper.TIMETAKEN));
+                    mdataset.get(i).setSpeed(obj.getDouble(DatabaseHelper.SPEED));
                 }
             }
             adapter.notifyDataSetChanged();
@@ -508,7 +549,7 @@ public class ExamListActivity extends Activitycommon {
 
     private void sendmail() {
         try {
-            final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+            final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
             emailIntent.setType("text/plain");
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Survey Data");
             String to[] = {"targeteducareapp@gmail.com"};
@@ -534,6 +575,38 @@ public class ExamListActivity extends Activitycommon {
             selectedposition=-1;
         } catch (Exception e) {
             Log.e("Exception", "File write failed: " + e.toString());
+        }
+    }
+
+    public void gotoAction(int position) {
+        Intent iprogrprt = new Intent(ExamListActivity.this, ProgressReportActivity.class);
+        iprogrprt.putExtra("progressreport",mdataset);
+        iprogrprt.putExtra("flag",2);
+        startActivity(iprogrprt);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            for (int i=0;i<mdataset.size();i++) {
+                JSONArray array = DatabaseHelper.getInstance(ExamListActivity.this).getexamdetails(mdataset.get(i).getExamid(), mdataset.get(i).getExam_type());
+                if (array.length() > 0) {
+                    JSONObject obj = array.getJSONObject(0);
+                    mdataset.get(i).setSkipp(obj.getInt(DatabaseHelper.SKIPP));
+                    mdataset.get(i).setAnswered(obj.getInt(DatabaseHelper.ANSWERED));
+                    mdataset.get(i).setWrong(obj.getInt(DatabaseHelper.WRONG));
+                    mdataset.get(i).setCorrect(obj.getInt(DatabaseHelper.CORRECT));
+                    mdataset.get(i).setProgress(obj.getDouble(DatabaseHelper.PROGRESS));
+                    mdataset.get(i).setTimetaken(obj.getLong(DatabaseHelper.TIMETAKEN));
+                    mdataset.get(i).setSpeed(obj.getDouble(DatabaseHelper.SPEED));
+                    //mdataset.get(i).setTotal_questions(obj.getString(PracticeDatabaseHelper.QUESTION));
+                }
+            }
+            adapter.notifyDataSetChanged();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 }

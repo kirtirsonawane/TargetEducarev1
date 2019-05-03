@@ -118,7 +118,8 @@ public class GridMainActivity extends Activitycommon{
                 startActivity(iexamlist);*/
                 break;
             case 3:
-
+                Intent ismppaper = new Intent(GridMainActivity.this, SamplePapers.class);
+                startActivity(ismppaper);
                 break;
             case 4:
                 Intent mypackage = new Intent(GridMainActivity.this, MyPackagesActivity.class);
@@ -141,12 +142,6 @@ public class GridMainActivity extends Activitycommon{
             case 9:
                 Intent iqnafeed = new Intent(GridMainActivity.this, QnAFeed.class);
                 startActivity(iqnafeed);
-                break;
-            case 10:
-                Intent ismppaper = new Intent(GridMainActivity.this, SamplePapers.class);
-                startActivity(ismppaper);
-                break;
-            case 11:
                 break;
         }
     }

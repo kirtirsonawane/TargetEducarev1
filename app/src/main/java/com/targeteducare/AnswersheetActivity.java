@@ -1,5 +1,7 @@
 package com.targeteducare;
 
+import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,12 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -282,7 +286,7 @@ public class AnswersheetActivity extends Activitycommon implements NavigationVie
         registerreceiver();
 
 
-        JSONArray array = DatabaseHelper.getInstance(AnswersheetActivity.this).getqdata1(exam.getExamid(), exam.getLanguages());
+        JSONArray array = DatabaseHelper.getInstance(AnswersheetActivity.this).getqdata(exam.getExamid(), exam.getLanguages());
         if (array.length() > 0) {
             try {
                 Log.e("via db ", "via db" + array.toString());
@@ -492,7 +496,12 @@ public class AnswersheetActivity extends Activitycommon implements NavigationVie
             double totalmarks = obtainedmarks - negativemarks;
             txt1.setText(Html.fromHtml("<b>Obtained Marks </b>: (" + obtainedmarks + ")  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Negative Marks</b> : (" + negativemarks + ")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Final Marks</b> : (" + totalmarks + ")" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b> Total Question</b> :" + totalquestions + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Attempted Questions</b> : (" + (totalquestions - totalnotanswered) + ")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b> Not Attempted Questions</b> : (" + totalnotanswered + ")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Right Questions</b> : (" + totalright + ")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Wrong Questions</b> : (" + totalwrong + ")"));
             setTitle(exam.getExamname() + " ( " + totalmarks + " Marks )");
-           /* txt7.setText("Questions: " + qdata.size());
+
+            /*Exam exam = new Exam();
+            exam.setTotal_correct(totalright+"");
+            exam.setTotal_wrong(totalwrong+"");*/
+
+            /* txt7.setText("Questions: " + qdata.size());
             notanswered=qdata.size();
             txt10.setText("Total Attempted Questions: "+answered);
             txt11.setText("Total Not Attempted Questions: "+notanswered);
@@ -615,5 +624,28 @@ public class AnswersheetActivity extends Activitycommon implements NavigationVie
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.viewprogressreport,menu);
+
+        Drawable icon_color_change = menu.getItem(0).getIcon(); // change 0 with 1,2 ...
+        icon_color_change.mutate();
+        icon_color_change.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_IN);
+
+        MenuItem logout_button = menu.findItem(R.id.viewprogressreport);
+        logout_button.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Intent progreport = new Intent(AnswersheetActivity.this, ProgressReportActivity.class);
+                startActivity(progreport);
+                finish();
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 }

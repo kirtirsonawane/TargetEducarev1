@@ -13,6 +13,9 @@ public class Options implements Serializable, Parcelable {
     boolean Selected = false;
     int isTabletag = 0;
 
+    //newly added
+    int Color_Backround ;
+
     public Options() {
 
     }
@@ -54,6 +57,7 @@ public class Options implements Serializable, Parcelable {
         IsAnswer = in.readByte() != 0;
         Selected = in.readByte() != 0;
         isTabletag = in.readInt();
+        Color_Backround = in.readInt();
     }
 
     public static final Creator<Options> CREATOR = new Creator<Options>() {
@@ -116,6 +120,14 @@ public class Options implements Serializable, Parcelable {
         this.isTabletag = isTabletag;
     }
 
+    public int getColor_Backround() {
+        return Color_Backround;
+    }
+
+    public void setColor_Backround(int color_Backround) {
+        Color_Backround = color_Backround;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -129,5 +141,6 @@ public class Options implements Serializable, Parcelable {
         parcel.writeByte((byte) (IsAnswer ? 1 : 0));
         parcel.writeByte((byte) (Selected ? 1 : 0));
         parcel.writeInt(isTabletag);
+        parcel.writeInt(Color_Backround);
     }
 }

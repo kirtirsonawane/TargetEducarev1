@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:tag="cards main container">
 
-    <android.support.v7.widget.CardView
+    <!--<android.support.v7.widget.CardView
         android:id="@+id/card_view"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -18,7 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/chapternumber"
@@ -52,17 +53,17 @@
                     android:weightSum="3">
 
                     <TextView
+                        android:id="@+id/totalquestions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Questions"
+                        android:layout_weight="1"/>
+
+                    <TextView
                         android:id="@+id/totalvideos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Videos"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:id="@+id/totalgoals"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Goals"
                         android:layout_weight="1"/>
 
                     <TextView
@@ -83,13 +84,30 @@
                     android:minWidth="10dp"
                     android:layout_marginRight="10dp"/>
 
-                <TextView
-                    android:id="@+id/coveredpercentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Covered x%"/>
-
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tv_coveredpercentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Covered x%"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/tv_checkprogress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blue"
+                        android:text="Check Progress"
+                        android:layout_weight="1"/>
+
+                </LinearLayout>
+
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -119,14 +137,13 @@
                         android:background="@drawable/rounded_button_layout"
                         android:layout_weight="1"/>
 
-                </LinearLayout>
-
+                </LinearLayout>&ndash;&gt;
 
             </LinearLayout>
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>-->
 
 </LinearLayout>
 

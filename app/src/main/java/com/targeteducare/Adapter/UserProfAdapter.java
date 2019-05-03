@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.targeteducare.Classes.UserProfModel;
 import com.targeteducare.R;
-import com.targeteducare.UserProfile;
+import com.targeteducare.UserProfileActivity;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class UserProfAdapter extends RecyclerView.Adapter<UserProfAdapter.MyView
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((UserProfile)context).referto(position);
+                ((UserProfileActivity)context).referto(position);
             }
         });
     }

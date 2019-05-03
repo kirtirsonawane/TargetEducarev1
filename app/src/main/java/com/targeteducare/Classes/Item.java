@@ -17,6 +17,15 @@ public class Item {
     double obtainedmarks=0;
     double negativemarks=0;
     int totalnotanswered = 0;
+    int review=0;
+
+    public int getReview() {
+        return review;
+    }
+
+    public void setReview(int review) {
+        this.review = review;
+    }
 
     public int getTotalwrong() {
         return totalwrong;

@@ -54,7 +54,7 @@ import static com.targeteducare.AnswersheetActivity.exam;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AnswerFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link AnswerFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -245,7 +245,9 @@ public class AnswerFragment extends Fragment implements Html.ImageGetter {
                     parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     parent.setOrientation(LinearLayout.HORIZONTAL);
                     final RadioButton rdbtn = new RadioButton(new ContextThemeWrapper(getActivity(), R.style.radionbutton), null, 0);
-                    rdbtn.setPadding(10, 10, 10, 10);
+                    rdbtn.setPadding(30,10,15,10);
+                    rdbtn.setBackgroundResource(R.drawable.card_radiobutton);
+                    rdbtn.setButtonDrawable(null);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -292,7 +294,9 @@ public class AnswerFragment extends Fragment implements Html.ImageGetter {
                     params.setMargins(10, 10, 10, 10);
                     rdbtn.setLayoutParams(params);
                     rdbtn.setEnabled(false);
-                    rdbtn.setPadding(10, 10, 10, 10);
+                    rdbtn.setPadding(30,10,15,10);
+                    rdbtn.setBackgroundResource(R.drawable.card_radiobutton);
+                    rdbtn.setButtonDrawable(null);
                     final Options opt = dataset.get(i);
                     rdbtn.setId(i);
                     //  rdbtn.setTextSize(14);
@@ -300,11 +304,13 @@ public class AnswerFragment extends Fragment implements Html.ImageGetter {
                     Log.e("isanswerdata ", "isanswer " + dataset.get(i).isSelected() + " " + dataset.get(i).isAnswer());
                     if (dataset.get(i).isSelected()) {
                         rdbtn.setChecked(true);
+                        rdbtn.setBackgroundResource(R.drawable.card_radiobutton_onclicked);
                     }
 
                     if (dataset.get(i).isAnswer()) {
                         if (exam.isInstantExamResultWithAns()) {
-                            rdbtn.setBackgroundColor(getContext().getResources().getColor(R.color.answered_questionlight));
+                            //rdbtn.setBackgroundColor(getContext().getResources().getColor(R.color.answered_questionlight));
+                            rdbtn.setBackgroundResource(R.drawable.card_radiobutton_onskipped);
                         }
                     }
 
@@ -392,25 +398,30 @@ public class AnswerFragment extends Fragment implements Html.ImageGetter {
             TextView txt = new TextView(getActivity());
             txt.setTypeface(Fonter.getTypefaceregular(getActivity()));
             txt.setTextColor(getResources().getColor(R.color.textcolor));
+            txt.setPadding(20,20,20,20);
 
             switch (isanswer) {
                 case 0:
-                    txt.setText("Not answer");
-                    txt.setBackgroundColor(getResources().getColor(R.color.notanswered_questionlight));
+                    txt.setText("Not answered");
+                    txt.setTextColor(getContext().getResources().getColor(R.color.white));
+                    //txt.setBackgroundColor(getResources().getColor(R.color.notanswered_questionlight));
+                    txt.setBackgroundResource(R.drawable.card_radiobutton_notattempted);
                     break;
                 case 1:
                     txt.setText("Your answer is correct");
-                    txt.setBackgroundColor(getResources().getColor(R.color.answered_questionlight));
+                    //txt.setBackgroundColor(getResources().getColor(R.color.answered_questionlight));
+                    txt.setBackgroundResource(R.drawable.card_radiobutton_onskipped);
                     break;
                 case 2:
                     txt.setText("Your answer is wrong");
-                    txt.setBackgroundColor(getResources().getColor(R.color.wrongswered_questionlight));
+                    //txt.setBackgroundColor(getResources().getColor(R.color.wrongswered_questionlight));
+                    txt.setBackgroundResource(R.drawable.card_radio_button_wronganswer);
                     break;
             }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.topMargin = 10;
-            txt.setPadding(10, 10, 10, 10);
+            txt.setPadding(40, 40, 40, 40);
             txt.setLayoutParams(params);
             layout.addView(txt);
 
@@ -701,7 +712,7 @@ public class AnswerFragment extends Fragment implements Html.ImageGetter {
                     Drawable empty = getResources().getDrawable(R.mipmap.ic_launcher);
                     d.addLevel(0, 0, empty);
                     d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
-                    new AnswerFragment.LoadImage(cb, 1).execute(s, d);
+                    new LoadImage(cb, 1).execute(s, d);
                     return d;
                 }
             };

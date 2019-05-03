@@ -37,14 +37,14 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_details, parent, false);
 
-        //view.setOnClickListener(EngineeringColleges.myOnClickListener);
+        //view.setOnClickListener(EngineeringCollegesActivity.myOnClickListener);
 
         MyViewHolder vh = new MyViewHolder(view);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QnaQuestionAdapter.MyViewHolder holder, final int i) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int i) {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);;
         holder.main_question.setText(dataSet.get(i).getMain_question());

@@ -57,7 +57,7 @@ import java.util.regex.Pattern;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link QuestionFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link QuestionFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -100,10 +100,9 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
 
     @Override
     public void onDestroy() {
-        try{
+        try {
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(rec);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         super.onDestroy();
@@ -113,25 +112,23 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_question, container, false);
         layout = (LinearLayout) v.findViewById(R.id.layout);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(rec,new IntentFilter("QuestionUpdated"));
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(rec, new IntentFilter("QuestionUpdated"));
 
         final JSONArray array = DatabaseHelper.getInstance(getActivity()).getquestionurl(mParam1.getId(), "que");
         if (array.length() > 0) {
-            for (int i=0;i<array.length();i++)
-            {
+            for (int i = 0; i < array.length(); i++) {
                 try {
                     JSONObject obj = array.getJSONObject(i);
-                    String originaldata=obj.getString(DatabaseHelper.IMAGESOURCE);
-                    String offlinepath=obj.getString(DatabaseHelper.OFFLINEPATH);
-                    Log.e("original "," "+originaldata+" "+offlinepath);
-                   mParam1.setName(mParam1.getName().replaceAll(originaldata,offlinepath));
+                    String originaldata = obj.getString(DatabaseHelper.IMAGESOURCE);
+                    String offlinepath = obj.getString(DatabaseHelper.OFFLINEPATH);
+                    Log.e("original ", " " + originaldata + " " + offlinepath);
+                    mParam1.setName(mParam1.getName().replaceAll(originaldata, offlinepath));
 
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            Log.e("qname "," qname "+mParam1.getName());
+            Log.e("qname ", " qname " + mParam1.getName());
         }
 
         txt = (TextView) v.findViewById(R.id.textview_1);
@@ -139,16 +136,16 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
         //txtsub.setText("Q."+mParam1.getSrno()+" / "+mParam1.getSubjectname());
         txt.setTypeface(Fonter.getTypefaceregular(getActivity()));
         Spanned spanned = Html.fromHtml(mParam1.getSrno() + "." + mParam1.getName(), this, null);
-        Log.e("optname ","qname "+mParam1.getName());
+        Log.e("optname ", "qname " + mParam1.getName());
         txt.setText(spanned);
-        txt.setPadding(10,10,10,10);
+        txt.setPadding(10, 10, 10, 10);
 
         if (mParam1.getIsTabletag().equalsIgnoreCase("1")) {
             txt.setVisibility(View.GONE);
             final WebView web = new WebView(getActivity());
             web.getSettings().setJavaScriptEnabled(true);
             web.getSettings().setAllowFileAccess(true);
-            web.loadDataWithBaseURL("file:///",mParam1.getSrno() + "." + mParam1.getName(), "text/html", "utf-8", null);
+            web.loadDataWithBaseURL("file:///", mParam1.getSrno() + "." + mParam1.getName(), "text/html", "utf-8", null);
             //parent.addView(web);
             layout.addView(web);
             RelativeLayout.LayoutParams webViewParams = new RelativeLayout.LayoutParams(300, 100);
@@ -203,20 +200,18 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
             for (int i = 0; i < dataset.size(); i++) {
                 final JSONArray arrayopt = DatabaseHelper.getInstance(getActivity()).getquestionurl(dataset.get(i).getId(), "ans");
                 if (arrayopt.length() > 0) {
-                    for (int j=0;j<arrayopt.length();j++)
-                    {
+                    for (int j = 0; j < arrayopt.length(); j++) {
                         try {
                             JSONObject obj = arrayopt.getJSONObject(j);
-                            String originaldata=obj.getString(DatabaseHelper.IMAGESOURCE);
-                            String offlinepath=obj.getString(DatabaseHelper.OFFLINEPATH);
-                            Log.e("original "," "+originaldata+" "+offlinepath);
-                            dataset.get(i).setName(dataset.get(i).getName().replaceAll(originaldata,offlinepath));
-                        }catch (Exception e)
-                        {
+                            String originaldata = obj.getString(DatabaseHelper.IMAGESOURCE);
+                            String offlinepath = obj.getString(DatabaseHelper.OFFLINEPATH);
+                            Log.e("original ", " " + originaldata + " " + offlinepath);
+                            dataset.get(i).setName(dataset.get(i).getName().replaceAll(originaldata, offlinepath));
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                    Log.e("qname "," qname "+mParam1.getName());
+                    Log.e("qname ", " qname " + mParam1.getName());
                 }
 
                 final Options opt = dataset.get(i);
@@ -225,15 +220,34 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                     parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     parent.setOrientation(LinearLayout.HORIZONTAL);
                     final RadioButton rdbtn = new RadioButton(getActivity());
-                 //   final RadioButton rdbtn = new RadioButton(new ContextThemeWrapper(getActivity(), R.style.radionbutton), null, 0);
+                    //   final RadioButton rdbtn = new RadioButton(new ContextThemeWrapper(getActivity(), R.style.radionbutton), null, 0);
+
+                    rdbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    rdbtn.setPadding(30,10,15,10);
+                    rdbtn.setTextColor(getResources().getColor(R.color.textcolor));
+                    rdbtn.setBackgroundResource(R.drawable.card_radiobutton);
+                    rdbtn.setButtonDrawable(null);
+                    if (dataset.get(i).isSelected()) {
+                        rdbtn.setBackgroundResource(R.drawable.card_radiobutton_onclicked);
+                        rdbtn.setChecked(true);
+                    }
 
                     parent.addView(rdbtn);
                     rdbtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             try {
+
+                                int pos = rg.getCheckedRadioButtonId();
+
                                 for (int i = 0; i < dataset.size(); i++) {
                                     dataset.get(i).setSelected(false);
+
+                                    rg.getChildAt(i).setBackgroundResource(R.drawable.card_radiobutton);
+                                    if (pos == i) {
+                                        rg.getChildAt(pos).setBackgroundResource(R.drawable.card_radiobutton_onclicked);
+                                        dataset.get(pos).isSelected();
+                                    }
                                 }
 
                                 opt.setSelected(((RadioButton) view).isChecked());
@@ -250,16 +264,27 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                     final WebView web = new WebView(getActivity());
 
                     web.getSettings().setJavaScriptEnabled(true);
-                   // web.loadData(dataset.get(i).getName(), null, null);
+                    // web.loadData(dataset.get(i).getName(), null, null);
                     web.getSettings().setAllowFileAccess(true);
-                    web.loadDataWithBaseURL("file:///",dataset.get(i).getName(), "text/html", "utf-8", null);
+                    web.loadDataWithBaseURL("file:///", dataset.get(i).getName(), "text/html", "utf-8", null);
                     parent.addView(web);
                     layout.addView(parent);
                     RelativeLayout.LayoutParams webViewParams = new RelativeLayout.LayoutParams(300, 100);
                     webViewParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 } else {
                     final RadioButton rdbtn = new RadioButton(getActivity());
-                   // rdbtn.setS
+                    // rdbtn.setS
+
+                    rdbtn.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    rdbtn.setPadding(30,10,15,10);
+                    rdbtn.setBackgroundResource(R.drawable.card_radiobutton);
+                    rdbtn.setButtonDrawable(null);
+                    rdbtn.setTextColor(getResources().getColor(R.color.textcolor));
+                    if (dataset.get(i).isSelected()) {
+                        rdbtn.setBackgroundResource(R.drawable.card_radiobutton_onclicked);
+                        rdbtn.setChecked(true);
+                    }
+
                     ViewGroup.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     rdbtn.setLayoutParams(params);
                     rdbtn.setId(i);
@@ -274,7 +299,7 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                             return d;*/
                             LevelListDrawable d = new LevelListDrawable();
                             try {
-                                Log.e("source ",source);
+                                Log.e("source ", source);
                                 Drawable empty = getResources().getDrawable(R.mipmap.ic_launcher);
                                 d.addLevel(0, 0, empty);
                                 d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
@@ -290,8 +315,7 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                                     ((RadioButton) rdbtn).setText(t);
                                     d.setLevel(1);
                                 }
-                            }catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             // bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
@@ -303,15 +327,24 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                         ImageView img = new ImageView(getActivity());
                         img.setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
                     }
-                    Log.e("optname ","optname "+dataset.get(i).getName());
+                    Log.e("optname ", "optname " + dataset.get(i).getName());
                     rdbtn.setText(Html.fromHtml(dataset.get(i).getName(), imggetter, null));
                     rg.addView(rdbtn);
                     rdbtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             try {
+
+                                int pos = rg.getCheckedRadioButtonId();
+
                                 for (int i = 0; i < dataset.size(); i++) {
                                     dataset.get(i).setSelected(false);
+
+                                    rg.getChildAt(i).setBackgroundResource(R.drawable.card_radiobutton);
+                                    if (pos == i) {
+                                        rg.getChildAt(pos).setBackgroundResource(R.drawable.card_radiobutton_onclicked);
+                                        dataset.get(pos).isSelected();
+                                    }
                                 }
 
                                 opt.setSelected(((RadioButton) view).isChecked());
@@ -393,7 +426,7 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
 
                     LevelListDrawable d = new LevelListDrawable();
                     try {
-                        Log.e("source ",source);
+                        Log.e("source ", source);
                         Drawable empty = getResources().getDrawable(R.mipmap.ic_launcher);
                         d.addLevel(0, 0, empty);
                         d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
@@ -409,8 +442,7 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                             ((CheckBox) cb).setText(t);
                             d.setLevel(1);
                         }
-                    }catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     // bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
@@ -453,11 +485,11 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
     public Drawable getDrawable(String source) {
         LevelListDrawable d = new LevelListDrawable();
         try {
-            Log.e("source ",source);
+            Log.e("source ", source);
             Drawable empty = getResources().getDrawable(R.mipmap.ic_launcher);
             d.addLevel(0, 0, empty);
             d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
-          //  new LoadImage(txt, 0).execute(source, d);
+            //  new LoadImage(txt, 0).execute(source, d);
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap bitmap = BitmapFactory.decodeFile(source, bmOptions);
             if (bitmap != null) {
@@ -469,11 +501,10 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                 ((TextView) txt).setText(t);
                 d.setLevel(1);
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-       // bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
+        // bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
         return d;
     }
 
@@ -583,8 +614,8 @@ QuestionFragment extends Fragment implements Html.ImageGetter {
                 if (rg != null) {
                     int radioButtonID = rg.getCheckedRadioButtonId();
                     RadioButton radioButton = rg.findViewById(radioButtonID);
-                    if (radioButton!=null)
-                    radioButton.setChecked(false);
+                    if (radioButton != null)
+                        radioButton.setChecked(false);
                 }
             }
         }

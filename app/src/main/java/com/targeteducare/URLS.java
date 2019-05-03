@@ -69,10 +69,6 @@ public class URLS {
         return getBaseUrv1() + "Api_Course_Get";
     }
 
-    public static String getsamplepaper() {
-        return getBaseUrv1() + "Api_Student_Ebook_Get";
-    }
-
     public static String getmy_package_image() {
         return getBaseUrlimg() + "uploadimages/20190411181207_red-2014577_1280.png";
     }
