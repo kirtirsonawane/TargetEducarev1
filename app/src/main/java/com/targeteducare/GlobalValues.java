@@ -11,5 +11,6 @@ public class GlobalValues {
     public static String IP="192.168.1.59:8097";
 
     public static StudentProfile studentProfile = new StudentProfile();
+    public static String WEB_VIEW="";
 
 }

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
@@ -108,6 +109,11 @@ public class Activitycommon extends AppCompatActivity {
 
     protected void back() {
         try {
+
+            final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp);
+            upArrow.setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -268,6 +274,88 @@ public class Activitycommon extends AppCompatActivity {
 
     public void downloaddata(ArrayList<QuestionURL> qdata , int examid, String language, String jsondata) {
       new DownloadImage(qdata,examid,language,jsondata).execute(qdata);
+    }
+
+    public void gotopracticeActivitytoRetry(Exam exam) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+        } else {
+            Calendar cal1 = Calendar.getInstance();
+            Date date2 = DateUtils.parseDate(exam.getEnddate(), "dd MMM yyyy");
+            Date date3 = DateUtils.parseDate(exam.getExamendtime(), "HH:mm:ss");
+            date2.setHours(date3.getHours());
+            date2.setMinutes(date3.getMinutes());
+            cal1.setTime(date2);
+
+            Calendar cal = Calendar.getInstance();
+            Date date = DateUtils.parseDate(exam.getStartdate(), "dd MMM yyyy");
+            Date date1 = DateUtils.parseDate(exam.getExamstarttime(), "HH:mm:ss");
+            date.setHours(date1.getHours());
+            date.setMinutes(date1.getMinutes());
+            cal.setTime(date);
+
+
+            /*if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                opendialog(exam);
+            else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();*/
+
+
+            /*if (preferences.getBoolean("flagtestacivity", false)) {
+                if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                    opendialog(exam);
+                else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
+                intent.putExtra("exam", exam);
+                startActivity(intent);
+            }*/
+            Intent intent = new Intent(Activitycommon.this, PracticeActivity.class);
+            intent.putExtra("exam", exam);
+            startActivity(intent);
+        }
+    }
+
+    public void gotopracticeActivitytoResume(Exam exam) {
+
+    }
+
+    public void gotopracticeActivitytoAttempt(Exam exam) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+        } else {
+            Calendar cal1 = Calendar.getInstance();
+            Date date2 = DateUtils.parseDate(exam.getEnddate(), "dd MMM yyyy");
+            Date date3 = DateUtils.parseDate(exam.getExamendtime(), "HH:mm:ss");
+            date2.setHours(date3.getHours());
+            date2.setMinutes(date3.getMinutes());
+            cal1.setTime(date2);
+
+            Calendar cal = Calendar.getInstance();
+            Date date = DateUtils.parseDate(exam.getStartdate(), "dd MMM yyyy");
+            Date date1 = DateUtils.parseDate(exam.getExamstarttime(), "HH:mm:ss");
+            date.setHours(date1.getHours());
+            date.setMinutes(date1.getMinutes());
+            cal.setTime(date);
+
+
+            /*if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                opendialog(exam);
+            else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();*/
+
+
+            /*if (preferences.getBoolean("flagtestacivity", false)) {
+                if (cal.before(Calendar.getInstance()) && cal1.after(Calendar.getInstance()))
+                    opendialog(exam);
+                else Toast.makeText(getApplicationContext(), "Expired", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(Activitycommon.this, ExamActivity.class);
+                intent.putExtra("exam", exam);
+                startActivity(intent);
+            }*/
+            Intent intent = new Intent(Activitycommon.this, PracticeActivity.class);
+            intent.putExtra("exam", exam);
+            startActivity(intent);
+        }
     }
 
     class LoadImage extends AsyncTask<Object, Void, Bitmap> {

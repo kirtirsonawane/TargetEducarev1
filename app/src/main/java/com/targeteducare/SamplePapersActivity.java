@@ -49,7 +49,7 @@ public class SamplePapersActivity extends Activitycommon {
         // set a GridLayoutManager with default vertical orientation and 2 number of columns
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
-        //    adapter = new PaperReadorDownloadAdapter(SamplePapersActivity.this,arrayListdata);
+        //    adapter = new PaperReadorDownloadAdapter(SamplePapers.this,arrayListdata);
         //recyclerView.setAdapter(adapter);
         String Student_id = Constants.projectid;
 
@@ -71,7 +71,7 @@ public class SamplePapersActivity extends Activitycommon {
         Sample_Papers_Videos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-              updatedata(searchView.getQuery().toString());
+                updatedata(searchView.getQuery().toString());
 
            /*  if (isChecked == true) {
                  data=data+" "+String.valueOf(Sample_Papers_Videos.getText());

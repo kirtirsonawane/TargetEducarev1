@@ -69,4 +69,10 @@ public class Constants {
 	public static final String treatmentprocedures = "treatment procedures";
 	public static final String connectiontimeout = "Please check lan connection";
 	public static final String qpaperdownloaded = "Question paper downloaded";
+
+	////----packages variables----/////
+	public static final String Packages_page_no = "1";
+	public static final String Packages_no_of_records = "1000000";
+	public static final String Packages_Category_id = "0";
+	public static final String Packages_Subcategory_id = "0";
 }

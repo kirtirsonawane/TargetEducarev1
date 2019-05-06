@@ -11,13 +11,7 @@
     <WebView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-<<<<<<< HEAD
-        android:id="@+id/sample_papers_web_view">
-
-    </WebView>
-=======
         android:id="@+id/sample_papers_web_view"></WebView>
->>>>>>> origin/master
 
 
 </LinearLayout>
