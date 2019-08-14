@@ -49,12 +49,14 @@ public class DateUtils {
 		}
 	}
 	public static String parseDate(String content, String existingformat, String expectedformat) {
+		//Log.e("date ","date "+content+" "+existingformat+" "+expectedformat+" "+Locale.getDefault());
 		SimpleDateFormat dateFormat = new SimpleDateFormat(existingformat,
 				Locale.getDefault());
 		try {
 			Date d = dateFormat.parse(content);
 			return formatDate(d, expectedformat);
 		} catch (Exception e) {
+			Log.e("error ","error "+e.toString());
 			return "";
 		}
 	}

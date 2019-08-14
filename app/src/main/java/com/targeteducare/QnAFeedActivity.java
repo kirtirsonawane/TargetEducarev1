@@ -3,6 +3,7 @@ package com.targeteducare;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.WindowManager;
 
 import com.targeteducare.Adapter.QnaQuestionAdapter;
 import com.targeteducare.Classes.QnAData;
@@ -21,10 +22,11 @@ public class QnAFeedActivity extends Activitycommon {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        screenshot_capture_permission();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qn_afeed);
         setmaterialDesign();
-        setTitle("QnA Feed");
+        setTitle(getResources().getString(R.string.qna));
         back();
         recyclerView = findViewById(R.id.recyclerviewforquestion);
         recyclerView.setHasFixedSize(true);

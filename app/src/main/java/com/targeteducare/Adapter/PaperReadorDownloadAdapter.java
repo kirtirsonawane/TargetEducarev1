@@ -18,6 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.PaperModel;
 import com.targeteducare.Constants;
 import com.targeteducare.Fonter;
@@ -38,10 +39,17 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
     private ArrayList<PaperModel> dataSet = new ArrayList<>();
 
     public PaperReadorDownloadAdapter(Context context, ArrayList<PaperModel> data) {
-        datasetFilter = data;
-        this.dataSet.addAll(data);
-        /*     datasetFilter.addAll(data);*/
-        this.context = context;
+
+        try {
+            datasetFilter = data;
+            this.dataSet.addAll(data);
+            /*     datasetFilter.addAll(data);*/
+            this.context = context;
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("PaperReadorDownloadAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -70,7 +78,7 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
 
                     TextView dialog_heading = (TextView) dialog.findViewById((R.id.sample_papers_dialog_heading));
 
-                    dialog_heading.setText("Details : ");
+                    dialog_heading.setText(context.getResources().getString(R.string.dialog_details));
                     Log.e("Discription", dataSet.get(position).getDescription());
                     TextView text1 = (TextView) dialog.findViewById(R.id.sample_papers_dialog_discription);
 
@@ -96,13 +104,13 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
             });
 
             holder.Sample_Paper_Subject_Name.setTypeface(Fonter.getTypefacesemibold(context));
-            holder.Sample_Paper_Subject_Name.setText("Subject Name : " + dataSet.get(position).getSubject());
+            holder.Sample_Paper_Subject_Name.setText(context.getResources().getString(R.string.subject_name) + dataSet.get(position).getSubject());
             Log.e("dataset :: ", dataSet.toString());
             Log.e("Id :: ", String.valueOf(dataSet.get(position).getId()));
             //holder.papername.setImageResource(Integer.parseInt(dataSet.get(position).getSubject()));
             holder.Sample_Paper_Quiz_Name.setTypeface(Fonter.getTypefacebold(context));
 
-            holder.Sample_Paper_Quiz_Name.setText("Name : " + dataSet.get(position).getName());
+            holder.Sample_Paper_Quiz_Name.setText(context.getResources().getString(R.string.sample_paper_name) + dataSet.get(position).getName());
 
             holder.Sample_Paper_discription.setTypeface(Fonter.getTypefacesemibold(context));
             holder.Sample_Paper_discription.setText(dataSet.get(position).getDescription());
@@ -112,25 +120,25 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
 
             Type_of_document = dataSet.get(position).getType();
             if (Type_of_document.equals("Video")) {
-                holder.Sample_Paper_Button_View_or_Read.setText("View");
+                holder.Sample_Paper_Button_View_or_Read.setText(context.getResources().getString(R.string.view));
                 holder.Sample_Paper_Button_View_or_Read.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         try {
-                            String Name_of_subject_1="";
-                            Name_of_subject_1=dataSet.get(position).getSubject();
+                            String Name_of_subject_1 = "";
+                            Name_of_subject_1 = dataSet.get(position).getSubject();
 
-                            String Name_of_course="";
-                            Name_of_course=dataSet.get(position).getName();
+                            String Name_of_course = "";
+                            Name_of_course = dataSet.get(position).getName();
 
                             Intent intent = new Intent(context, Sample_Paper_Video_Activity.class);
-                            String Url=dataSet.get(position).getVideoUrl();
-                            Log.e("position :: ",String.valueOf(position));
+                            String Url = dataSet.get(position).getVideoUrl();
+                            Log.e("position :: ", String.valueOf(position));
 
-                            intent.putExtra("Video_Url",Url);
-                            intent.putExtra("Name_of_subject",Name_of_subject_1);
-                            intent.putExtra("Name_of_course",Name_of_course);
+                            intent.putExtra("Video_Url", Url);
+                            intent.putExtra("Name_of_subject", Name_of_subject_1);
+                            intent.putExtra("Name_of_course", Name_of_course);
                             context.startActivity(intent);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -140,16 +148,16 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
 
 
             } else {
-                holder.Sample_Paper_Button_View_or_Read.setText("Read");
+                holder.Sample_Paper_Button_View_or_Read.setText(context.getResources().getString(R.string.read));
                 holder.Sample_Paper_Button_View_or_Read.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String Name_of_Course="";
-                        Name_of_Course=dataSet.get(position).getName();
-                        Intent intent=new Intent(context, Sample_Paper_Webview_Activity.class);
-                        GlobalValues.WEB_VIEW =dataSet.get(position).getDescription();
+                        String Name_of_Course = "";
+                        Name_of_Course = dataSet.get(position).getName();
+                        Intent intent = new Intent(context, Sample_Paper_Webview_Activity.class);
+                        GlobalValues.WEB_VIEW = dataSet.get(position).getDescription();
 
-                        intent.putExtra("Title",Name_of_Course);
+                        intent.putExtra("Title", Name_of_Course);
                         context.startActivity(intent);
                     }
                 });
@@ -162,7 +170,8 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
                     .placeholder(R.drawable.ic_exam)
                     .error(R.drawable.ic_launcher)
                     .into(holder.Sample_Paper_Image);
-        }catch (Exception e){
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("PaperReadorDownloadAdapter", e.toString());
             e.printStackTrace();
         }
     }
@@ -184,55 +193,61 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<PaperModel> filteredList = new ArrayList<>();
-            Log.e("s ", "sval " + ((SamplePapersActivity) context).sdata);
-            String sdata ="";
-            sdata=((SamplePapersActivity) context).sdata;
-            if ((constraint == null || constraint.length() == 0)&&(sdata==null||sdata.length()==0)) {
 
-                filteredList.addAll(datasetFilter);
-                Log.e("called ","constraint "+constraint);
 
-                Log.e("called ","sdata "+sdata);
-                Log.e("called ","calle "+filteredList.size());
+            try {
+                Log.e("s ", "sval " + ((SamplePapersActivity) context).sdata);
+                String sdata = "";
+                sdata = ((SamplePapersActivity) context).sdata;
+                if ((constraint == null || constraint.length() == 0) && (sdata == null || sdata.length() == 0)) {
 
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                String[] parts = filterPattern.split(" ");
-                for (int i = 0; i < parts.length; i++) {
-                    for (PaperModel item : datasetFilter) {
-                        Log.e("filter pattern:: ", filterPattern);
-                        Log.e("type ", item.getType());
-                        if ((item.getName().toLowerCase().contains(parts[i])) || (item.getSubject().toLowerCase().contains(parts[i])) ||
-                                ((item.getType()).toLowerCase().contains(parts[i]))) {
-                            ArrayList<PaperModel> filteredList1 = new ArrayList<>();
-                            String[] sdataval=sdata.split(" ");
-                            Log.e("valsize ","val "+sdataval.length);
-                            for (int j=0;j<sdataval.length;j++) {
-                                if (sdataval[j].equalsIgnoreCase(item.getType())) {
-                                    Log.e("valcal ","val1 "+j+" "+sdataval[j]+" "+item.getType());
-                                    //   filteredList.add(item);
-                                    Log.e("valcalbefore","val "+j+" "+filteredList1.size());
+                    filteredList.addAll(datasetFilter);
+                    Log.e("called ", "constraint " + constraint);
 
-                                    filteredList1.add(item);
-                                    Log.e("valcalafter","val "+j+" "+filteredList1.size());
-                                    // break;
+                    Log.e("called ", "sdata " + sdata);
+                    Log.e("called ", "calle " + filteredList.size());
+
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
+                    String[] parts = filterPattern.split(" ");
+                    for (int i = 0; i < parts.length; i++) {
+                        for (PaperModel item : datasetFilter) {
+                            Log.e("filter pattern:: ", filterPattern);
+                            Log.e("type ", item.getType());
+                            if ((item.getName().toLowerCase().contains(parts[i])) || (item.getSubject().toLowerCase().contains(parts[i])) ||
+                                    ((item.getType()).toLowerCase().contains(parts[i]))) {
+                                ArrayList<PaperModel> filteredList1 = new ArrayList<>();
+                                String[] sdataval = sdata.split(" ");
+                                Log.e("valsize ", "val " + sdataval.length);
+                                for (int j = 0; j < sdataval.length; j++) {
+                                    if (sdataval[j].equalsIgnoreCase(item.getType())) {
+                                        Log.e("valcal ", "val1 " + j + " " + sdataval[j] + " " + item.getType());
+                                        //   filteredList.add(item);
+                                        Log.e("valcalbefore", "val " + j + " " + filteredList1.size());
+
+                                        filteredList1.add(item);
+                                        Log.e("valcalafter", "val " + j + " " + filteredList1.size());
+                                        // break;
+
+                                    }
 
                                 }
-
+                                filteredList.addAll(filteredList1);
+                                //  break;
                             }
-                            filteredList.addAll(filteredList1);
-                            //  break;
-                        }
 
+                        }
                     }
+
                 }
 
+
+                Log.e("called1 ", "called1 " + filteredList.size());
+
+            } catch (Exception e) {
+                ((Activitycommon) context).reporterror("PaperReadorDownloadAdapter", e.toString());
+                e.printStackTrace();
             }
-
-
-            Log.e("called1 ", "called1 " + filteredList.size());
-
-
             FilterResults results = new FilterResults();
             results.values = filteredList;
 
@@ -241,9 +256,16 @@ public class PaperReadorDownloadAdapter extends RecyclerView.Adapter<PaperReador
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            dataSet.clear();
-            dataSet.addAll((ArrayList) results.values);
-            notifyDataSetChanged();
+
+            try {
+                dataSet.clear();
+                dataSet.addAll((ArrayList) results.values);
+                notifyDataSetChanged();
+
+            } catch (Exception e) {
+                ((Activitycommon) context).reporterror("PaperReadorDownloadAdapter", e.toString());
+                e.printStackTrace();
+            }
         }
 
         public void setdata(String s) {

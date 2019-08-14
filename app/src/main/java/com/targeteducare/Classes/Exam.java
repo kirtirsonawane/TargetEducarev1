@@ -6,12 +6,12 @@ public class Exam implements Serializable {
     String categoryname = "";
     int examid = 0;
     String examname = "";
-    String marks = "";
-    String neagativemarks = "";
+    String marks = "0";
+    String neagativemarks = "0";
     String startdate = "";
     String enddate = "";
-    String duration = "";
-    String durationinMin = "";
+    String duration = "0";
+    String durationinMin = "0";
     boolean InstantExamResult = true;
     boolean InstantExamResultWithAns = true;
     int isshowexam = 0;
@@ -36,6 +36,105 @@ public class Exam implements Serializable {
     long timetaken = 0;
     String exam_type = "";
     Double speed = 0.0;
+    String coursename = "";
+    String courseid = "";
+    String coursename_inmarathi = "";
+    String Name_InMarathi = "";
+    boolean isheader = false;
+    int ispaid = 0;
+    String examstatus = "";
+    String version = "1";
+    String DayMonthNumber;
+    int IsOmr = 0;
+    String type="";
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getIsOmr() {
+        return IsOmr;
+    }
+
+    public void setIsOmr(int isOmr) {
+        IsOmr = isOmr;
+    }
+
+    public String getDayMonthNumber() {
+        return DayMonthNumber;
+    }
+
+    public void setDayMonthNumber(String dayMonthNumber) {
+        DayMonthNumber = dayMonthNumber;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getExamstatus() {
+        return examstatus;
+    }
+
+    public void setExamstatus(String examstatus) {
+        this.examstatus = examstatus;
+    }
+
+    public int getIspaid() {
+        return ispaid;
+    }
+
+    public void setIspaid(int ispaid) {
+        this.ispaid = ispaid;
+    }
+
+    public boolean isIsheader() {
+        return isheader;
+    }
+
+    public void setIsheader(boolean isheader) {
+        this.isheader = isheader;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename;
+    }
+
+    public String getCourseid() {
+        return courseid;
+    }
+
+    public void setCourseid(String courseid) {
+        this.courseid = courseid;
+    }
+
+    public String getCoursename_inmarathi() {
+        return coursename_inmarathi;
+    }
+
+    public void setCoursename_inmarathi(String coursename_inmarathi) {
+        this.coursename_inmarathi = coursename_inmarathi;
+    }
+
+    public String getName_InMarathi() {
+        return Name_InMarathi;
+    }
+
+    public void setName_InMarathi(String name_InMarathi) {
+        Name_InMarathi = name_InMarathi;
+    }
 
     public Double getProgress() {
         return progress;
@@ -302,7 +401,6 @@ public class Exam implements Serializable {
     }
 
 
-
     //For Different Test ACtivities
     String topic_no = "";
     String topic_name_select = "";
@@ -368,7 +466,6 @@ public class Exam implements Serializable {
     public void setCovered_percentage(String covered_percentage) {
         this.covered_percentage = covered_percentage;
     }
-
 
 
     //For Progress Report

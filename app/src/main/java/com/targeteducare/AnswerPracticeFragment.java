@@ -1,5 +1,5 @@
 package com.targeteducare;
-
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,16 +31,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.targeteducare.Adapter.QuestionURLDataAdapter;
 import com.targeteducare.Classes.Options;
 import com.targeteducare.Classes.Question;
 import com.targeteducare.Classes.QuestionURL;
 import com.targeteducare.database.DatabaseHelper;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,9 +46,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static com.targeteducare.AnswersheetActivity.exam;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -69,7 +65,23 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
     TextView txt;
     LinearLayout layout;
 
+    String style="<style type=\"text/css\">\n" +
+            "@font-face {\n" +
+            "    font-family: Symbol;\n" +
+            "    src: url(\"file:///android_asset/fonts/hinted_symbolmt.ttf\")\n" +
+            "}\n" +
+            "@font-face {\n" +
+            "    font-family: Calibri;\n" +
+            "    src: url(\"file:///android_asset/fonts/calibri.ttf\")\n" +
+            "}@font-face {\n" +
+            "    font-family: AkrutiDevPriya;\n" +
+            "    src: url(\"file:///android_asset/fonts/akrutidevpriyanormal.ttf\")\n" +
+            "}\n" +
+            "\n" +
+            "</style>";
+
     public AnswerPracticeFragment() {
+
     }
 
     // TODO: Rename and change types and number of parameters
@@ -86,53 +98,56 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("I am in ", "AnswerPracticeFragment");
-        if (getArguments() != null) {
-            mParam1 = (Question) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        try {
+            if (getArguments() != null) {
+                mParam1 = (Question) getArguments().getSerializable(ARG_PARAM1);
+                mParam2 = getArguments().getString(ARG_PARAM2);
+            }
+        }catch (Exception e){
+            reporterror("Answerfragment",e.toString());
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_question_practice, container, false);
-        final JSONArray array = DatabaseHelper.getInstance(getActivity()).getquestionurl(mParam1.getId(), "que");
-        if (array.length() > 0) {
-            for (int i=0;i<array.length();i++)
-            {
-                try {
-                    JSONObject obj = array.getJSONObject(i);
-                    String originaldata=obj.getString(DatabaseHelper.IMAGESOURCE);
-                    String offlinepath=obj.getString(DatabaseHelper.OFFLINEPATH);
-                    Log.e("original "," "+originaldata+" "+offlinepath);
-                    mParam1.setName(mParam1.getName().replaceAll(originaldata,offlinepath));
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
+        try {
+            final JSONArray array = DatabaseHelper.getInstance(getActivity()).getquestionurl(mParam1.getId(), "que");
+            if (array.length() > 0) {
+                for (int i = 0; i < array.length(); i++) {
+                    try {
+                        JSONObject obj = array.getJSONObject(i);
+                        String originaldata = obj.getString(DatabaseHelper.IMAGESOURCE);
+                        String offlinepath = obj.getString(DatabaseHelper.OFFLINEPATH);
+                        Log.e("original ", " " + originaldata + " " + offlinepath);
+                        mParam1.setName(mParam1.getName().replaceAll(originaldata, offlinepath));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                Log.e("qname ", " qname " + mParam1.getName());
             }
-            Log.e("qname "," qname "+mParam1.getName());
-        }
 
-        layout = (LinearLayout) v.findViewById(R.id.layout);
-        txt = (TextView) v.findViewById(R.id.textview_1);
-        txt.setTypeface(Fonter.getTypefaceregular(getActivity()));
-        Spanned spanned = Html.fromHtml(mParam1.getSrno() + "." + mParam1.getName(), this, null);
-        txt.setText(spanned);
-        txt.setPadding(10, 10, 10, 10);
-        //   mParam1.setIsTabletag("1");
-        if (mParam1.getIsTabletag().equalsIgnoreCase("1")) {
-            txt.setVisibility(View.GONE);
-            final WebView web = new WebView(getActivity());
-            web.getSettings().setJavaScriptEnabled(true);
-            web.getSettings().setAllowFileAccess(true);
-            web.loadDataWithBaseURL("file:///",mParam1.getSrno() + "." + mParam1.getName(), "text/html", "utf-8", null);
-            //parent.addView(web);
-            layout.addView(web);
-            RelativeLayout.LayoutParams webViewParams = new RelativeLayout.LayoutParams(300, 100);
-            webViewParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        }
-        //final ArrayList<QuestionURL> qdata = checkdata();
-        addenlargedata(checkdata(mParam1.getName()));
+            layout = (LinearLayout) v.findViewById(R.id.layout);
+            txt = (TextView) v.findViewById(R.id.textview_1);
+            txt.setTypeface(Fonter.getTypefaceregular(getActivity()));
+            Spanned spanned = Html.fromHtml(mParam1.getSrno() + "." + mParam1.getName(), this, null);
+            txt.setText(spanned);
+            txt.setPadding(10, 10, 10, 10);
+            //   mParam1.setIsTabletag("1");
+            if (mParam1.getIsTabletag().equalsIgnoreCase("1")) {
+                txt.setVisibility(View.GONE);
+                final WebView web = new WebView(getActivity());
+                web.getSettings().setJavaScriptEnabled(true);
+                web.getSettings().setAllowFileAccess(true);
+                web.loadDataWithBaseURL("file:///", style + mParam1.getSrno() + "." + mParam1.getName(), "text/html", "utf-8", null);
+                //parent.addView(web);
+                layout.addView(web);
+                RelativeLayout.LayoutParams webViewParams = new RelativeLayout.LayoutParams(300, 100);
+                webViewParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            }
+            //final ArrayList<QuestionURL> qdata = checkdata();
+            addenlargedata(checkdata(mParam1.getName()));
 
       /*  if (qdata.size() > 0) {
             TextView txt = new TextView(getActivity());
@@ -169,40 +184,53 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
             });
             layout.addView(txt);
         }*/
-        if (Integer.parseInt(mParam1.getQuestionTypeId()) == 1) {
-            addradioGroup(mParam1.getOptions());
-        } else {
-            for (int i = 0; i < mParam1.getOptions().size(); i++) {
-                Options t = mParam1.getOptions().get(i);
-                addCheckBox(t);
+            if (Integer.parseInt(mParam1.getQuestionTypeId()) == 1) {
+                addradioGroup(mParam1.getOptions());
+            } else {
+                for (int i = 0; i < mParam1.getOptions().size(); i++) {
+                    Options t = mParam1.getOptions().get(i);
+                    addCheckBox(t);
+                }
             }
+        }catch (Exception e)
+        {
+            reporterror("Anserfrag",e.toString());
         }
         return v;
     }
 
     public void addenlargedata(final ArrayList<QuestionURL> qdata){
+        try{
         if (qdata.size() > 0) {
             TextView txt = new TextView(getActivity());
-            txt.setText("enlarge Image");
+            txt.setText(getResources().getString(R.string.enlarge_image));
             txt.setGravity(Gravity.RIGHT);
             txt.setTextColor(getResources().getColor(R.color.colorAccent));
             txt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     opendialog(qdata);
                 }
             });
             layout.addView(txt);
         }
+        }catch (Exception e)
+        {
+            reporterror("Anserfrag",e.toString());
+        }
     }
 
     public ArrayList<QuestionURL> checkdata(String sdata){
         ArrayList<QuestionURL> qdata=new ArrayList<>();
+        try{
         Pattern pattern = Pattern.compile("src=([^>]*)>");
         Matcher matcher = pattern.matcher(sdata);
         while (matcher.find()) {
             qdata.add(new QuestionURL(matcher.group(1)));
+        }
+        }catch (Exception e)
+        {
+            reporterror("Anserfrag",e.toString());
         }
         return  qdata;
     }
@@ -222,7 +250,6 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
             RadioGroup rg = new RadioGroup(getActivity());
             rg.setOrientation(LinearLayout.VERTICAL);
             for (int i = 0; i < dataset.size(); i++) {
-
                 final JSONArray arrayopt = DatabaseHelper.getInstance(getActivity()).getquestionurl(dataset.get(i).getId(), "ans");
                 if (arrayopt.length() > 0) {
                     for (int j=0;j<arrayopt.length();j++)
@@ -273,7 +300,7 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
 
                     web.getSettings().setJavaScriptEnabled(true);
                     web.getSettings().setAllowFileAccess(true);
-                    web.loadDataWithBaseURL("file:///",dataset.get(i).getName(), "text/html", "utf-8", null);
+                    web.loadDataWithBaseURL("file:///",style+dataset.get(i).getName(), "text/html", "utf-8", null);
                     //   web.loadData(dataset.get(i).getName(), null, null);
                     parent.addView(web);
                     layout.addView(parent);
@@ -396,15 +423,15 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
 
             switch (isanswer) {
                 case 0:
-                    txt.setText("Not answer");
+                    txt.setText(getResources().getString(R.string.not_answered));
                     txt.setBackgroundColor(getResources().getColor(R.color.notanswered_questionlight));
                     break;
                 case 1:
-                    txt.setText("Your answer is correct");
+                    txt.setText(getResources().getString(R.string.correct_answer));
                     txt.setBackgroundColor(getResources().getColor(R.color.answered_questionlight));
                     break;
                 case 2:
-                    txt.setText("Your answer is wrong");
+                    txt.setText(getResources().getString(R.string.wrong_answer));
                     txt.setBackgroundColor(getResources().getColor(R.color.wrongswered_questionlight));
                     break;
             }
@@ -435,12 +462,12 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
                     Log.e("qname "," qname "+mParam1.getName());
                 }
 
-                if (mParam1.getIsTabletag().equalsIgnoreCase("1")) {
+                if (mParam1.getIsTabletagexplanation().equalsIgnoreCase("1")) {
                     //   txt.setVisibility(View.GONE);
                     final WebView web = new WebView(getActivity());
                     web.getSettings().setJavaScriptEnabled(true);
                     web.getSettings().setAllowFileAccess(true);
-                    web.loadDataWithBaseURL("file:///",mParam1.getExplanation(), "text/html", "utf-8", null);
+                    web.loadDataWithBaseURL("file:///",style+mParam1.getExplanation(), "text/html", "utf-8", null);
                     layout.addView(web);
                     RelativeLayout.LayoutParams webViewParams = new RelativeLayout.LayoutParams(300, 100);
                     webViewParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -686,8 +713,9 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
             }*/
 
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e)
+        {
+            reporterror("Anserfrag",e.toString());
         }
     }
 
@@ -716,8 +744,9 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
             });
             cb.setTextColor(getResources().getColor(R.color.Black));
             layout.addView(cb);
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (Exception e)
+        {
+            reporterror("Anserfrag",e.toString());
         }
     }
 
@@ -767,7 +796,7 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
             }
         }catch (Exception e)
         {
-            e.printStackTrace();
+            reporterror("Anserfrag",e.toString());
         }
         // bitmap = Bitmap.createScaledBitmap(bitmap,parent.getWidth(),parent.getHeight(),true);
         return d;
@@ -797,17 +826,24 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
                 InputStream is = new URL(source).openStream();
                 return BitmapFactory.decodeStream(is);
             } catch (FileNotFoundException e) {
+                reporterror("Anserfrag",e.toString());
                 e.printStackTrace();
             } catch (MalformedURLException e) {
+                reporterror("Anserfrag",e.toString());
                 e.printStackTrace();
             } catch (IOException e) {
+                reporterror("Anserfrag",e.toString());
                 e.printStackTrace();
+            }catch (Exception e)
+            {
+                reporterror("Anserfrag",e.toString());
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+            try{
             if (bitmap != null) {
                 BitmapDrawable d = new BitmapDrawable(bitmap);
                 mDrawable.addLevel(1, 1, d);
@@ -830,6 +866,10 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
                         break;
                 }
             }
+            }catch (Exception e)
+            {
+                reporterror("Anserfrag",e.toString());
+            }
         }
     }
 
@@ -849,6 +889,7 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
     }
 
     public void opendialog(final ArrayList<QuestionURL> dataset) {
+        try{
         final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.list_item_questionurl, null);
@@ -860,7 +901,39 @@ public class AnswerPracticeFragment extends Fragment implements Html.ImageGetter
         mRecyclerview.setAdapter(adapter);
 
         alert.setCancelable(true);
-        final AlertDialog dialog = alert.create();
-        dialog.show();
+            if (!((Activity) getActivity()).isFinishing()) {
+                final AlertDialog dialog = alert.create();
+                dialog.show();
+            }
+        }catch (Exception e)
+        {
+            reporterror("Anserfrag",e.toString());
+        }
+    }
+
+    public int getos() {
+        return android.os.Build.VERSION.SDK_INT;
+    }
+
+    public String getmodel() {
+        return Build.MODEL + " " + Build.BRAND;
+    }
+
+
+    public void reporterror(String classname, String error) {
+        try {
+            JSONObject obj = new JSONObject();
+            if(GlobalValues.student!=null)
+                obj.put("email",GlobalValues.student.getMobile());
+            else obj.put("email","");
+            obj.put("osversion", getmodel() + " " + getos());
+            obj.put("errordetail", error.replaceAll("'", ""));
+            obj.put("appname", "Target Educare Peak");
+            obj.put("activityname", classname);
+            ConnectionManager.getInstance(getActivity()).reporterror(obj.toString());
+        } catch (Exception e) {
+            Log.e("error", "error " + e);
+            e.printStackTrace();
+        }
     }
 }

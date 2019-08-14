@@ -54,7 +54,7 @@
                         android:id="@+id/reviewview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Reviews"
+                        android:text="@string/review"
                         android:textSize="10dp"
                         android:layout_marginLeft="6dp"
                         android:layout_marginTop="5dp"/>
@@ -95,13 +95,13 @@
                                 android:layout_height="wrap_content"
 
                                 android:layout_marginTop="8dp"
-                                android:text="Estd:"/>
+                                android:text="@string/established"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="Courses:"/>
+                                android:text="@string/courses"/>
 
                         </LinearLayout>
                         <LinearLayout
@@ -207,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:layout_marginLeft="200dp"
-                    android:text="Get Contact"
+                    android:text="@string/get_contact"
                     android:textSize="10dp"
                     android:textAllCaps="false"
                     android:padding="5dp"
@@ -219,7 +219,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_shape_round"
-                    android:text="Compare  "
+                    android:text="@string/compare"
                     android:textSize="10dp"
                     android:padding="5dp"
                     android:textStyle="bold"

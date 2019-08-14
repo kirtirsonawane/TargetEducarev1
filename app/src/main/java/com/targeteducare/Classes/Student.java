@@ -1,52 +1,111 @@
 package com.targeteducare.Classes;
 
-import android.graphics.drawable.Drawable;
+import android.util.Log;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Student {
-    String Id="";
-    String Name="";
-    String RollNumber="";
-    String CenterId="";
-    String FatherName="";
-    String MotherName="";
-    String DOB="";
-    String Mobile="";
-    String Email="";
-    String QualificationId="";
-    String CountryId="";
-    String StateId="";
-    String CityId="";
-    String Password="";
-    String Address="";
-    String RegistrationDate="";
-    String CategoryId="";
-    String CasteCategory="";
-    String Adhar="";
-    String IsActive="";
-    String Deleted="";
-    String CreatedDate="";
-    String RoleName="";
-    String UserTheme="";
-    String InstituteName="";
-    String Institutelogo="";
-    String SubCategoryId="";
-    String Gender="";
-    String Nationality="";
-    String AltMobile="";
-    String AltEmail="";
-    String Totalamt="";
-    String dueAmt="";
-    String sanstha_id="";
-    String ReferalMobile="";
-    String Institutesign="";
-    String surname="";
+    String Id = "";
+    String Name = "";
+    String RollNumber = "";
+    String CenterId = "";
+    String FatherName = "";
+    String MotherName = "";
+    String DOB = "";
+    String Mobile = "";
+    String Email = "";
+    String QualificationId = "";
+    String CountryId = "";
+    String StateId = "";
+    String CityId = "";
+    String Password = "";
+    String Address = "";
+    String RegistrationDate = "";
+    String CategoryId = "";
+    String CasteCategory = "";
+    String Adhar = "";
+    String IsActive = "";
+    String Deleted = "";
+    String CreatedDate = "";
+    String RoleName = "";
+    String UserTheme = "";
+    String InstituteName = "";
+    String Institutelogo = "";
+    String SubCategoryId = "";
+    String Gender = "";
+    String Nationality = "";
+    String AltMobile = "";
+    String AltEmail = "";
+    String Totalamt = "";
+    String dueAmt = "";
+    String sanstha_id = "";
+    String ReferalMobile = "";
+    String Institutesign = "";
+    String surname = "";
     String fullname = "";
     String board_name = "";
     String subboard_name = "";
     String state = "";
     String city = "";
     String district = "";
+    String IsFaculty = "";
+    int isomr = 0;
+    long timetaken = 0;
+    long lasttimetaken = 0;
+    String lastvisiteddate = "";
+    int useractive = 0;
+    String IEMIno = "";
+    int islogin = 0;
+    ArrayList<Examfirebasedb> examdata = new ArrayList<>();
 
+    public String getIEMIno() {
+        return IEMIno;
+    }
+
+    public void setIEMIno(String IEMIno) {
+        this.IEMIno = IEMIno;
+    }
+
+    public int getUseractive() {
+        return useractive;
+    }
+
+    public void setUseractive(int useractive) {
+        this.useractive = useractive;
+    }
+
+    public long getTimetaken() {
+        return timetaken;
+    }
+
+    public void setTimetaken(long timetaken) {
+        this.timetaken = timetaken;
+    }
+
+    public String getLastvisiteddate() {
+        return lastvisiteddate;
+    }
+
+    public void setLastvisiteddate(String lastvisiteddate) {
+        this.lastvisiteddate = lastvisiteddate;
+    }
+
+    public String getIsFaculty() {
+        return IsFaculty;
+    }
+
+    public void setIsFaculty(String isFaculty) {
+        IsFaculty = isFaculty;
+    }
+
+    public int getIsomr() {
+        return isomr;
+    }
+
+    public void setIsomr(int isomr) {
+        this.isomr = isomr;
+    }
 
     public String getDistrict() {
         return district;
@@ -390,5 +449,46 @@ public class Student {
 
     public void setInstitutelogo(String institutelogo) {
         Institutelogo = institutelogo;
+    }
+
+    public long getLasttimetaken() {
+        return lasttimetaken;
+    }
+
+    public void setLasttimetaken(long lasttimetaken) {
+        this.lasttimetaken = lasttimetaken;
+    }
+
+    public int getIslogin() {
+        return islogin;
+    }
+
+    public void setIslogin(int islogin) {
+        this.islogin = islogin;
+    }
+
+    public ArrayList<Examfirebasedb> getExamdata() {
+        return examdata;
+    }
+
+    public void setExamdata(ArrayList<Examfirebasedb> examdata) {
+        this.examdata = examdata;
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("Id", Id);
+        result.put("Name", Name);
+        result.put("RollNumber", RollNumber);
+        result.put("Mobile", Mobile);
+        result.put("timetaken", timetaken);
+        result.put("lastvisiteddate", lastvisiteddate);
+        result.put("lasttimetaken", lasttimetaken);
+        result.put("useractive", useractive);
+        result.put("IEMIno", IEMIno);
+        result.put("islogin", islogin);
+        result.put("exam",examdata);
+        Log.e("useractive ", "useractive " + useractive);
+        return result;
     }
 }

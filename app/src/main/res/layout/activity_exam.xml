@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -99,8 +98,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true">
-
-        <include layout="@layout/listitemdrawerleft"></include>
+        <include
+            layout="@layout/listitemdrawerleft">
+        </include>
     </android.support.design.widget.NavigationView>
 
     <android.support.design.widget.NavigationView
@@ -114,7 +114,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
          <include
              layout="@layout/listitemdrawerright"

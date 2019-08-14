@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -32,46 +33,53 @@ public class SamplePapersActivity extends Activitycommon {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample_papers);
-        Sample_Papers_E_Books = (CheckBox) findViewById(R.id.sample_papers_e_books);
-        Sample_Papers_Videos = (CheckBox) findViewById(R.id.sample_papers_videos);
-        arrayListdata = new ArrayList<>();
-        setmaterialDesign();
-        setTitle("E-books");
-        back();
-        JSONObject jsonObject = new JSONObject();
-        JSONObject jsonObject1 = new JSONObject();
-
-        // get the reference of RecyclerView
-        recyclerView = findViewById(R.id.recyclerviewforsamplepaper);
-
-        // set a GridLayoutManager with default vertical orientation and 2 number of columns
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
-        //    adapter = new PaperReadorDownloadAdapter(SamplePapers.this,arrayListdata);
-        //recyclerView.setAdapter(adapter);
-        String Student_id = Constants.projectid;
-
         try {
-            jsonObject.put("StudentId", Student_id);
-            jsonObject1.put("FilterParameter", jsonObject.toString());
-            Log.e("parameters ::  :: ", jsonObject1.toString());
-            ConnectionManager.getInstance(SamplePapersActivity.this).getsamplepapers(jsonObject1.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+            screenshot_capture_permission();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_sample_papers);
+
+            tag = this.getClass().getSimpleName();
+
+            Sample_Papers_E_Books = (CheckBox) findViewById(R.id.sample_papers_e_books);
+            Sample_Papers_Videos = (CheckBox) findViewById(R.id.sample_papers_videos);
+            arrayListdata = new ArrayList<>();
+            setmaterialDesign();
+            setTitle(getResources().getString(R.string.e_books));
+            back();
+            JSONObject jsonObject = new JSONObject();
+            JSONObject jsonObject1 = new JSONObject();
+
+            // get the reference of RecyclerView
+            recyclerView = findViewById(R.id.recyclerviewforsamplepaper);
+
+            // set a GridLayoutManager with default vertical orientation and 2 number of columns
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+            recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+            //    adapter = new PaperReadorDownloadAdapter(SamplePapers.this,arrayListdata);
+            //recyclerView.setAdapter(adapter);
+            String Student_id = Constants.projectid;
+
+            try {
+                jsonObject.put("StudentId", Student_id);
+                jsonObject1.put("FilterParameter", jsonObject.toString());
+                Log.e("parameters ::  :: ", jsonObject1.toString());
+                ConnectionManager.getInstance(SamplePapersActivity.this).getsamplepapers(jsonObject1.toString());
+            } catch (Exception e) {
+                reporterror(tag, e.toString());
+                e.printStackTrace();
+            }
 
 
-        }
+            Sample_Papers_Videos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-
-
-
-
-        Sample_Papers_Videos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updatedata(searchView.getQuery().toString());
+                    try {
+                        updatedata(searchView.getQuery().toString());
+                    } catch (Exception e) {
+                        reporterror(tag, e.toString());
+                        e.printStackTrace();
+                    }
 
            /*  if (isChecked == true) {
                  data=data+" "+String.valueOf(Sample_Papers_Videos.getText());
@@ -86,14 +94,20 @@ public class SamplePapersActivity extends Activitycommon {
                  Log.e("data videos else::: ",data);
                  adapter.getFilter().filter(data);
              }*/
-            }
-        });
+                }
+            });
 
 
-        Sample_Papers_E_Books.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updatedata(searchView.getQuery().toString());
+            Sample_Papers_E_Books.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    try{
+                    updatedata(searchView.getQuery().toString());
+                    } catch (Exception e) {
+                        reporterror(tag,e.toString());
+                        e.printStackTrace();
+                    }
               /*  if (isChecked == true) {
                     data=data+" "+String.valueOf(Sample_Papers_E_Books.getText().toString());
                     sdata=String.valueOf(Sample_Papers_E_Books.getText());
@@ -106,8 +120,8 @@ public class SamplePapersActivity extends Activitycommon {
                     Log.e("data ebooks else::: ",data);
                     adapter.getFilter().filter(data);
                 }*/
-            }
-        });
+                }
+            });
        /* Sample_Papers_Videos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -117,69 +131,87 @@ public class SamplePapersActivity extends Activitycommon {
             }
         });*/
 
+        } catch (Exception e) {
+            reporterror(tag, e.toString());
+            e.printStackTrace();
+        }
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        try {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.menu, menu);
 
-        searchView = (SearchView) searchItem.getActionView();
+            MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            searchView = (SearchView) searchItem.getActionView();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+            searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-                updatedata(newText);
-                //if(Sample_Papers_Videos.isChecked()){
-                //  sdata = String.valueOf(Sample_Papers_Videos.getText());
-                Log.e("in checked :: ", sdata);
-                //  adapter.getFilter().filter(newText);
-                // }
+                @Override
+                public boolean onQueryTextChange(String newText) {
+
+
+                    try {
+
+                        updatedata(newText);
+                        //if(Sample_Papers_Videos.isChecked()){
+                        //  sdata = String.valueOf(Sample_Papers_Videos.getText());
+                        Log.e("in checked :: ", sdata);
+                        //  adapter.getFilter().filter(newText);
+                        // }
                 /*else {
                     adapter.getFilter().filter(newText);
                 }*/
-
-                return false;
-            }
-        });
-
+                    } catch (Exception e) {
+                        reporterror(tag, e.toString());
+                        e.printStackTrace();
+                    }
+                    return false;
+                }
+            });
+        } catch (Exception e) {
+            reporterror(tag, e.toString());
+            e.printStackTrace();
+        }
 
         return true;
     }
 
 
-
-
-
     public void updatedata(String searchkey) {
-        sdata = "";
-        if (Sample_Papers_E_Books.isChecked()) {
-            sdata = Sample_Papers_E_Books.getText().toString();
-        }
 
-        if(Sample_Papers_Videos.isChecked())
-        {
-            if(sdata.length()==0)
-            {
-                sdata = Sample_Papers_Videos.getText().toString();
-            }else {
-                sdata =sdata+" "+ Sample_Papers_Videos.getText().toString();
-
+        try {
+            sdata = "";
+            if (Sample_Papers_E_Books.isChecked()) {
+                sdata = Sample_Papers_E_Books.getText().toString();
             }
-        }
 
-        adapter.getFilter().filter(searchkey);
+            if (Sample_Papers_Videos.isChecked()) {
+                if (sdata.length() == 0) {
+                    sdata = Sample_Papers_Videos.getText().toString();
+                } else {
+                    sdata = sdata + " " + Sample_Papers_Videos.getText().toString();
+
+                }
+            }
+
+            adapter.getFilter().filter(searchkey);
+
+        } catch (Exception e) {
+            reporterror(tag, e.toString());
+            e.printStackTrace();
+        }
 
     }
 
@@ -202,6 +234,7 @@ public class SamplePapersActivity extends Activitycommon {
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
                     } catch (Exception e) {
+                        reporterror(tag, e.toString());
                         e.printStackTrace();
                     }
                 }

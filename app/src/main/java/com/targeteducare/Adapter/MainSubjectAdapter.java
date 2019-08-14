@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.MainSubjectDataModel;
 import com.targeteducare.MainSubjectSelectionActivity;
 import com.targeteducare.R;
@@ -19,16 +20,23 @@ public class MainSubjectAdapter extends RecyclerView.Adapter<MainSubjectAdapter.
     ArrayList<MainSubjectDataModel> mainSubjectDataModels;
     Context context;
 
-    public MainSubjectAdapter(Context context, ArrayList<MainSubjectDataModel> mainSubjectDataModels){
-        this.context = context;
-        this.mainSubjectDataModels = mainSubjectDataModels;
+    public MainSubjectAdapter(Context context, ArrayList<MainSubjectDataModel> mainSubjectDataModels) {
+
+        try {
+            this.context = context;
+            this.mainSubjectDataModels = mainSubjectDataModels;
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("MainSubjectAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View vh = LayoutInflater.from(parent.getContext()).inflate(R.layout.subject_list,parent,false);
+        View vh = LayoutInflater.from(parent.getContext()).inflate(R.layout.subject_list, parent, false);
         MyViewHolder viewHolder = new MyViewHolder(vh);
         return viewHolder;
     }
@@ -40,7 +48,14 @@ public class MainSubjectAdapter extends RecyclerView.Adapter<MainSubjectAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainSubjectSelectionActivity)context).referto(position);
+
+                try {
+                    ((MainSubjectSelectionActivity) context).referto(position);
+
+                } catch (Exception e) {
+                    ((Activitycommon) context).reporterror("MainSubjectAdapter", e.toString());
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -52,7 +67,7 @@ public class MainSubjectAdapter extends RecyclerView.Adapter<MainSubjectAdapter.
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_mainsubjectselect;
 

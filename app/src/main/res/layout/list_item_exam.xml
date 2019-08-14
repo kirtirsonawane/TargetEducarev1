@@ -3,31 +3,308 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_margin="2dp"
+    app:cardBackgroundColor="@color/White"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+
+            <LinearLayout
+                android:id="@+id/linearlayout_color"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/chapternumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:text="01 May"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="@color/White"
+                    android:visibility="gone" />
+
+                <ImageView
+
+                    android:id="@+id/imageview_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_exam"
+                    android:visibility="visible"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textview_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Abc"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:textColor="@color/Gray"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textview_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="30 min"
+                        android:textColor="@color/light_text_color" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textview_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="30 min"
+                    android:textColor="@color/light_text_color"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayoutforpracticetest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/totalquestions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Questions" />
+
+                    <TextView
+                        android:id="@+id/totalvideos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Videos" />
+
+                    <TextView
+                        android:id="@+id/totalconcepts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Concepts" />
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progress_topiccovered"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:minWidth="10dp"
+                    android:minHeight="10dp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayoutprogresbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tv_coveredpercentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Covered 0%" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearlayouttoattemptexam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/attempt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/attempt"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/buy"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blue" />
+
+                    <TextView
+                        android:id="@+id/download"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:text="@string/get_exam"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blue"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/sync"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                       android:drawableLeft="@drawable/ic_refresh"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/red"
+                        android:visibility="gone"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="center"
+
+                        />
+                  <!--  android:text="@string/sync_with_cloud"
+                        android:layout_weight="1"
+                  -->
+                    <TextView
+                        android:id="@+id/mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/mail"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/red"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/imageview_mail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/ic_mail"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        />
+
+                    <TextView
+                        android:id="@+id/viewanswersheet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/view_answersheet"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blue"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_checkprogress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/view_marksheet"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blue" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/text_view_attempt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"
+                android:padding="5dp"
+                android:text="@string/take_practise"
+                android:textAlignment="center"
+                android:textColor="@color/blue1"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
     app:cardCornerRadius="4dp"
     app:cardBackgroundColor="@color/White">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/linearlayout_color"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="start">
 
             <TextView
                 android:id="@+id/chapternumber"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_width="40dp"
+                android:layout_margin="5dp"
+                android:layout_width="45dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:text="01"
-                android:visibility="gone"/>
+                android:textColor="@color/White"
+                android:visibility="gone"
+                android:gravity="start"/>
 
             <ImageView
 
@@ -44,16 +321,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textview_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="abc"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/textcolor" />
+                android:text="Abc"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/Gray"
+                android:textStyle="bold"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -77,6 +355,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="30 min"
+                android:visibility="gone"
                 android:textColor="@color/light_text_color" />
 
             <LinearLayout
@@ -135,7 +414,7 @@
                     android:id="@+id/tv_coveredpercentage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Covered x%"
+                    android:text="Covered 0%"
                     android:layout_weight="1"/>
 
             </LinearLayout>
@@ -145,45 +424,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3"
+
                 android:layout_marginTop="10dp">
 
 
                 <TextView
                     android:id="@+id/attempt"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Attempt"
-                    android:textColor="@color/blue" />
-
+                    android:text="@string/attempt"
+                    android:textColor="@color/blue"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    />
+                <TextView
+                    android:id="@+id/pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/buy"
+                    android:textColor="@color/blue"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    />
                 <TextView
                     android:id="@+id/download"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:text="Get Exam"
+                    android:text="@string/get_exam"
                     android:textColor="@color/blue"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    />
 
                 <TextView
                     android:id="@+id/sync"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sync with cloud"
+                    android:text="@string/sync_with_cloud"
                     android:textColor="@color/red"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    />
 
                 <TextView
                     android:id="@+id/mail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Mail"
+                    android:text="@string/mail"
                     android:textColor="@color/red"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    />
 
                 <ImageView
                     android:id="@+id/imageview_mail"
@@ -191,26 +487,31 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:src="@drawable/ic_mail"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    />
 
                 <TextView
                     android:id="@+id/viewanswersheet"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="View Answersheet"
+                    android:text="@string/view_answersheet"
                     android:textColor="@color/blue"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:visibility="gone"/>
 
                 <TextView
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                     android:id="@+id/tv_checkprogress"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/blue"
-                    android:text="Check Progress"
-                    android:layout_weight="1"/>
+                    android:text="@string/check_progress"
+                    android:layout_weight="1"
+                    />
 
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>-->

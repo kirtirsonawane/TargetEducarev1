@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -17,48 +18,46 @@ import com.targeteducare.Classes.EngColgDataModel;
 import java.util.ArrayList;
 
 public class CollegeComparisionActivity extends Activitycommon {
-    int count=0;
+    int count = 0;
     LinearLayout layout;
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_college__comparision);
-
-
-
-            setmaterialDesign();
-            setTitle("Comparision Of Colleges");
-            back();
-
+        screenshot_capture_permission();
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_college__comparision);
         try {
-    Bundle bundle = getIntent().getExtras();
-    ArrayList<EngColgDataModel> Received_data = (ArrayList<EngColgDataModel>) bundle.getSerializable("collegedata");
-    Log.e("Recieved data : ", Received_data.get(0).getExam_name()+ " " + Received_data.size());
-
-    layout = (LinearLayout) findViewById(R.id.layout);
+        setmaterialDesign();
+        setTitle(getResources().getString(R.string.title_collegecompare));
+        back();
 
 
-        final ScrollView scrollView1 =(ScrollView)findViewById(R.id.fixed_scrollview);
-        final ScrollView scrollView2 =(ScrollView)findViewById(R.id.sv);
-        scrollView1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                scrollView2.scrollTo(scrollX,scrollY);
-            }
-        });
+            Bundle bundle = getIntent().getExtras();
+            ArrayList<EngColgDataModel> Received_data = (ArrayList<EngColgDataModel>) bundle.getSerializable("collegedata");
+            Log.e("Recieved data : ", Received_data.get(0).getExam_name() + " " + Received_data.size());
 
-        scrollView2.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                scrollView1.scrollTo(scrollX,scrollY);
-            }
-        });
+            layout = (LinearLayout) findViewById(R.id.layout);
 
 
+            final ScrollView scrollView1 = (ScrollView) findViewById(R.id.fixed_scrollview);
+            final ScrollView scrollView2 = (ScrollView) findViewById(R.id.sv);
+            scrollView1.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    scrollView2.scrollTo(scrollX, scrollY);
+                }
+            });
+
+            scrollView2.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    scrollView1.scrollTo(scrollX, scrollY);
+                }
+            });
 
 
-    TableLayout ll = (TableLayout)findViewById(R.id.table);
+            TableLayout ll = (TableLayout) findViewById(R.id.table);
 
 
 
@@ -74,29 +73,28 @@ public class CollegeComparisionActivity extends Activitycommon {
     ll.addView(tr_head);*/
 
 
-    for(int i=0;i<6;i++) {
+            for (int i = 0; i < 6; i++) {
 
 
-        TableRow tr = new TableRow(this);
+                TableRow tr = new TableRow(this);
 
-        tr.setId(100 + count);
+                tr.setId(100 + count);
 
-        tr.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.FILL_PARENT,130));
+                tr.setLayoutParams(new TableRow.LayoutParams(
+                        TableRow.LayoutParams.FILL_PARENT, 130));
 
-        switch (i) {
+                switch (i) {
 
 
-
-            case 0:
-                for(int j=0;j<Received_data.size();j++){
-                    TextView tv1 = new TextView(this);
-                tv1.setId(200 + count);
-                    tv1.setHeight(53);
-                tv1.setText( Received_data.get(j).getCollege_name());
-                tv1.setPadding(5, 5, 5, 5);
-                tv1.setTextColor(Color.BLACK);
-                    tv1.setBackgroundResource(R.drawable.comparision_table_shape_xml);
+                    case 0:
+                        for (int j = 0; j < Received_data.size(); j++) {
+                            TextView tv1 = new TextView(this);
+                            tv1.setId(200 + count);
+                            tv1.setHeight(53);
+                            tv1.setText(Received_data.get(j).getCollege_name());
+                            tv1.setPadding(5, 5, 5, 5);
+                            tv1.setTextColor(Color.BLACK);
+                            tv1.setBackgroundResource(R.drawable.comparision_table_shape_xml);
                     /*ShapeDrawable border = new ShapeDrawable(new RectShape());
                     border.getPaint().setStyle(Paint.Style.STROKE);
                     border.getPaint().setColor(Color.BLACK);
@@ -104,16 +102,18 @@ public class CollegeComparisionActivity extends Activitycommon {
                         tv1.setBackground(border);
 
                     }*/
-                    tr.addView(tv1);}
-                break;
-            case 1:for(int j=0;j<Received_data.size();j++) {
-                TextView tv2 = new TextView(this);
-                tv2.setId(200 + count);
-                tv2.setHeight(53);
-                tv2.setText(String.valueOf(Received_data.get(j).getCourses()));
-                tv2.setPadding(5, 5, 5, 5);
-                tv2.setTextColor(Color.BLACK);
-                tv2.setBackgroundResource(R.drawable.comparision_table_shape_xml);
+                            tr.addView(tv1);
+                        }
+                        break;
+                    case 1:
+                        for (int j = 0; j < Received_data.size(); j++) {
+                            TextView tv2 = new TextView(this);
+                            tv2.setId(200 + count);
+                            tv2.setHeight(53);
+                            tv2.setText(String.valueOf(Received_data.get(j).getCourses()));
+                            tv2.setPadding(5, 5, 5, 5);
+                            tv2.setTextColor(Color.BLACK);
+                            tv2.setBackgroundResource(R.drawable.comparision_table_shape_xml);
                 /*ShapeDrawable border = new ShapeDrawable(new RectShape());
                 border.getPaint().setStyle(Paint.Style.STROKE);
                 border.getPaint().setColor(Color.BLACK);
@@ -121,97 +121,92 @@ public class CollegeComparisionActivity extends Activitycommon {
                     tv2.setBackground(border);
 
                 }*/
-                tr.addView(tv2);
-            }
+                            tr.addView(tv2);
+                        }
 
-                break;
-            case 2:
-                for(int j=0;j<Received_data.size();j++) {
-                    TextView tv3 = new TextView(this);
-                tv3.setId(200 + count);
-                    tv3.setHeight(53);
-                tv3.setText( Received_data.get(j).getInstitute_type());
-                tv3.setPadding(5, 5, 5, 5);
-                tv3.setTextColor(Color.BLACK);
-                    tv3.setBackgroundResource(R.drawable.comparision_table_shape_xml);
+                        break;
+                    case 2:
+                        for (int j = 0; j < Received_data.size(); j++) {
+                            TextView tv3 = new TextView(this);
+                            tv3.setId(200 + count);
+                            tv3.setHeight(53);
+                            tv3.setText(Received_data.get(j).getInstitute_type());
+                            tv3.setPadding(5, 5, 5, 5);
+                            tv3.setTextColor(Color.BLACK);
+                            tv3.setBackgroundResource(R.drawable.comparision_table_shape_xml);
                    /* ShapeDrawable border = new ShapeDrawable(new RectShape());
                     border.getPaint().setStyle(Paint.Style.STROKE);
                     border.getPaint().setColor(Color.BLACK);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         tv3.setBackground(border);
                     }*/
-                tr.addView(tv3);}
-                break;
-            case 3:
+                            tr.addView(tv3);
+                        }
+                        break;
+                    case 3:
 
-                for(int j=0;j<Received_data.size();j++) {
-                    TextView tv4 = new TextView(this);
-                tv4.setId(200 + count);
-                tv4.setHeight(53);
-                tv4.setText( Received_data.get(j).getExam_name());
-                tv4.setPadding(5, 5, 5, 5);
-                tv4.setTextColor(Color.BLACK);
-                    tv4.setBackgroundResource(R.drawable.comparision_table_shape_xml);
+                        for (int j = 0; j < Received_data.size(); j++) {
+                            TextView tv4 = new TextView(this);
+                            tv4.setId(200 + count);
+                            tv4.setHeight(53);
+                            tv4.setText(Received_data.get(j).getExam_name());
+                            tv4.setPadding(5, 5, 5, 5);
+                            tv4.setTextColor(Color.BLACK);
+                            tv4.setBackgroundResource(R.drawable.comparision_table_shape_xml);
                     /*ShapeDrawable border = new ShapeDrawable(new RectShape());
                     border.getPaint().setStyle(Paint.Style.STROKE);
                     border.getPaint().setColor(Color.BLACK);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         tv4.setBackground(border);
                     }*/
-                tr.addView(tv4);}
-                break;
-            case 4:
-                for(int j=0;j<Received_data.size();j++) {
-                    TextView tv5 = new TextView(this);
-                tv5.setId(200 + count);
-                    tv5.setHeight(53);
-                tv5.setText(String.valueOf(Received_data.get(j).getReviews()));
-                tv5.setPadding(5, 5, 5, 5);
-                tv5.setTextColor(Color.BLACK);
-                    tv5.setBackgroundResource(R.drawable.comparision_table_shape_xml);
+                            tr.addView(tv4);
+                        }
+                        break;
+                    case 4:
+                        for (int j = 0; j < Received_data.size(); j++) {
+                            TextView tv5 = new TextView(this);
+                            tv5.setId(200 + count);
+                            tv5.setHeight(53);
+                            tv5.setText(String.valueOf(Received_data.get(j).getReviews()));
+                            tv5.setPadding(5, 5, 5, 5);
+                            tv5.setTextColor(Color.BLACK);
+                            tv5.setBackgroundResource(R.drawable.comparision_table_shape_xml);
                     /*ShapeDrawable border = new ShapeDrawable(new RectShape());
                     border.getPaint().setStyle(Paint.Style.STROKE);
                     border.getPaint().setColor(Color.BLACK);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         tv5.setBackground(border);
                     }*/
-                tr.addView(tv5);}
-                break;
-            case 5:
-                for(int j=0;j<Received_data.size();j++) {
-                    TextView tv6 = new TextView(this);
-                tv6.setId(200 + count);
-                    tv6.setHeight(53);
-                tv6.setText(String.valueOf(Received_data.get(j).getRating()));
-                tv6.setPadding(5, 5, 5, 5);
-                tv6.setTextColor(Color.BLACK);
-                    tv6.setBackgroundResource(R.drawable.comparision_table_shape_xml);
+                            tr.addView(tv5);
+                        }
+                        break;
+                    case 5:
+                        for (int j = 0; j < Received_data.size(); j++) {
+                            TextView tv6 = new TextView(this);
+                            tv6.setId(200 + count);
+                            tv6.setHeight(53);
+                            tv6.setText(String.valueOf(Received_data.get(j).getRating()));
+                            tv6.setPadding(5, 5, 5, 5);
+                            tv6.setTextColor(Color.BLACK);
+                            tv6.setBackgroundResource(R.drawable.comparision_table_shape_xml);
                   /*  ShapeDrawable border = new ShapeDrawable(new RectShape());
                     border.getPaint().setStyle(Paint.Style.STROKE);
                     border.getPaint().setColor(Color.BLACK);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         tv6.setBackground(border);
                     }*/
-                tr.addView(tv6);}
+                            tr.addView(tv6);
+                        }
 
-                break;
+                        break;
 
-        }
+                }
 
-        ll.addView(tr, new TableLayout.LayoutParams(
-                TableRow.LayoutParams.FILL_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        count++;
-    }
-
-
-
-
-
-
-
-
-
+                ll.addView(tr, new TableLayout.LayoutParams(
+                        TableRow.LayoutParams.FILL_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                count++;
+            }
 
 
 ////////////////////////-----------------------------half code-------------------***********************************************---------------------------////////////////////////////
@@ -347,10 +342,10 @@ public class CollegeComparisionActivity extends Activitycommon {
             count++;
         }*/
 
-        }catch (Exception e)
-            {
-             e.printStackTrace();
-            }
+        } catch (Exception e) {
+            reporterror("CollegeComparisionActivity",e.toString());
+            e.printStackTrace();
+        }
     }
 }
 

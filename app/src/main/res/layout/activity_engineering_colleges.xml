@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/college_compare_button"
-        android:text="Compare"
+        android:text="@string/compare"
         android:textColor="@color/White"
         android:background="@drawable/rounded_button1"
         android:layout_margin="8dp"

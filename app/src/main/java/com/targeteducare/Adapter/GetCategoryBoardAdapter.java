@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.GetCategoryBoard;
 import com.targeteducare.R;
 import com.targeteducare.SelectBoardActivity;
@@ -16,22 +17,28 @@ import java.util.ArrayList;
 
 public class GetCategoryBoardAdapter extends RecyclerView.Adapter<GetCategoryBoardAdapter.MyViewHolder> {
 
-    String boardvalue="";
+    String boardvalue = "";
     String name_board;
     Context context;
 
     private ArrayList<GetCategoryBoard> getCategoryBoards;
 
     public GetCategoryBoardAdapter(Context context, ArrayList<GetCategoryBoard> getCategoryBoardsdata) {
-        this.context = context;
-        this.getCategoryBoards = getCategoryBoardsdata;
+
+        try {
+            this.context = context;
+            this.getCategoryBoards = getCategoryBoardsdata;
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("GetCategoryBoardAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.board_select,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.board_select, parent, false);
 
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
@@ -44,8 +51,15 @@ public class GetCategoryBoardAdapter extends RecyclerView.Adapter<GetCategoryBoa
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boardvalue = getCategoryBoards.get(position).getName_board();
-                ((SelectBoardActivity)context).referTo(position,boardvalue);
+
+                try {
+                    boardvalue = getCategoryBoards.get(position).getName_board();
+                    ((SelectBoardActivity) context).referTo(position, boardvalue);
+
+                } catch (Exception e) {
+                    ((Activitycommon) context).reporterror("GetCategoryBoardAdapter", e.toString());
+                    e.printStackTrace();
+                }
                 //Toast.makeText(context, boardvalue+" "+Integer.toString(position), Toast.LENGTH_SHORT).show();
             }
         });
@@ -56,7 +70,7 @@ public class GetCategoryBoardAdapter extends RecyclerView.Adapter<GetCategoryBoa
         return getCategoryBoards.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_board;
 
         public MyViewHolder(View itemView) {

@@ -19,3 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# https://firebase.google.com/docs/crashlytics/get-deobfuscated-reports
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+-keep public class * extends java.lang.Exception
+
+# To let Crashlytics automatically upload the ProGuard or DexGuard mapping file, remove this line from the config file
+# -printmapping mapping.txt
+
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**

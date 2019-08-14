@@ -10,6 +10,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 
 import com.targeteducare.Adapter.CustomAdapterEngColg;
@@ -24,35 +25,43 @@ public class EngineeringCollegesActivity1 extends Activitycommon {
     private CustomAdapterEngColg adapter;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView recyclerView;
-
+String tag="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_engineering_colleges);
+        try {
+            screenshot_capture_permission();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_engineering_colleges);
 
-        setmaterialDesign();
-        setTitle("Engineering Colleges");
-        back();
+            tag=this.getClass().getSimpleName();
+            setmaterialDesign();
+            setTitle("Engineering Colleges");
+            back();
 
-        recyclerView = findViewById(R.id.recyclerviewforengcolg);
-        recyclerView.setHasFixedSize(true);
+            recyclerView = findViewById(R.id.recyclerviewforengcolg);
+            recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
 
-        data = new ArrayList<EngColgDataModel>();
-        for(int i = 0; i< EngColgData.logo_img.length; i++){
-            data.add(new EngColgDataModel(
-                    EngColgData.logo_img[i],EngColgData.rating[i],EngColgData.reviews[i],EngColgData.college_name[i],
-                    EngColgData.established_year[i],EngColgData.courses[i],EngColgData.institute_type[i],EngColgData.exam_name[i]
-            ));
+            data = new ArrayList<EngColgDataModel>();
+            for (int i = 0; i < EngColgData.logo_img.length; i++) {
+                data.add(new EngColgDataModel(
+                        EngColgData.logo_img[i], EngColgData.rating[i], EngColgData.reviews[i], EngColgData.college_name[i],
+                        EngColgData.established_year[i], EngColgData.courses[i], EngColgData.institute_type[i], EngColgData.exam_name[i]
+                ));
+            }
+            adapter = new CustomAdapterEngColg(EngineeringCollegesActivity1.this, data);
+            recyclerView.setAdapter(adapter);
+        }catch (Exception e){
+            reporterror(tag,e.toString());
+            e.toString();
         }
-        adapter = new CustomAdapterEngColg(EngineeringCollegesActivity1.this,data);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        try{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
 
@@ -77,6 +86,10 @@ public class EngineeringCollegesActivity1 extends Activitycommon {
                 return false;
             }
         });
+        }catch (Exception e){
+            reporterror(tag,e.toString());
+            e.toString();
+        }
         return true;
     }
 }

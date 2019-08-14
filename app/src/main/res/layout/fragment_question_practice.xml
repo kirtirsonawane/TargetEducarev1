@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedscrollview_1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/layout"
@@ -15,30 +14,95 @@
         android:orientation="vertical"
         android:padding="10dp"
         tools:context=".QuestionFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <Switch
+                android:id="@+id/switchlang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="Marathi" />
+
+            <TextView
+                android:id="@+id/iv_reporterror"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:padding="2dp"
+                android:text="@string/report_error"
+                android:textColor="@color/redish_axis"
+                />
+
+            <!--    <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/error"
+                    android:visibility="gone"/>-->
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textview_sub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/hello_blank_fragment"
-            android:visibility="gone"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-            android:textColor="@color/textcolor"/>
-        <TextView
-            android:id="@+id/textview_1"
+            android:textColor="@color/textcolor"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layoutv1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/hello_blank_fragment"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-            android:textColor="@color/textcolor"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_serialNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:text="1"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/textcolor"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textview_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/hello_blank_fragment"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textColor="@color/textcolor" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_timeperquestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="end"
+            android:text="@string/timetaken_perquestion"
+            android:textColor="@color/Gray500"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_skipquestion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skip Question"
             android:gravity="end"
-            android:textColor="@color/blue"/>
+            android:text="@string/skip_question"
+            android:textColor="@color/blue" />
     </LinearLayout>
+
 </android.support.v4.widget.NestedScrollView>

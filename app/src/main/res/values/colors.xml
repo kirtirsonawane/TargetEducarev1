@@ -3,5 +3,20 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <array name="colorsforbackground">
+        <item name="darkred">#590D26</item>
+        <item name="pink">#B54AA3</item>
+        <item name="darkgreen">#003322</item>
+        <item name="brown">#947058</item>
+        <item name="golden">#F77901</item>
+        <item name="redish_axis">#B4034B</item>
+        <item name="pinkishbrown">#814141</item>
+        <item name="green">#0C6B69</item>
+        <item name="red">#D50000</item>
+        <item name="darkpurple">#3F0D59</item>
+        <item name="blue">#4679BD</item>
+        <item name="olive">#488A1C</item>
+        <item name="brown">#A85400</item>
+    </array>
 
 </resources>

@@ -2,57 +2,192 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.targeteducare">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="true"
-        android:allowBackup="true"
+        android:name=".App"
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".PracticeActivity"></activity>
-        <activity android:name=".MockTestActivity" />
-        <activity android:name=".ProgressReportActivity" />
-        <activity android:name=".PracticeTestActivity" />
-        <activity android:name=".MainSubjectSelectionActivity" />
-        <activity android:name=".SubjectSelectionActivity" />
-        <activity android:name=".BoardSubtypeSelection" />
-        <activity android:name=".SelectBoardActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".UserProfileActivity" />
-        <activity android:name=".LoginV1Activity">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".Imageenlargeactivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ChooseLanguageActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SamplePapersActivity" />
-        <activity android:name=".QnAFeedActivity" />
-        <activity android:name=".EngineeringCollegesActivity" />
-        <activity android:name=".EngineeringCollegesActivity1"/>
-        <activity android:name=".GridMainActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".ActivitySplashScreen"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PracticeActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MockTestActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ProgressReportActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PracticeTestActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainSubjectSelectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SubjectSelectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BoardSubtypeSelection"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SelectBoardActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignUpActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EditProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UserProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginV1Activity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SamplePapersActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".QnAFeedActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EngineeringCollegesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EngineeringCollegesActivity1"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".GridMainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ExamActivity"
             android:label="@string/title_activity_exam"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ExamListActivity" />
-        <activity android:name=".AnswersheetActivity" />
-        <activity android:name=".IPSettingActivity" />
-        <activity android:name=".MyPackagesActivity"/>
-        <activity android:name=".Sample_Paper_Webview_Activity"/>
-        <activity android:name=".Sample_Paper_Video_Activity"/>
-        <activity android:name=".CollegeComparisionActivity"/>
+        <activity android:name=".ExamListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AnswersheetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".IPSettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MyPackagesActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Sample_Paper_Webview_Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Sample_Paper_Video_Activity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CollegeComparisionActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.ebs.android.sdk.PaymentDetailActivity"
+            android:label="@string/title_activity_payment_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ebs.android.sdk.PaymentActivity"
+            android:label="@string/title_activity_payment"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.ebs.android.sdk.WebViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_webview"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateVisible|stateAlwaysHidden" />
+        <activity
+            android:name="com.ebs.android.sdk.EBSHomeConfigurableActivity"
+            android:label="@string/title_activity_test__transaction_details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.ebs.android.sdk.PaymentFailureActivity"
+            android:label="@string/title_activity_payment_failure"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.ebs.android.sdk.IdleTimeOut"
+            android:label="@string/title_activity_idle_time_out"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PaymentSuccessActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <data android:scheme="com.targeteducare" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false"/>
+
+        <activity android:name=".ChatBotActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MySubscriptionsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SyllabusActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--
+Delete Crash Reporting:
+<meta-data
+    android:name="firebase_crash_collection_enabled"
+    android:value=false />
+
+     Add Crashlytics:
+        -->
+
+        <meta-data
+            android:name="com.onesignal.NotificationOpened.DEFAULT"
+            android:value="DISABLE" />
+
+        <activity android:name=".RewardPointsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".EventFeedbackActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FillFeedbackActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".WebViewActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityChatFaq"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityFAQ"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySelectNAddText"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityStartChat"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivitySubCategory"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SupportActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityEnlargeImage"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NotificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityDescription"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ActivityNews"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ReferAndEarnActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

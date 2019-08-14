@@ -29,7 +29,9 @@
             android:text="Review Later"
             android:paddingLeft="10dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-            android:textColor="@color/textcolor"></TextView>
+            android:textColor="@color/textcolor">
+
+        </TextView>
 
         <TextView
             android:id="@+id/textview_timer"
@@ -40,11 +42,13 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="First"
+            android:text="@string/first"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@color/red"
             android:visibility="gone"
-            ></TextView>
+            >
+
+        </TextView>
 
         <TextView
             android:id="@+id/textview_submit"
@@ -55,11 +59,13 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="SUBMIT"
+            android:text="@string/submit"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@color/BlueLight"
             android:visibility="gone"
-            ></TextView>
+            >
+
+        </TextView>
 
     </LinearLayout>
 
@@ -70,7 +76,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="1dp"
-        android:layout_weight="1"></android.support.v4.view.ViewPager>
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,38 +95,46 @@
             android:id="@+id/first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="First"
+            android:text="@string/first"
             android:background="@drawable/rounded_button"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            ></Button>
+            >
+
+        </Button>
 
         <Button
             android:id="@+id/previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Previous"
+            android:text="@string/previous"
             android:background="@drawable/rounded_button"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            ></Button>
+            >
+
+        </Button>
         <Button
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
+            android:text="@string/next"
             android:background="@drawable/rounded_button"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            ></Button>
+            >
+
+        </Button>
         <Button
             android:id="@+id/last_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last"
+            android:text="@string/last"
             android:background="@drawable/rounded_button"
             android:layout_marginRight="2dp"
             android:layout_weight="1"
-            ></Button>
+            >
+
+        </Button>
     </LinearLayout>
 </LinearLayout>

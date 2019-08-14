@@ -2,19 +2,64 @@ package com.targeteducare.Classes;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.io.Serializable;
 
-public class Options implements Serializable, Parcelable {
+public class Options implements Serializable , Parcelable {
     int Id = 0;
     int QuestionId = 0;
     String Name = "";
     boolean IsAnswer = false;
     boolean Selected = false;
     int isTabletag = 0;
+    String optionalp = "";
+    int Color_Backround;
+    String NameInMarathi = "";
+    String ExplInMarathi = "";
+    String  OptNumber="";
 
-    //newly added
-    int Color_Backround ;
+    public static final Creator<Options> CREATOR = new Creator<Options>() {
+        @Override
+        public Options createFromParcel(Parcel in) {
+            return new Options(in);
+        }
+
+        @Override
+        public Options[] newArray(int size) {
+            return new Options[size];
+        }
+    };
+
+    public String getOptNumber() {
+        return OptNumber;
+    }
+
+    public void setOptNumber(String optNumber) {
+        OptNumber = optNumber;
+    }
+
+    public String getExplInMarathi() {
+        return ExplInMarathi;
+    }
+
+    public void setExplInMarathi(String explInMarathi) {
+        ExplInMarathi = explInMarathi;
+    }
+
+    public String getNameInMarathi() {
+        return NameInMarathi;
+    }
+
+    public void setNameInMarathi(String nameInMarathi) {
+        NameInMarathi = nameInMarathi;
+    }
+
+    public String getOptionalp() {
+        return optionalp;
+    }
+
+    public void setOptionalp(String optionalp) {
+        this.optionalp = optionalp;
+    }
 
     public Options() {
 
@@ -54,23 +99,13 @@ public class Options implements Serializable, Parcelable {
         Id = in.readInt();
         QuestionId = in.readInt();
         Name = in.readString();
+        OptNumber = in.readString();
         IsAnswer = in.readByte() != 0;
         Selected = in.readByte() != 0;
         isTabletag = in.readInt();
         Color_Backround = in.readInt();
     }
 
-    public static final Creator<Options> CREATOR = new Creator<Options>() {
-        @Override
-        public Options createFromParcel(Parcel in) {
-            return new Options(in);
-        }
-
-        @Override
-        public Options[] newArray(int size) {
-            return new Options[size];
-        }
-    };
 
     public int getId() {
         return Id;
@@ -127,7 +162,6 @@ public class Options implements Serializable, Parcelable {
     public void setColor_Backround(int color_Backround) {
         Color_Backround = color_Backround;
     }
-
     @Override
     public int describeContents() {
         return 0;
@@ -142,5 +176,6 @@ public class Options implements Serializable, Parcelable {
         parcel.writeByte((byte) (Selected ? 1 : 0));
         parcel.writeInt(isTabletag);
         parcel.writeInt(Color_Backround);
+        parcel.writeString(OptNumber);
     }
 }

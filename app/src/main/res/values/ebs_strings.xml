@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="title_activity_payment_detail">PaymentDetailActivity</string>
+    <string name="title_activity_payment">PaymentActivity</string>
+    <string name="title_activity_webview">Webview</string>
+
+    <!-- String values for text view -->
+
+    <!-- String values for textview billing address -->
+
+    <!-- String value for delivery address -->
+
+    <!-- String Value for button name -->
+
+
+    <!-- String Value for note textview -->
+    <string name="title_activity_test__transaction_details">Test_TransactionDetailsActivity</string>
+
+    <string name="title_activity_payment_failure">PaymentFailureActivity</string>
+
+
+
+    <!--String value for payment Failure-->
+    <string name="title_activity_idle_time_out">IdleTimeOut</string>
+
+</resources>

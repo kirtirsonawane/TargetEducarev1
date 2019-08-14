@@ -1,14 +1,11 @@
 package com.targeteducare.Classes;
 
-import android.util.Log;
+import com.targeteducare.URLS;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.jar.Attributes;
 
 public class MyPackages {
     int TotalRecord;
@@ -32,8 +29,11 @@ public class MyPackages {
     String ExamassignedNames;
     String ExamassignedIds;
     String CategoryName;
-    boolean isSelected;
+    boolean isSelected=false;
     String Imageurl;
+    String Name_InMarathi;
+    String Description_InMarathi;
+    String IsSubscribe;
 
     public MyPackages(int totalRecord, int id, String name, int noofstudent, double amount, String nameAmount, int mockTest, int EBook, int PBook, int videoOnDemand, int liveStreaming, double renewAmount, int validFor, String validForType, int deleted, int categoryId, int subCategoryId, String description, String examassignedNames, String examassignedIds, String categoryName, String imageUrl) {
         this.TotalRecord = totalRecord;
@@ -81,13 +81,13 @@ public class MyPackages {
             if (jsonArray != null) {
                 int i = 0;
 
-                Log.e("json array len ", String.valueOf(jsonArray.length()));
+                //Log.e("json array len ", String.valueOf(jsonArray.length()));
                 for (i = 0; i < jsonArray.length(); i++) {
 
                     MyPackages myPackages = new MyPackages();
-                    Log.e("Array data  ::: ", jsonArray.toString());
+                    //Log.e("Array data  ::: ", jsonArray.toString());
                     jsonObject4 = jsonArray.getJSONObject(i);
-                    Log.e("Msg  : ", jsonObject4.toString());
+                    //Log.e("Msg  : ", jsonObject4.toString());
 
                     myPackages.setId(Integer.parseInt(jsonObject4.getString("Id")));
                     myPackages.setName(jsonObject4.getString("Name"));
@@ -100,7 +100,7 @@ public class MyPackages {
                     myPackages.setDescription((jsonObject4.getString("Description")));
                     myPackages.setEBook(Integer.parseInt(jsonObject4.getString("EBook")));
 
-                    Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
+                    //Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
                     //myPackages.setExamassignedIds(jsonObject4.getString("ExamassignedIds"));
                     //  myPackages.setExamassignedNames((jsonObject4.getString("ExamassignedNames")));
                     myPackages.setLiveStreaming(Integer.parseInt((jsonObject4.getString("LiveStreaming"))));
@@ -111,14 +111,20 @@ public class MyPackages {
                     myPackages.setVideoOnDemand(Integer.parseInt(jsonObject4.getString("VideoOnDemand")));
                     myPackages.setSubCategoryId(Integer.parseInt(jsonObject4.getString("SubCategoryId")));
                     myPackages.setRenewAmount(Double.parseDouble((jsonObject4.getString("RenewAmount"))));
-                    myPackages.setImageurl(jsonObject4.getString("Imageurl"));
+                    myPackages.setImageurl( jsonObject4.getString("Imageurl"));
 
-                    Log.e("list 1 ::: ", myPackages.getName());
 
-                    Log.e("list 1 ::: ", list.toString());
 
+                    myPackages.setName_InMarathi(jsonObject4.optString("Name_InMarathi"));
+                    myPackages.setDescription_InMarathi((jsonObject4.getString("Description_InMarathi")));
+                    myPackages.setIsSubscribe(jsonObject4.optString("IsSubscribe"));
+
+                    //Log.e("list 1 ::: ", myPackages.getName());
+
+                    //Log.e("list 1 ::: ", list.toString());
+if(Double.parseDouble((jsonObject4.getString("Amount")))>0)
                     list.add(myPackages);
-                    Log.e("list  ::: ", String.valueOf(list.size()));
+                    //Log.e("list  ::: ", String.valueOf(list.size()));
                 }
             } else {
                 MyPackages myPackages = new MyPackages();
@@ -129,7 +135,7 @@ public class MyPackages {
 
 
                 jsonObject4 = jsonObject3.getJSONObject("subroot");
-                Log.e("Msg  : ", jsonObject4.toString());
+                //Log.e("Msg  : ", jsonObject4.toString());
                 if (jsonObject4 != null) {
                     myPackages.setId(Integer.parseInt(jsonObject4.getString("Id")));
                     myPackages.setName(jsonObject4.getString("Name"));
@@ -142,7 +148,7 @@ public class MyPackages {
                     myPackages.setDescription((jsonObject4.getString("Description")));
                     myPackages.setEBook(Integer.parseInt(jsonObject4.getString("EBook")));
 
-                    Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
+                    //Log.e("ids;;;;;; ", String.valueOf(myPackages.getId()));
                     //myPackages.setExamassignedIds(jsonObject4.getString("ExamassignedIds"));
                     //  myPackages.setExamassignedNames((jsonObject4.getString("ExamassignedNames")));
                     myPackages.setLiveStreaming(Integer.parseInt((jsonObject4.getString("LiveStreaming"))));
@@ -155,11 +161,15 @@ public class MyPackages {
                     myPackages.setRenewAmount(Double.parseDouble((jsonObject4.getString("RenewAmount"))));
                     myPackages.setImageurl(jsonObject4.getString("Imageurl"));
 
-                    Log.e("list 1 ::: ", myPackages.getName());
+                    myPackages.setName_InMarathi(jsonObject4.optString("Name_InMarathi"));
+                    myPackages.setDescription_InMarathi((jsonObject4.getString("Description_InMarathi")));
+                    myPackages.setIsSubscribe(jsonObject4.optString("IsSubscribe"));
 
-                    Log.e("list 1 ::: ", list.toString());
+                    //Log.e("list 1 ::: ", myPackages.getName());
 
-                    list.add(myPackages);
+                    //Log.e("list 1 ::: ", list.toString());
+                    if(Double.parseDouble((jsonObject4.getString("Amount")))>0)
+                        list.add(myPackages);
                 }
             }
         } catch (JSONException e) {
@@ -345,6 +355,30 @@ public class MyPackages {
         Imageurl = imageurl;
     }
 
+    public String getName_InMarathi() {
+        return Name_InMarathi;
+    }
+
+    public void setName_InMarathi(String name_InMarathi) {
+        Name_InMarathi = name_InMarathi;
+    }
+
+    public String getDescription_InMarathi() {
+        return Description_InMarathi;
+    }
+
+    public void setDescription_InMarathi(String description_InMarathi) {
+        Description_InMarathi = description_InMarathi;
+    }
+
+    public String getIsSubscribe() {
+        return IsSubscribe;
+    }
+
+    public void setIsSubscribe(String isSubscribe) {
+        IsSubscribe = isSubscribe;
+    }
+
     @Override
     public String toString() {
         ArrayList list = new ArrayList();
@@ -352,6 +386,9 @@ public class MyPackages {
         list.add(Name);
         list.add(Description);
         list.add(Amount);
+        list.add(Name_InMarathi);
+        list.add(Description_InMarathi);
+        list.add(IsSubscribe);
         return String.valueOf(list);
     }
 
