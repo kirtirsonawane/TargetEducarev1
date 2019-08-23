@@ -65,6 +65,7 @@ public class EbookChapterSelectActivity extends Activitycommon {
 
                         ebook_id = ebookDetails.getId();
                         type_ebook = ebookDetails.getType();
+                        //ebookid
 
                     } catch (Exception e) {
                         reporterror(tag, e.getMessage());
