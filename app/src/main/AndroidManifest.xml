@@ -23,24 +23,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".EbookVideoPlayerActivity"
-            android:screenOrientation="landscape">
-        </activity>
-        <activity android:name=".EbookChapterSelectActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".EBookContentDisplayActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".EbookSubjectActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".EbookVideoPlayerActivity"></activity>
+        <activity android:name=".EbookChapterSelectActivity" />
+        <activity android:name=".EBookContentDisplayActivity" />
+        <activity android:name=".EbookSubjectActivity" />
 
         <service
             android:name=".BackgroundService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".PracticeTestSelectActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".PracticeTestSelectActivity" />
         <activity
             android:name=".Imageenlargeactivity"
             android:screenOrientation="portrait" />

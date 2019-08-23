@@ -61,11 +61,10 @@ public class EbookChapterSelectActivity extends Activitycommon {
                         obj.put("ImagePath", URLS.url_ebook_content());
                         mainobj.put("FilterParameter", obj.toString());
 
-                        ConnectionManager.getInstance(EbookChapterSelectActivity.this).ebook_contentget(mainobj.toString(), ebookDetails.getId(), ebookDetails.getType());
+                        ConnectionManager.getInstance(EbookChapterSelectActivity.this).ebook_contentget(mainobj.toString(), ebook_id, ebookDetails.getType());
 
                         ebook_id = ebookDetails.getId();
                         type_ebook = ebookDetails.getType();
-                        //ebookid working
 
                     } catch (Exception e) {
                         reporterror(tag, e.getMessage());

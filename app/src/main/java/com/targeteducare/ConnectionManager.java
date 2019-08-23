@@ -1593,7 +1593,6 @@ public class ConnectionManager extends Activitycommon {
                             ContentValues c1 = new ContentValues();
                             c1.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
                             c1.put(DatabaseHelper.JSONDATA, array.toString());
-                            c1.put(DatabaseHelper.EBOOK_ID, ebook_id);
                             c1.put(DatabaseHelper.TYPE, type);
                             DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c1);
                         }

@@ -758,7 +758,11 @@ public class MockTestActivity extends Activitycommon {
                     mockTestModels.get(i).setProgress(obj.getDouble(DatabaseHelper.PROGRESS));
                     mockTestModels.get(i).setTimetaken(obj.getLong(DatabaseHelper.TIMETAKEN));
                     mockTestModels.get(i).setSpeed(obj.getDouble(DatabaseHelper.SPEED));
+
                     //practiceTestModels.get(i).setTotal_questions(obj.getString(EBookDatabaseHelper.QUESTION));
+
+                    //practiceTestModels.get(i).setTotal_questions(obj.getString(PracticeDatabaseHelper.QUESTION));
+
                 }
             }
             mockTestAdapter.notifyDataSetChanged();

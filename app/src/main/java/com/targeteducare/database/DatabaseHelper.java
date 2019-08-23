@@ -317,7 +317,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = getWritableDatabase();
 
             //String searchQuery = "SELECT * FROM "+ TABLE_EBOOKCONTENTDETAILS + " where " + TYPE + " = '" + type_ebook + "'";
-            String searchQuery = "SELECT * FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + TYPE + " = '" + type_ebook + "'";
+            String searchQuery = "SELECT JSONDATA FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + TYPE + " = '" + type_ebook + "'";
             Cursor cursor = db.rawQuery(searchQuery, null);
             cursor.moveToFirst();
             resultSet = convertcursorvaltoJSOnArray(cursor);

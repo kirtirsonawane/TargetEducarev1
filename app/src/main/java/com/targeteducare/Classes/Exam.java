@@ -47,7 +47,6 @@ public class Exam implements Serializable {
     String DayMonthNumber;
     int IsOmr = 0;
     String type="";
-    String peakno = "";
 
     public String getType() {
         return type;
@@ -401,13 +400,6 @@ public class Exam implements Serializable {
         this.isexamindatetimerange = isexamindatetimerange;
     }
 
-    public String getPeakno() {
-        return peakno;
-    }
-
-    public void setPeakno(String peakno) {
-        this.peakno = peakno;
-    }
 
     //For Different Test ACtivities
     String topic_no = "";

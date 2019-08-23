@@ -38,6 +38,7 @@
     <color name="yellow">#FEC224</color>
     <color name="red">#F51716</color>
     <color name="lightgreen">#62D538</color>
+    <color name="edittext_bg">#DFDFDF</color>
     <color name="violet">#8000B5</color>
     <color name="darkred">#AB0303</color>
     <color name="lightgray">#b3ecff</color>

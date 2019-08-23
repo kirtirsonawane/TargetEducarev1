@@ -44,7 +44,7 @@
     <color name="gridcolor_2">#05C5CD</color>
     <color name="white_ru">#D2E9FF</color>
     <color name="black">#000</color>
-
+    <color name="edittext_bg">#DFDFDF</color>
     <color name="green">#4ACC60</color>
     <color name="pink">#6A2290</color>
     <color name="blue_light">#53687D</color>

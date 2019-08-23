@@ -17,14 +17,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.TransactionTooLargeException;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.Spanned;
-
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -137,8 +136,6 @@ public class QuestionPracticeFragment extends Fragment implements Html.ImageGett
             args.putString(ARG_PARAM2, param2);
             fragment.mquestions = mquestions;
             fragment.setArguments(args);
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +148,6 @@ public class QuestionPracticeFragment extends Fragment implements Html.ImageGett
         if (getArguments() != null) {
             try {
                 mParam1 = (Question) getArguments().getSerializable(ARG_PARAM1);
-
                 options = mParam1.getOptions();
                 mParam2 = getArguments().getString(ARG_PARAM2);
             } catch (Exception e) {
@@ -175,14 +171,14 @@ public class QuestionPracticeFragment extends Fragment implements Html.ImageGett
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_question_practice, container, false);
         try {
-            //Log.e("layout ", "QuestionPracticeFragment");
+            Log.e("layout ", "QuestionPracticeFragment");
             layout = (LinearLayout) view.findViewById(R.id.layout);
             lang = getContext().getSharedPreferences("Settings", Activity.MODE_PRIVATE).getString("Current Language", "");
             switchlang = (Switch) view.findViewById(R.id.switchlang);
             switchlang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    //Log.e("is marathi ", "is marathi " + b);
+                    Log.e("is marathi ", "is marathi " + b);
                     boolean ischange = true;
                     if (b) {
                         if (lang.equalsIgnoreCase("mr"))
@@ -1428,13 +1424,13 @@ public class QuestionPracticeFragment extends Fragment implements Html.ImageGett
             cv.setLayoutParams(cardViewParams);
 
             for (int i = 0; i < dataset.size(); i++) {
-                final JSONArray arrayopt = EBookDatabaseHelper.getInstance(getActivity()).getquestionurl(dataset.get(i).getId(), "ans");
+                final JSONArray arrayopt = PracticeDatabaseHelper.getInstance(getActivity()).getquestionurl(dataset.get(i).getId(), "ans");
                 if (arrayopt.length() > 0) {
                     for (int j = 0; j < arrayopt.length(); j++) {
                         try {
                             JSONObject obj = arrayopt.getJSONObject(j);
-                            String originaldata = obj.getString(EBookDatabaseHelper.PRACTICE_IMAGESOURCE);
-                            String offlinepath = obj.getString(EBookDatabaseHelper.PRACTICE_OFFLINEPATH);
+                            String originaldata = obj.getString(PracticeDatabaseHelper.PRACTICE_IMAGESOURCE);
+                            String offlinepath = obj.getString(PracticeDatabaseHelper.PRACTICE_OFFLINEPATH);
                             Log.e("original ", " " + originaldata + " " + offlinepath);
                             dataset.get(i).setName(dataset.get(i).getName().replaceAll(originaldata, offlinepath));
                         } catch (Exception e) {
@@ -1548,7 +1544,7 @@ public class QuestionPracticeFragment extends Fragment implements Html.ImageGett
                             return d;
                         }
                     };
-                    JSONArray array = EBookDatabaseHelper.getInstance(getActivity()).getquestionurl(opt.getId(), "que");
+                    JSONArray array = PracticeDatabaseHelper.getInstance(getActivity()).getquestionurl(opt.getId(), "que");
                     if (array.length() > 0) {
                         ImageView img = new ImageView(getActivity());
                         img.setImageDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
@@ -2033,14 +2029,14 @@ public class QuestionPracticeFragment extends Fragment implements Html.ImageGett
                     WebView expweb = view.findViewById(R.id.webxml);
                     if (expweb != null) {
                         if (!lang.equalsIgnoreCase("mr")) {
-                            //Log.e("view is null ", "view is marathi " + mParam1.getExplanation());
+                            Log.e("view is null ", "view is marathi " + mParam1.getExplanation());
                             expweb.loadDataWithBaseURL("file:///", style + mParam1.getExplanation(), "text/html", "utf-8", null);
                         } else {
-                            //Log.e("view is null ", "view is english " + mParam1.getExplInMarathi());
+                            Log.e("view is null ", "view is english " + mParam1.getExplInMarathi());
                             expweb.loadDataWithBaseURL("file:///", style + mParam1.getExplInMarathi(), "text/html", "utf-8", null);
                         }
                     } else {
-                        //Log.e("view is null ", "view is null ");
+                        Log.e("view is null ", "view is null ");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

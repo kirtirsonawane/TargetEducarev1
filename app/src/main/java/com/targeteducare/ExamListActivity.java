@@ -683,10 +683,10 @@ public class ExamListActivity extends Activitycommon {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_ip:
+            /*case R.id.action_ip:
                 Intent intent = new Intent(ExamListActivity.this, IPSettingActivity.class);
                 startActivity(intent);
-                break;
+                break;*/
         }
         return super.onOptionsItemSelected(item);
     }

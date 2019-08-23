@@ -14,11 +14,10 @@
     <color name="sky_blue">#DDE8F3</color>
     <color name="white">#ffffff</color>
     <color name="table_bg">#DDE8F3</color>   
-    <color name="btn_shape_bg">#2E64FE</color> 
-    <color name="edittext_bg">#DFDFDF</color>
+    <color name="btn_shape_bg">#2E64FE</color>
     <color name="header_start_bg">#4587d1</color>
     <color name="header_end_bg">#84bade</color>
     <color name="blue_bg">#007CC1</color>
     <color name="grey_bg">#cccccc</color>
-    <color name="edittext_grey">#c8c8c8</color>         
+    <color name="edittext_grey">#c8c8c8</color>
 </resources>

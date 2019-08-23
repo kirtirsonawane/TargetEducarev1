@@ -22,7 +22,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -47,8 +46,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.targeteducare.Classes.Exam;
 import com.targeteducare.Classes.MyPackages;
 import com.targeteducare.Classes.QuestionURL;
@@ -86,9 +83,6 @@ public class Activitycommon extends AppCompatActivity {
     String lang = "";
     private FirebaseAnalytics mFirebaseAnalytics;
     public static String type = "";
-
-    SharedPreferences preferences;
-    SharedPreferences.Editor edit;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -1116,7 +1110,6 @@ public class Activitycommon extends AppCompatActivity {
                             .select(".hAyfc .htlgb")
                             .get(7)
                             .ownText();
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();
