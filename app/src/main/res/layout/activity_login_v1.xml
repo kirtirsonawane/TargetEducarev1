@@ -1,93 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/background_test2"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".LoginV1Activity">
 
-
-    <ScrollView
-        android:id="@+id/login_form"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        app:cardCornerRadius="10dp">
 
-        <LinearLayout
-            android:id="@+id/email_login_form"
+        <ScrollView
+            android:id="@+id/login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_gravity="center">
 
-            <org.sufficientlysecure.htmltextview.HtmlTextView
-                android:id="@+id/html_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="@android:style/TextAppearance.Small"/>
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_launcher"/>
-
-            <TextView
-                android:id="@+id/textview_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Welcome"
-                android:textColor="@color/colorPrimary"
-                android:textSize="32dp"
-                android:textStyle="italic" />
-
-            <EditText
-                android:id="@+id/mobile_no"
+            <LinearLayout
+                android:id="@+id/email_login_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_edittext"
-                android:hint="Mobile Number"
-                android:padding="10dp"
-                android:inputType="number"
-                android:maxLength="10"/>
+                android:orientation="vertical"
+                android:padding="5dp">
 
-            <EditText
-                android:id="@+id/enter_otp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_edittext"
-                android:hint="Enter OTP"
-                android:layout_marginTop="12dp"
-                android:padding="10dp"
-                android:inputType="number"
-                android:maxLength="6"
-                android:visibility="gone"/>
+                <org.sufficientlysecure.htmltextview.HtmlTextView
+                    android:id="@+id/html_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="@android:style/TextAppearance.Small" />
 
-            <Button
-                android:id="@+id/button_submit"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_button1"
-                android:text="Submit"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_launcher" />
 
-            <TextView
-                android:id="@+id/tv_newuser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="New User? Sign up"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:padding="10dp"/>
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:id="@+id/textview_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/welcome"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="32dp" />
+
+                <!--<android.support.design.widget.TextInputLayout
+                    android:id="@+id/textinputlayout_surname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    </android.support.design.widget.TextInputLayout>-->
+
+                <EditText
+                    android:id="@+id/mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/phone"
+                    android:drawablePadding="15dp"
+                    android:hint="@string/mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="10dp"
+                    android:textColor="@color/textcolor" />
+
+                <EditText
+                    android:id="@+id/ip_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ip"
+                    android:drawablePadding="15dp"
+                    android:hint="@string/ip"
+                    android:padding="10dp"
+                    android:visibility="gone"
+                    android:textColor="@color/textcolor" />
+
+                <EditText
+                    android:id="@+id/enter_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:drawableLeft="@drawable/eye"
+                    android:drawablePadding="15dp"
+                    android:hint="@string/enter_otp"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:padding="10dp"
+                    android:textColor="@color/textcolor"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/button_submit"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/rounded_button1"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tv_resendotplogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="@string/resend_code"
+                    android:textColor="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/tv_newuser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/newuser_signup"
+                    android:textColor="@color/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/tv_problemwith_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:text="@string/otp_problem_message"
+                    android:textColor="@color/colorPrimary"/>
+
+                <TextView
+                    android:id="@+id/tv_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:text="@string/logoumsg"
+                    android:textColor="@color/redish_axis"/>
+            </LinearLayout>
+        </ScrollView>
+
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

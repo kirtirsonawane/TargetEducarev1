@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "96106695229",
+    "firebase_url": "https://targeteducare-294ee.firebaseio.com",
+    "project_id": "targeteducare-294ee",
+    "storage_bucket": "targeteducare-294ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96106695229:android:18549fa86114903a",
+        "android_client_info": {
+          "package_name": "com.targeteducare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96106695229-6q0hgpoc314gn78c03ugj2tgctjj1ll4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.targeteducare",
+            "certificate_hash": "06b24e02f24ff5b835bb2194ed29e55984185e1c"
+          }
+        },
+        {
+          "client_id": "96106695229-oieqe5dl4g7bv3s997rtd4ovtd4tfqa8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkFEJahUjfBRAAz4n2fXt5nLaXCrA-Bfc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96106695229-oieqe5dl4g7bv3s997rtd4ovtd4tfqa8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

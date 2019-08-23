@@ -1,41 +1,233 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    app:elevation="5dp"
-    android:layout_marginTop="7dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:background="#094a73"
-       android:orientation="horizontal">
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="5dp">
 
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:paddingTop="@dimen/section_padding"
-           android:paddingBottom="@dimen/section_padding"
-           android:background="@drawable/theme_color"
-           android:textColor="@color/default_text_color"
-           android:textSize="@dimen/section_text_size"
-           android:id="@+id/text_section"
-           android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/GrayLight3"
+            android:orientation="horizontal">
 
-       <ToggleButton
-           android:layout_width="80dp"
-           android:layout_height="50dp"
-           android:id="@+id/toggle_button_section"
-           android:contentDescription="@string/image_button_content_description"
-           android:background="@drawable/selector_section_toggle"
-           android:padding="@dimen/section_padding"
-           android:textOn=""
-           android:textOff=""
-           android:layout_gravity="center"
-           android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/text_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="@dimen/section_padding"
+                android:paddingLeft="7dp"
+                android:paddingTop="@dimen/section_padding"
+                android:textColor="@color/textcolor"
+                android:textSize="@dimen/section_text_size" />
 
-   </LinearLayout>
+            <ToggleButton
+                android:id="@+id/toggle_button_section"
+                android:layout_width="55dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_section_toggle"
+                android:contentDescription="@string/image_button_content_description"
+                android:padding="@dimen/section_padding"
+                android:textOff=""
+                android:textOn="" />
 
-</android.support.v7.widget.CardView>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:id="@+id/layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:id="@+id/layout_totalq"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Total Questions"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_totalq"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_attemptedquestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Q. Attempted"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_attemptedquestions"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_rightmarked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Q. Right Marked"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_rightmarked"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_wrongmarked"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Q. Wrong Marked"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_wrongmarked"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_totalnotattemtedq"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Q. Not Attempted"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_totalnotattemtedq"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_totalreviewq"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Q. Review"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_totalreviewq"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/layout_marksobtained"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Marks Obtained"
+                android:textColor="@color/textcolor"/>
+
+            <TextView
+                android:id="@+id/textview_marksobtained"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

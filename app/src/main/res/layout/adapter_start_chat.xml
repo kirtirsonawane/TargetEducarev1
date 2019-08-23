@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="2dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/chat_left">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_show_token"
+            android:background="@drawable/chat_left"
+            android:layout_alignParentLeft="true"
+            android:padding="1dp"
+            android:textColor="@color/white"
+            android:layout_margin="1dp"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_show_msg"
+            android:background="@drawable/chat_left"
+            android:layout_alignParentLeft="true"
+            android:padding="1dp"
+            android:textColor="@color/white"
+            android:layout_margin="1dp"
+            />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_start_img"
+            android:layout_gravity="left"
+            android:padding="1dp"
+            android:visibility="gone"
+            android:layout_margin="1dp"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_show_time"
+            android:layout_alignParentLeft="true"
+            android:padding="1dp"
+            android:textColor="@color/white"
+            android:layout_margin="1dp"
+            />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+
+</RelativeLayout>
+

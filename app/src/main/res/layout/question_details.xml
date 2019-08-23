@@ -27,7 +27,7 @@
                 android:id="@+id/followers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Followers"
+                android:text="@string/qna_followers"
                 android:textSize="12dp"/>
 
             <TextView
@@ -42,7 +42,7 @@
                 android:id="@+id/answers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Answers"
+                android:text="@string/qna_answers"
                 android:textSize="12dp"/>
 
         </LinearLayout>
@@ -69,7 +69,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FOLLOW"
+                android:text="@string/follow"
                 android:layout_weight="1"
                 android:padding="5dp"/>
 
@@ -88,7 +88,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ANSWER"
+                android:text="@string/answer"
                 android:layout_weight="1"
                 android:padding="5dp"/>
 

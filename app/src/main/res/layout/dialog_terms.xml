@@ -33,13 +33,13 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="I have read and understood the instructions given above"/>
+        android:text="@string/terms_conditions"/>
     <Button
         android:id="@+id/button_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
-        android:text="START"
+        android:text="@string/start"
         android:textColor="@color/White"
         android:textStyle="bold"/>
 </LinearLayout>

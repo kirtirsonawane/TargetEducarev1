@@ -38,7 +38,7 @@ public class PracticeAdapter extends FragmentStatePagerAdapter {
             Log.e("I am in ", "PracticeAdapter");
             return AnswerPracticeFragment.newInstance(items.get(position), "data");
         }
-        else return QuestionPracticeFragment.newInstance(items.get(position), "data");
+        else return QuestionPracticeFragment.newInstance(items, items.get(position), "data");
         //  }
     }
 }

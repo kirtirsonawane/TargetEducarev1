@@ -2,7 +2,6 @@ package com.targeteducare;
 
 import android.content.Context;
 import android.graphics.Typeface;
-
 import java.util.Hashtable;
 
 public class Fonter {

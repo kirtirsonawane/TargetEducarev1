@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar"></include>
+    <TextView
+        android:id="@+id/textview_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        ></TextView>
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Total Questions"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                />
+            <TextView
+                android:id="@+id/textview_nav4"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Total Marks"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                />
+            <TextView
+                android:id="@+id/textview_nav9"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Negative marks"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"/>
+            <TextView
+                android:id="@+id/textview_nav2"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/dotedline"
+            android:layerType="software" />
+       <!-- <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/Gray500"
+            android:layout_margin="10dp"
+            ></View>-->
+   <!--     android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="2dp"-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Q. Attempted"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+
+                />
+            <TextView
+                android:id="@+id/textview_nav5"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Q. Right Marked"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                />
+            <TextView
+                android:id="@+id/textview_nav7"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Q. Wrong Marked"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                />
+            <TextView
+                android:id="@+id/textview_nav8"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Q. Not Attempted"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                />
+            <TextView
+                android:id="@+id/textview_nav6"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Marks Obtained"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/textview_nav1"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
+      <!--  <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Final Marks"
+                android:layout_weight="1"
+                android:textColor="@color/textcolor"
+                />
+            <TextView
+                android:id="@+id/textview_nav3"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text=": 1020.00"
+                android:textColor="@color/textcolor"
+                android:textStyle="bold"
+                />
+        </LinearLayout>-->
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+</LinearLayout>

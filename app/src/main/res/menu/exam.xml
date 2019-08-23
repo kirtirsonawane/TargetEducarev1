@@ -6,5 +6,5 @@
         android:id="@+id/action_ip"
         android:orderInCategory="100"
         android:title="IP"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 </menu>

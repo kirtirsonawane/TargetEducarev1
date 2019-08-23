@@ -1,20 +1,45 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.11.0, 0.99.99]'
+    }
+}
+plugins {
+    id 'com.onesignal.androidsdk.onesignal-gradle-plugin' version '0.8.1'
+}
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.targeteducare"
+        multiDexEnabled true
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 8
+        versionName '1.8'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [onesignal_app_id               : "4978e0d2-d78e-4550-8412-195ecdb9f66c",
+                                onesignal_google_project_number: "REMOTE"]
     }
     buildTypes {
         release {
+            android {
+                lintOptions {
+                    checkReleaseBuilds false
+                    // Or, if you prefer, you can continue to check for errors in release builds,
+                    // but continue the build even when errors are found:
+                    abortOnError false
+                }
+            }
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
@@ -33,5 +58,28 @@ dependencies {
     implementation files('libs/okhttp-2.5.0.jar')
     implementation 'org.sufficientlysecure:html-textview:3.6'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation files('libs/apache-httpcomponents-httpclient.jar')
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation files('libs/apache-commons-net.jar')
+    implementation files('libs/apache-httpcomponents-httpcore.jar')
+    implementation files('libs/apache-httpcomponents-httpclient.jar')
+    implementation files('libs/org-apache-commons-logging.jar')
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-storage:16.0.3'
+    implementation 'com.google.firebase:firebase-database:16.0.3'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'org.jsoup:jsoup:1.8.3'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.airbnb.android:lottie:2.5.0-rc1'
+    implementation 'com.google.firebase:firebase-auth:16.0.4'
+    implementation 'com.onesignal:OneSignal:[3.9.1, 3.99.99]'
+    implementation files('libs/ebs_live_v3.3.jar')
+    implementation 'com.google.android.exoplayer:exoplayer:2.7.2'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.7.2'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.7.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.7.3'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.7.3'
 }
+apply plugin: 'com.google.gms.google-services'
+""

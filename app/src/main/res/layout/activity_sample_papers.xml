@@ -20,7 +20,7 @@
             android:id="@+id/sample_papers_e_books"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EBook"
+            android:text="@string/e_books"
             android:padding="10dp"
             android:imeOptions="actionSearch"
             android:layout_weight="1"/>

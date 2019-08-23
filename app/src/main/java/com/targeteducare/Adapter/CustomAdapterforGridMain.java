@@ -8,19 +8,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.Menu;
 import com.targeteducare.GridMainActivity;
 import com.targeteducare.R;
+
 import java.util.ArrayList;
 
 public class CustomAdapterforGridMain extends RecyclerView.Adapter<CustomAdapterforGridMain.MyViewHolder> {
-
     Context context;
     private ArrayList<Menu> dataSet;
 
     public CustomAdapterforGridMain(Context context, ArrayList<Menu> data) {
-        this.dataSet = data;
-        this.context = context;
+
+        try {
+            this.dataSet = data;
+            this.context = context;
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("CustomAdapterforGridMain", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -37,13 +45,19 @@ public class CustomAdapterforGridMain extends RecyclerView.Adapter<CustomAdapter
         // set the data in items
         holder.name.setText(dataSet.get(position).getName());
         holder.image.setImageResource(dataSet.get(position).getIcon());
-
         // implement setOnClickListener event on item view.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // open another activity on item click
-                ((GridMainActivity)context).referto(position);
+
+                try {
+                    ((GridMainActivity) context).referto(dataSet.get(position).getIcon());
+
+                } catch (Exception e) {
+                    ((Activitycommon) context).reporterror("CustomAdapterforGridMain", e.toString());
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -57,6 +71,7 @@ public class CustomAdapterforGridMain extends RecyclerView.Adapter<CustomAdapter
         // init the item view's
         TextView name;
         ImageView image;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             // get the reference of item view's

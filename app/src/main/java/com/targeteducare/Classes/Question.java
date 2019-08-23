@@ -5,20 +5,19 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Question implements Serializable, Parcelable {
-    int displayid = 0;
+    private int displayid = 0;
     int srno = 0;
     int Id = 0;
-    String Name = "";
+    private String Name = "";
     String QuestionTypeId = "";
     int subjectid = 0;
     String unitid = "";
@@ -37,14 +36,55 @@ public class Question implements Serializable, Parcelable {
     String optiontypename = "";
     boolean isanswered = false;
     boolean isreview = false;
+    private String NameInMarathi = "";
+    long timeperquestion = 0;
+    String ExplInMarathi = "";
+    boolean issubmit = false;
+    String Selected = "";
 
-    int timeperquestion = 0;
 
-    public int getTimeperquestion() {
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
+
+    public boolean isIssubmit() {
+        return issubmit;
+    }
+
+    public void setIssubmit(boolean issubmit) {
+        this.issubmit = issubmit;
+    }
+
+    public String getExplInMarathi() {
+        return ExplInMarathi;
+    }
+
+    public void setExplInMarathi(String explInMarathi) {
+        ExplInMarathi = explInMarathi;
+    }
+
+    public String getNameInMarathi() {
+        return NameInMarathi;
+    }
+
+    public void setNameInMarathi(String nameInMarathi) {
+        NameInMarathi = nameInMarathi;
+    }
+
+    public long getTimeperquestion() {
         return timeperquestion;
     }
 
-    public void setTimeperquestion(int timeperquetion) {
+    public void setTimeperquestion(long timeperquetion) {
         this.timeperquestion = timeperquetion;
     }
 
@@ -58,7 +98,7 @@ public class Question implements Serializable, Parcelable {
 
     boolean isvisited = false;
     JSONObject QuestionType = new JSONObject();
-    boolean IswrongAnswer=false;
+    boolean IswrongAnswer = false;
 
     boolean isskipped = false;
 
@@ -83,6 +123,7 @@ public class Question implements Serializable, Parcelable {
         srno = in.readInt();
         Id = in.readInt();
         Name = in.readString();
+        NameInMarathi = in.readString();
         QuestionTypeId = in.readString();
         subjectid = in.readInt();
         unitid = in.readString();
@@ -102,11 +143,11 @@ public class Question implements Serializable, Parcelable {
         isreview = in.readByte() != 0;
         isvisited = in.readByte() != 0;
         isskipped = in.readByte() != 0;
-
+        issubmit = in.readByte() != 0;
         timeperquestion = in.readInt();
     }
 
-    public static final Creator<Question> CREATOR = new Creator<Question>() {
+   /* public static final Creator<Question> CREATOR = new Creator<Question>() {
         @Override
         public Question createFromParcel(Parcel in) {
             return new Question(in);
@@ -116,7 +157,7 @@ public class Question implements Serializable, Parcelable {
         public Question[] newArray(int size) {
             return new Question[size];
         }
-    };
+    };*/
 
     public boolean isIsvisited() {
         return isvisited;
@@ -148,7 +189,7 @@ public class Question implements Serializable, Parcelable {
 
     public Question(JSONObject obj) {
         try {
-         //   Log.e("qobj","qobj "+obj.toString());
+
             if (obj.has("srno")) {
                 this.srno = obj.getInt("srno");
             }
@@ -177,6 +218,9 @@ public class Question implements Serializable, Parcelable {
             if (obj.has("selectedanswer")) {
                 this.selectedanswer = obj.getString("selectedanswer");
             }
+            if (obj.has("ExplInMarathi")) {
+                this.ExplInMarathi = obj.getString("ExplInMarathi");
+            }
             if (obj.has("isTabletag")) {
                 this.isTabletag = obj.getString("isTabletag");
             }
@@ -198,13 +242,23 @@ public class Question implements Serializable, Parcelable {
             if (obj.has("isTabletagexplanation")) {
                 this.isTabletagexplanation = obj.getString("isTabletagexplanation");
             }
-            if (obj.has("isTabletagHint")) {
-                this.isTabletagHint = obj.getString("isTabletagHint");
+
+            if (obj.has("NameInMarathi")) {
+                this.NameInMarathi = obj.getString("NameInMarathi");
             }
+
             if (obj.has("isTabletagHint")) {
                 this.isTabletagHint = obj.getString("isTabletagHint");
             }
 
+            if (obj.has("isTabletagHint")) {
+                this.isTabletagHint = obj.getString("isTabletagHint");
+            }
+
+            if (obj.has("issubmit")) {
+                this.issubmit = obj.getBoolean("issubmit");
+            } else {
+            }
             if (obj.has("QuestionType")) {
                 QuestionType = obj.getJSONObject("QuestionType");
                 JSONObject obj1 = obj.getJSONObject("QuestionType").getJSONObject("QuestionType");
@@ -245,13 +299,32 @@ public class Question implements Serializable, Parcelable {
                 }
             }
 
-            if(obj.has("isanswered"))
-            {
-                this.isanswered=obj.getBoolean("isanswered");
+            if (obj.has("isanswered")) {
+                this.isanswered = obj.getBoolean("isanswered");
             }
-           // Log.e("parsed properly","p");
+
+            if (obj.has("Selected")) {
+                this.Selected = obj.getString("Selected");
+            }
+
+            if(this.Selected!=null)
+            {
+                if(this.Selected.length()>0)
+                {
+                    for (int i=0;i<getOptions().size();i++)
+                    {
+                        if(getOptions().get(i).getOptNumber().trim().equalsIgnoreCase(Selected))
+                        {
+                            getOptions().get(i).setSelected(true);
+                           // Log.e("data ","data true "+Selected+" "+getOptions().get(i).getOptNumber()+" "+getOptions().get(i).getOptionalp()+" "+srno);
+                        }else {
+                           // Log.e("data ","data false "+Selected+" "+getOptions().get(i).getOptNumber()+" "+getOptions().get(i).getOptionalp()+" "+srno);
+                        }
+                    }
+                }
+            }
+            // Log.e("parsed properly","p");
         } catch (Exception e) {
-            Log.e("qerror ","qerror "+e.toString());
             e.printStackTrace();
         }
     }
@@ -276,18 +349,17 @@ public class Question implements Serializable, Parcelable {
             String optdata = gson.toJson(q.getOptions());
             JSONObject opt = new JSONObject();
 
-            JSONArray array1=new JSONArray();
+            JSONArray array1 = new JSONArray();
             array1.put(new JSONArray(optdata).getJSONObject(0));
             opt.put("Options", new JSONArray(optdata));
-            obj.put("Options",opt);
-            obj.put("QuestionType",getOpttype());
-           // obj.put("QuestionType", );
+            obj.put("Options", opt);
+            obj.put("QuestionType", getOpttype());
+            // obj.put("QuestionType", );
 
             //Log.e("optdata ","optdata "+obj.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.e("obj ", "obj " + obj.toString());
         return obj;
     }
 
@@ -454,6 +526,15 @@ public class Question implements Serializable, Parcelable {
         this.isTabletagexplanation = isTabletagexplanation;
     }
 
+
+    public String getSelected() {
+        return Selected;
+    }
+
+    public void setSelected(String selected) {
+        Selected = selected;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -483,9 +564,8 @@ public class Question implements Serializable, Parcelable {
         parcel.writeByte((byte) (isanswered ? 1 : 0));
         parcel.writeByte((byte) (isreview ? 1 : 0));
         parcel.writeByte((byte) (isvisited ? 1 : 0));
-
+        parcel.writeByte((byte) (issubmit ? 1 : 0));
         parcel.writeByte((byte) (isskipped ? 1 : 0));
-        parcel.writeInt(timeperquestion);
-
+        parcel.writeLong(timeperquestion);
     }
 }

@@ -2,7 +2,6 @@ package com.targeteducare;
 
 
 import android.graphics.Bitmap;
-
 import com.squareup.okhttp.MediaType;
 
 public class Constants {
@@ -16,7 +15,9 @@ public class Constants {
 	public static String apikey="AAAAt9Ji1U4:APA91bHAj-MvGsV-K4AT0RE3_MyLgHWN9BK17dFxpcDomjobkhuIgc7Zsp8IfdSI2yr8aKpihm7UVSk1FuEbewIWkI9vEAeZW-ymCS7eBHIR6E7MbMHEoub5PYnPW68SQw7NMt6mIyke";
 	public final static String NOTIFICATION_TOKEN = "ida_news_app";
 	//public final static String NOTIFICATION_TOKEN = "ida_news_app1";
-
+	public final static String AccountName = "Target Educare Pvt Ltd";
+	public final static int AccountId = 13903;
+	public final static String SecretKey = "9428758c089f370ee21527c00d8a560e";
 	public static final int STATUS_OK = 200;
 	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 	public final static String PM = "pm";
@@ -25,11 +26,11 @@ public class Constants {
 	public static final String PACK_NAME = "com_ida_main_app";
 	public  static  int MAXTABCOUNT=4;
 	public static final String imagepath = "http://192.168.1.59:8097//images/Uploadvideos/Thumbnail/";
-	public static final String ippath = "http://192.168.1.59:8097/images/Uploadvideo";
+	public static final String ippath = "http://"+GlobalValues.IP+"/images/Uploadvideo";
 	public static final int REQUEST_CAMERA = 45;
 	public static final int REQUEST_CROP = 46;
 	public static final int REQUEST_GALLARY = 41;
-
+	public static final String TITLE = "PEAK";
 	public static final String PROFILE_PIC = "ProfilePic";
 	public static final String FILE_NAME_THUMB = "_thumb_chat.jpeg";
 	public static final String FILE_NAME_EXT = ".png";
@@ -67,7 +68,7 @@ public class Constants {
 	public static final String Lab = "Lab";
 	public static final String Test = "Test";
 	public static final String treatmentprocedures = "treatment procedures";
-	public static final String connectiontimeout = "Please check lan connection";
+	//public static final String connectiontimeout = "Please check lan connection";
 	public static final String qpaperdownloaded = "Question paper downloaded";
 
 	////----packages variables----/////
@@ -75,4 +76,5 @@ public class Constants {
 	public static final String Packages_no_of_records = "1000000";
 	public static final String Packages_Category_id = "0";
 	public static final String Packages_Subcategory_id = "0";
+	public static final String firebasedbname = "LiveUsers";
 }

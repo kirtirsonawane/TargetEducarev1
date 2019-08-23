@@ -9,27 +9,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.UserProfModel;
 import com.targeteducare.R;
 import com.targeteducare.UserProfileActivity;
 
 import java.util.ArrayList;
 
-public class UserProfAdapter extends RecyclerView.Adapter<UserProfAdapter.MyViewHolder>{
+public class UserProfAdapter extends RecyclerView.Adapter<UserProfAdapter.MyViewHolder> {
 
     Context context;
     private ArrayList<UserProfModel> userProfModels;
 
-    public UserProfAdapter(Context context, ArrayList<UserProfModel> userProfModels){
-        this.context = context;
-        this.userProfModels = userProfModels;
+    public UserProfAdapter(Context context, ArrayList<UserProfModel> userProfModels) {
+
+        try {
+            this.context = context;
+            this.userProfModels = userProfModels;
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("UserProfAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.userprof_gridview,parent,false);
-
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.userprof_gridview, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -37,15 +44,28 @@ public class UserProfAdapter extends RecyclerView.Adapter<UserProfAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.tv_usersettings.setText(userProfModels.get(position).getUsersettings());
-        holder.iv_usersettingsimage.setImageResource(userProfModels.get(position).getUsersettingsimage());
+        try {
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((UserProfileActivity)context).referto(position);
-            }
-        });
+            holder.tv_usersettings.setText(userProfModels.get(position).getUsersettings());
+            holder.iv_usersettingsimage.setImageResource(userProfModels.get(position).getUsersettingsimage());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    try {
+                        ((UserProfileActivity) context).referto(userProfModels.get(position).getUsersettingsimage());
+                    } catch (Exception e) {
+                        ((Activitycommon) context).reporterror("UserProfAdapter", e.toString());
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("UserProfAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -53,7 +73,7 @@ public class UserProfAdapter extends RecyclerView.Adapter<UserProfAdapter.MyView
         return userProfModels.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_usersettings;
         ImageView iv_usersettingsimage;

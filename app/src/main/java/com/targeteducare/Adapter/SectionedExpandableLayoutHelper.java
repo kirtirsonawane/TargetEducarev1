@@ -29,11 +29,11 @@ public class SectionedExpandableLayoutHelper implements SectionStateChangeListen
 
     //recycler view
     RecyclerView mRecyclerView;
-    public SectionedExpandableLayoutHelper(Context context, RecyclerView recyclerView, ItemClickListener itemClickListener, int gridSpanCount, boolean isanswersheet) {
+    public SectionedExpandableLayoutHelper(Context context, RecyclerView recyclerView, ItemClickListener itemClickListener, int gridSpanCount, boolean isanswersheet,boolean ispracticetest) {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, gridSpanCount);
         recyclerView.setLayoutManager(gridLayoutManager);
         mSectionedExpandableGridAdapter = new SectionedExpandableGridAdapter(context, mDataArrayList,
-                gridLayoutManager, itemClickListener, this,isanswersheet);
+                gridLayoutManager, itemClickListener, this,isanswersheet,ispracticetest);
         recyclerView.setAdapter(mSectionedExpandableGridAdapter);
         mRecyclerView = recyclerView;
     }

@@ -6,9 +6,10 @@ import com.targeteducare.Classes.Item;
  * Created by bpncool on 2/23/2016.
  */
 public class Section {
-   // private final String name;
+    // private final String name;
     public boolean isExpanded;
     Item item;
+
     public Section(Item name) {
         this.item = name;
         isExpanded = true;

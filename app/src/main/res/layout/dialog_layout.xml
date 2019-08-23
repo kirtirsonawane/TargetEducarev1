@@ -11,7 +11,8 @@
         android:id="@+id/dialog_layout_hori_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
         <TextView
             android:id="@+id/textview_course_name"
@@ -44,7 +45,7 @@
             android:paddingRight="3dp"
             android:paddingBottom="5dp"
             android:scaleType="fitEnd"
-            android:src="@drawable/close_dialog_one" />
+            android:src="@drawable/ic_cancel_black_24dp" />
 
 
         <!--<TextView
@@ -66,29 +67,19 @@
         android:layout_gravity="left"
         android:layout_margin="10dp"
         android:layout_marginTop="6dp"
-
         android:gravity="left"
         android:paddingLeft="6dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+
+        />
 
     <WebView
         android:id="@+id/webview_dialog_discription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-
-        android:layout_weight="1"
         android:padding="2dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"></WebView>
-
-    <!--    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_dialog_discription"
-            android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:layout_margin="5dp"
-            android:padding="2dp"/>-->
 
 
 </LinearLayout>

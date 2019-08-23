@@ -1,0 +1,29 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/ebs_styles.xml on newer devices.
+    -->
+    <style name="ebsUXTheme" parent="@style/_EBS"/>
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/ebs_styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+
+    <!-- Application theme. -->
+    <style name="_EBS" parent="android:Theme.Light">
+        <item name="android:spinnerStyle">@style/SpinneraEBS</item>
+        <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemaEBS</item>
+    </style>
+
+    <style name="SpinneraEBS" parent="android:Widget.Spinner">
+        <item name="android:background">@drawable/ebs_spinner_background_holo_light</item>
+        <item name="android:dropDownSelector">@drawable/ebs_list_selector_holo_light</item>
+    </style>
+
+    <style name="SpinnerDropDownItemaEBS" parent="android:Widget.DropDownItem.Spinner">
+        <item name="android:checkMark">@drawable/ebs_btn_radio_holo_light</item>
+    </style>
+
+</resources>

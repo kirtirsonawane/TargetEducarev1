@@ -92,7 +92,12 @@
                     android:textColor="@color/textcolor"
                     android:textStyle="bold" />
             </LinearLayout>
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/dotedline"
+                android:layerType="software" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,7 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Total Question"
+                    android:text="Total Questions"
                     android:textColor="@color/textcolor" />
 
                 <TextView
@@ -155,7 +160,12 @@
                     android:textColor="@color/textcolor"
                     android:textStyle="bold" />
             </LinearLayout>
-
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/dotedline"
+                android:layerType="software" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="4dip">
+    android:padding="4dip"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </LinearLayout>
 
     <LinearLayout
@@ -22,42 +22,59 @@
             android:id="@+id/timertxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_marginRight="10dp"
-            android:text="12:00"
-            android:textColor="@color/textcolor"
+            android:text="00:00:00"
+            android:textColor="@color/textcolor"/>
 
-            />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:orientation="vertical"
             android:layout_weight="1"
-            android:progress="0" />
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:progress="0"/>
+
+            <TextView
+                android:id="@+id/subtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="Maths"
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/pregressupdates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_marginLeft="10dp"
             android:text="0%"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/textcolor"
-            android:layout_marginLeft="10dp"
-
-            />
+            android:textColor="@color/textcolor"/>
 
         <ImageView
             android:id="@+id/timeview"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_pause"/>
+
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_refresh"/>
     </LinearLayout>
 
 
@@ -85,7 +102,6 @@
             android:textColor="@color/BlueLight"
             android:textSize="12dp"
             android:visibility="gone">
-
         </TextView>
 
         <TextView
@@ -115,10 +131,9 @@
             android:paddingTop="10dp"
             android:text="SUBMIT EXAM"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/BlueLight">
-
+            android:textColor="@color/BlueLight"
+            android:visibility="gone">
         </TextView>
-
     </LinearLayout>
 
     <android.support.v4.view.ViewPager
@@ -128,11 +143,114 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="1dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="1">
-
     </android.support.v4.view.ViewPager>
-
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <Button
+                android:id="@+id/previous"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_button_layout"
+                android:textColor="@color/Gray500"
+                android:drawableLeft="@drawable/back_arrow"
+                android:drawablePadding="2dp"
+                android:text="@string/previous">
+            </Button>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <Button
+                android:id="@+id/submitviewanswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:background="@drawable/rounded_button_layout"
+                android:textColor="@color/Gray500"
+                android:padding="10dp"
+                android:text="@string/skip_question">
+            </Button>
+
+            <Button
+                android:id="@+id/submitquestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:background="@drawable/rounded_button_layout"
+                android:textColor="@color/Gray500"
+                android:padding="10dp"
+                android:drawableRight="@drawable/front_arrow"
+                android:drawablePadding="2dp"
+                android:text="@string/next"
+                android:visibility="gone">
+            </Button>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/rounded_button"
+            android:text="First"
+            android:visibility="gone">
+
+        </Button>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/rounded_button_layout"
+            android:textColor="@color/white"
+            android:text="Next"
+            android:visibility="gone">
+
+        </Button>
+
+
+
+        <Button
+            android:id="@+id/last_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/rounded_button"
+            android:text="Last"
+            android:visibility="gone">
+
+        </Button>
+    </LinearLayout>
+   <!-- <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -160,9 +278,8 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button_layout"
-            android:textColor="@color/white"
-            android:text="Previous">
-
+            android:text="@string/previous"
+            android:textColor="@color/white">
         </Button>
 
         <Button
@@ -171,10 +288,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="2dp"
             android:background="@drawable/rounded_button_layout"
-            android:textColor="@color/white"
             android:text="Next"
+            android:textColor="@color/white"
             android:visibility="gone">
-
         </Button>
 
         <Button
@@ -184,9 +300,8 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button_layout"
-            android:textColor="@color/white"
-            android:text="Submit Question">
-
+            android:text="@string/next"
+            android:textColor="@color/white">
         </Button>
 
         <Button
@@ -199,5 +314,5 @@
             android:visibility="gone">
 
         </Button>
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.targeteducare.Classes;
 
-public class QuestionURL {
+import java.io.Serializable;
+public class QuestionURL implements Serializable{
     int id1=0;
     int id=0;
     String imagemainsource="";

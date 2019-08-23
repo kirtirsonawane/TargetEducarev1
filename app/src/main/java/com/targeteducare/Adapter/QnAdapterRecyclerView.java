@@ -9,19 +9,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.QnaDataModel;
 import com.targeteducare.R;
 
 import java.util.ArrayList;
 
-public class QnAdapterRecyclerView extends RecyclerView.Adapter<QnAdapterRecyclerView.MyViewHolder>{
+public class QnAdapterRecyclerView extends RecyclerView.Adapter<QnAdapterRecyclerView.MyViewHolder> {
     private ArrayList<QnaDataModel> dataSet;
     Context context;
 
     public QnAdapterRecyclerView(Context context, ArrayList<QnaDataModel> data) {
-        this.dataSet = data;
-        this.context=context;
+
+        try {
+            this.dataSet = data;
+            this.context = context;
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("QnAdapterRecyclerView", e.toString());
+            e.printStackTrace();
+        }
     }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.follower_details, parent, false);
@@ -34,10 +42,17 @@ public class QnAdapterRecyclerView extends RecyclerView.Adapter<QnAdapterRecycle
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
-        holder.profile_pic.setImageResource(dataSet.get(i).getProfile_pic());
-        holder.name.setText(dataSet.get(i).getName());
-        holder.xminsago.setText(dataSet.get(i).getMinutes_ago()+" minutes ago");
-        holder.paragraphs.setText(dataSet.get(i).getParagraph());
+
+        try {
+            holder.profile_pic.setImageResource(dataSet.get(i).getProfile_pic());
+            holder.name.setText(dataSet.get(i).getName());
+            holder.xminsago.setText(dataSet.get(i).getMinutes_ago() + " " + context.getResources().getString(R.string.minutes_ago));
+            holder.paragraphs.setText(dataSet.get(i).getParagraph());
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("QnAdapterRecyclerView", e.toString());
+            e.printStackTrace();
+        }
     }
 
 

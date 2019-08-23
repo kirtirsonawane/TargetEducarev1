@@ -25,6 +25,7 @@ public class SpinnerStandard {
         this.standard = standard;
     }
 
+
     @Override
     public String toString() {
         return this.standard;

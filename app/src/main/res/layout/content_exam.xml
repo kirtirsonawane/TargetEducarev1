@@ -8,7 +8,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></LinearLayout>
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
-            android:text="12:00"
+            android:text="00:00:00"
             android:textColor="@color/textcolor"
 
             />
@@ -79,11 +81,13 @@
             android:layout_weight="1"
             android:background="@color/White"
             android:gravity="center"
-            android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="Review"
+            android:paddingBottom="10dp"
+            android:text="@string/review_contentexam"
             android:textColor="@color/BlueLight"
-            android:textSize="12dp"></TextView>
+            android:textSize="12dp">
+
+        </TextView>
 
         <TextView
             android:id="@+id/textview_timer"
@@ -96,7 +100,8 @@
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/red"></TextView>
+            android:textColor="@color/red">
+        </TextView>
 
         <TextView
             android:id="@+id/textview_submit"
@@ -107,9 +112,10 @@
             android:gravity="center"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
-            android:text="SUBMIT"
+            android:text="@string/submit"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/BlueLight"></TextView>
+            android:textColor="@color/BlueLight">
+        </TextView>
 
     </LinearLayout>
 
@@ -120,7 +126,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="1dp"
-        android:layout_weight="1"></android.support.v4.view.ViewPager>
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,7 +147,9 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
-            android:text="First"></Button>
+            android:text="@string/first">
+
+        </Button>
 
         <Button
             android:id="@+id/previous"
@@ -148,7 +158,8 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
-            android:text="Previous"></Button>
+            android:text="@string/previous">
+        </Button>
 
         <Button
             android:id="@+id/next"
@@ -157,7 +168,9 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
-            android:text="Next"></Button>
+            android:text="@string/next">
+
+        </Button>
 
         <Button
             android:id="@+id/last_button"
@@ -166,6 +179,8 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_button"
-            android:text="Last"></Button>
+            android:text="@string/last">
+
+        </Button>
     </LinearLayout>
 </LinearLayout>

@@ -15,6 +15,7 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.EngColgDataModel;
 
 import com.targeteducare.EngineeringCollegesActivity;
@@ -33,12 +34,13 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
             this.datasetFilter.addAll(data);
             this.dataSet = data;
             this.context = context;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("CustomAdapterEngColg", e.toString());
             e.printStackTrace();
         }
 
     }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_layout, parent, false);
@@ -50,15 +52,15 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
     }
 
     @Override
-    public void onBindViewHolder(@NonNull  MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
 
-       holder.icon.setImageResource(dataSet.get(position).getLogo_img());
-        holder.ratings.setText(dataSet.get(position).getRating()+"/5");
-        holder.reviews.setText(dataSet.get(position).getReviews()+" reviews");
+        holder.icon.setImageResource(dataSet.get(position).getLogo_img());
+        holder.ratings.setText(dataSet.get(position).getRating() + "/5");
+        holder.reviews.setText(dataSet.get(position).getReviews() + " " + context.getResources().getString(R.string.review));
         holder.collegename.setText(dataSet.get(position).getCollege_name());
-        holder.establishedyear.setText(""+dataSet.get(position).getEstablished_year());
-        holder.noofcourses.setText(""+dataSet.get(position).getCourses());
+        holder.establishedyear.setText("" + dataSet.get(position).getEstablished_year());
+        holder.noofcourses.setText("" + dataSet.get(position).getCourses());
         holder.institutetype.setText(dataSet.get(position).getInstitute_type());
         holder.examtype.setText(dataSet.get(position).getExam_name());
 
@@ -69,15 +71,20 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
 
                 Log.e("is Checked", String.valueOf((isChecked)));
 
+                try {
+                    if (isChecked == true) {
+                        Log.e("is Checked in if", String.valueOf((isChecked)));
+                        ((EngineeringCollegesActivity) context).gotocompare_function(1, position);
 
-                if (isChecked == true) {
-                    Log.e("is Checked in if", String.valueOf((isChecked)));
-                    ((EngineeringCollegesActivity) context).gotocompare_function( 1,position);
 
+                    } else if (isChecked == false) {
+                        ((EngineeringCollegesActivity) context).gotocompare_function(0, position);
 
-                } else if (isChecked == false) {
-                    ((EngineeringCollegesActivity) context).gotocompare_function( 0,position);
+                    }
 
+                } catch (Exception e) {
+                    ((Activitycommon) context).reporterror("CustomAdapterEngColg", e.toString());
+                    e.printStackTrace();
                 }
 
 
@@ -85,9 +92,6 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
         });
 
     }
-
-
-
 
 
     @Override
@@ -99,30 +103,36 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
     public Filter getFilter() {
         return datasetFilterFull;
     }
+
     private Filter datasetFilterFull = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             ArrayList<EngColgDataModel> filteredList = new ArrayList<>();
 
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(datasetFilter);
+            try {
+                if (constraint == null || constraint.length() == 0) {
+                    filteredList.addAll(datasetFilter);
 
-                //Log.e("called ","calle "+filteredList.size());
+                    //Log.e("called ","calle "+filteredList.size());
 
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
+                } else {
+                    String filterPattern = constraint.toString().toLowerCase().trim();
 
-                for (EngColgDataModel item : datasetFilter) {
+                    for (EngColgDataModel item : datasetFilter) {
 
 
-                    if ((item.getExam_name().toLowerCase().contains(filterPattern)) || (item.getCollege_name().toLowerCase().contains(filterPattern)) ||
-                            (Integer.toString(item.getCourses()).toLowerCase().contains(filterPattern)))
-                    {
-                        filteredList.add(item);
+                        if ((item.getExam_name().toLowerCase().contains(filterPattern)) || (item.getCollege_name().toLowerCase().contains(filterPattern)) ||
+                                (Integer.toString(item.getCourses()).toLowerCase().contains(filterPattern))) {
+                            filteredList.add(item);
+                        }
                     }
+                    Log.e("called1 ", "called1 " + filteredList.size());
                 }
-                Log.e("called1 ","called1 "+filteredList.size());
+            } catch (Exception e) {
+                ((Activitycommon) context).reporterror("CustomAdapterEngColg", e.toString());
+                e.printStackTrace();
             }
+
 
             FilterResults results = new FilterResults();
             results.values = filteredList;
@@ -132,12 +142,17 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            dataSet.clear();
-            dataSet.addAll((ArrayList) results.values);
-            notifyDataSetChanged();
+
+            try {
+                dataSet.clear();
+                dataSet.addAll((ArrayList) results.values);
+                notifyDataSetChanged();
+            } catch (Exception e) {
+                ((Activitycommon) context).reporterror("CustomAdapterEngColg", e.toString());
+                e.printStackTrace();
+            }
         }
     };
-
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -166,9 +181,8 @@ public class CustomAdapterEngColg extends RecyclerView.Adapter<CustomAdapterEngC
             examtype = itemView.findViewById(R.id.examtogiveview);
             btn_getcontact = itemView.findViewById(R.id.btn_getcontact);
             cb_compare = itemView.findViewById(R.id.cb_compare);
-            college_compare_button=itemView.findViewById(R.id.college_compare_button);
+            college_compare_button = itemView.findViewById(R.id.college_compare_button);
         }
-
 
 
     }

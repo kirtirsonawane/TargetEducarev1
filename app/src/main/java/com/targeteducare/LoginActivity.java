@@ -14,7 +14,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.Display;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,54 +34,89 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class LoginActivity extends Activitycommon implements Html.ImageGetter {
-    EditText e1, e2,e3;
+    EditText e1, e2, e3;
     Button bt;
     TextView txt;
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
+    String tag = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        try {
+            screenshot_capture_permission();
+            super.onCreate(savedInstanceState);
+            loadLocale();
 
-        attachUI();
-        registerreceiver();
+            setContentView(R.layout.activity_login);
+            tag = this.getClass().getSimpleName();
+            preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+            edit = preferences.edit();
+
+            if (preferences.getBoolean("isloginv1", false)) {
+                String stprofile = preferences.getString("profile", "");
+                GlobalValues.IP = preferences.getString("IP", "");
+                if (stprofile.length() > 0) {
+                    Gson gson = new Gson();
+                    Type type = new TypeToken<Student>() {
+                    }.getType();
+                    GlobalValues.student = gson.fromJson(stprofile, type);
+                }
+                Intent intent = new Intent(LoginActivity.this, ExamListActivity.class);
+                startActivity(intent);
+                this.finish();
+            }
+
+            attachUI();
+            registerreceiver();
+        } catch (Exception e) {
+            reporterror(tag, e.toString());
+            e.printStackTrace();
+        }
     }
 
     private void attachUI() {
-        Display display = getWindowManager(). getDefaultDisplay();
-        Point size = new Point();
-        display. getSize(size);
-        GlobalValues.width = size.x;
+        try {
+            Display display = getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            GlobalValues.width = size.x;
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-        edit=preferences.edit();
-        if (preferences.getBoolean("islogin", false)) {
-            String stprofile = preferences.getString("profile", "");
-            GlobalValues.IP = preferences.getString("IP", "");
-            if (stprofile.length() > 0) {
-                Gson gson = new Gson();
-                Type type = new TypeToken<Student>() {
-                }.getType();
-                GlobalValues.student = gson.fromJson(stprofile, type);
+            e1 = (EditText) findViewById(R.id.edittext_1);
+            e2 = (EditText) findViewById(R.id.edittext_2);
+            e3 = (EditText) findViewById(R.id.edittext_3);
+            bt = (Button) findViewById(R.id.button_1);
+
+            e1.setText("11");
+            e2.setText("a");
+            e3.setText(GlobalValues.IP);
+            edit.putString("IP", GlobalValues.IP);
+            edit.commit();
+            try {
+                //GlobalValues.IP=e3.getText().toString();
+                genloading(getResources().getString(R.string.loading));
+                JSONObject obj = new JSONObject();
+                obj.put("Username", e1.getText().toString().trim());
+                obj.put("Type", "Student");
+                obj.put("Password", e2.getText().toString().trim());
+                JSONObject mainobj = new JSONObject();
+                mainobj.put("FilterParameter", obj.toString());
+                ConnectionManager.getInstance(LoginActivity.this).login(mainobj.toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            Intent intent = new Intent(LoginActivity.this, ExamListActivity.class);
-            startActivity(intent);
-            this.finish();
+        } catch (Exception e) {
+            reporterror(tag, e.toString());
+            e.printStackTrace();
         }
-
-        e1 = (EditText) findViewById(R.id.edittext_1);
-        e2 = (EditText) findViewById(R.id.edittext_2);
-        e3 = (EditText) findViewById(R.id.edittext_3);
-        bt = (Button) findViewById(R.id.button_1);
-        bt.setOnClickListener(new View.OnClickListener() {
+        /*bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     if (e1.getText().toString().length() > 0 && e2.getText().toString().length() > 0 && e3.getText().toString().length() > 0) {
-                        GlobalValues.IP=e3.getText().toString();
-                        edit.putString("IP",e3.getText().toString());
+                        //GlobalValues.IP=e3.getText().toString();
+                        edit.putString("IP",GlobalValues.IP);
                         edit.commit();
                         genloading("loading..");
                         JSONObject obj = new JSONObject();
@@ -98,7 +133,7 @@ public class LoginActivity extends Activitycommon implements Html.ImageGetter {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -109,10 +144,9 @@ public class LoginActivity extends Activitycommon implements Html.ImageGetter {
                 try {
                     JSONObject obj = new JSONObject(GlobalValues.TEMP_STR).getJSONObject("root").optJSONObject("subroot");
                     if (obj != null) {
-                        if(obj.has("error"))
-                        {
-                            Toast.makeText(getApplicationContext(),"please enter valid details", Toast.LENGTH_LONG).show();
-                        }else {
+                        if (obj.has("error")) {
+                            Toast.makeText(getApplicationContext(), "please enter valid details", Toast.LENGTH_LONG).show();
+                        } else {
                             Gson gson = new Gson();
                             Type type = new TypeToken<Student>() {
                             }.getType();
@@ -120,8 +154,9 @@ public class LoginActivity extends Activitycommon implements Html.ImageGetter {
                             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
                             SharedPreferences.Editor edit = pref.edit();
                             edit.putString("profile", obj.toString());
-                            edit.putBoolean("islogin", true);
+                            edit.putBoolean("isloginv1", true);
                             edit.commit();
+
                             Intent intent = new Intent(LoginActivity.this, ExamListActivity.class);
                             startActivity(intent);
                             this.finish();
@@ -130,11 +165,12 @@ public class LoginActivity extends Activitycommon implements Html.ImageGetter {
                         Toast.makeText(getApplicationContext(), "Please enter valid details", Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
+                    reporterror(tag, e.toString());
                     e.printStackTrace();
                 }
-            }else if (accesscode == Connection.LOGINEXCEPTION.ordinal()) {
+            } else if (accesscode == Connection.LOGINEXCEPTION.ordinal()) {
                 try {
-                    Toast.makeText(getApplicationContext(),Constants.connectiontimeout, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),Constants.connectiontimeout, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,18 +213,25 @@ public class LoginActivity extends Activitycommon implements Html.ImageGetter {
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            Log.d("tag", "onPostExecute drawable " + mDrawable);
-            Log.d("tag", "onPostExecute bitmap " + bitmap);
-            if (bitmap != null) {
-                BitmapDrawable d = new BitmapDrawable(bitmap);
-                mDrawable.addLevel(1, 1, d);
-                mDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
-                mDrawable.setLevel(1);
-                // i don't know yet a better way to refresh TextView
-                // mTv.invalidate() doesn't work as expected
-                CharSequence t = txt.getText();
-                txt.setText(t);
+            try {
+                Log.d("tag", "onPostExecute drawable " + mDrawable);
+                Log.d("tag", "onPostExecute bitmap " + bitmap);
+                if (bitmap != null) {
+                    BitmapDrawable d = new BitmapDrawable(bitmap);
+                    mDrawable.addLevel(1, 1, d);
+                    mDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                    mDrawable.setLevel(1);
+                    // i don't know yet a better way to refresh TextView
+                    // mTv.invalidate() doesn't work as expected
+                    CharSequence t = txt.getText();
+                    txt.setText(t);
+                }
+
+            } catch (Exception e) {
+                reporterror(tag, e.toString());
+                e.printStackTrace();
             }
         }
     }
+
 }

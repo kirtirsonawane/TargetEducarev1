@@ -14,10 +14,28 @@ public class Item {
     int totalwrong = 0;
     int totalquestions = qdata.size();
     int totalright = 0;
-    double obtainedmarks=0;
-    double negativemarks=0;
+    double obtainedmarks = 0;
+    double negativemarks = 0;
     int totalnotanswered = 0;
-    int review=0;
+    int review = 0;
+    double totalmarks = 0;
+    String optionalp = "";
+
+    public double getTotalmarks() {
+        return totalmarks;
+    }
+
+    public void setTotalmarks(double totalmarks) {
+        this.totalmarks = totalmarks;
+    }
+
+    public String getOptionalp() {
+        return optionalp;
+    }
+
+    public void setOptionalp(String optionalp) {
+        this.optionalp = optionalp;
+    }
 
     public int getReview() {
         return review;

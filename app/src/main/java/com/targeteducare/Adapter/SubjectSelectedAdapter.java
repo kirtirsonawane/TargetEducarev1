@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.SubjectSelectedDataModel;
 import com.targeteducare.GlobalValues;
 import com.targeteducare.R;
@@ -20,23 +21,37 @@ public class SubjectSelectedAdapter extends RecyclerView.Adapter<SubjectSelected
     Context context;
     ArrayList<SubjectSelectedDataModel> subjectSelectedDataModels;
 
-    public SubjectSelectedAdapter(Context context, ArrayList<SubjectSelectedDataModel> subjectSelectedDataModels){
-        this.context = context;
-        this.subjectSelectedDataModels = subjectSelectedDataModels;
+    public SubjectSelectedAdapter(Context context, ArrayList<SubjectSelectedDataModel> subjectSelectedDataModels) {
+
+        try {
+            this.context = context;
+            this.subjectSelectedDataModels = subjectSelectedDataModels;
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("SubjectSelectedAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.subject_select,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.subject_select, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.student_name.setText("Hey "+ GlobalValues.studentProfile.getName());
+
+        try {
+            holder.student_name.setText("Hey " + GlobalValues.studentProfile.getName());
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("SubjectSelectedAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -44,7 +59,7 @@ public class SubjectSelectedAdapter extends RecyclerView.Adapter<SubjectSelected
         return subjectSelectedDataModels.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView student_name, random_text;
         ImageView iv_topicicon;

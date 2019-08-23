@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.AnswerFragment;
 import com.targeteducare.Classes.Question;
 import com.targeteducare.QuestionFragment;
@@ -17,9 +18,16 @@ public class QuestionAdapter extends FragmentStatePagerAdapter {
 
     public QuestionAdapter(FragmentManager fragmentManager, ArrayList<Question> items, boolean isanswersheet) {
         super(fragmentManager);
-        this.items = items;
-        this.isanswersheet = isanswersheet;
-        Log.e("item", "itemsize " + this.items.size());
+
+        try {
+            this.items = items;
+            this.isanswersheet = isanswersheet;
+           // Log.e("item", "itemsize " + this.items.size());
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

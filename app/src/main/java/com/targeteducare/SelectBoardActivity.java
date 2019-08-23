@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.targeteducare.Adapter.GetCategoryBoardAdapter;
 import com.targeteducare.Classes.GetCategoryBoard;
@@ -37,22 +38,29 @@ public class SelectBoardActivity extends Activitycommon {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_board);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(SelectBoardActivity.this);
-        editor = preferences.edit();
 
-        registerreceiver();
+        try {
+            screenshot_capture_permission();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_select_board);
 
-        recyclerView = findViewById(R.id.recyclerviewforboard);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+            preferences = PreferenceManager.getDefaultSharedPreferences(SelectBoardActivity.this);
+            editor = preferences.edit();
 
-        getCategoryBoardsdata = new ArrayList<GetCategoryBoard>();
+            registerreceiver();
 
-        getCategoryBoardAdapter = new GetCategoryBoardAdapter(SelectBoardActivity.this, getCategoryBoardsdata);
-        recyclerView.setAdapter(getCategoryBoardAdapter);
+
+            tag = this.getClass().getSimpleName();
+
+            recyclerView = findViewById(R.id.recyclerviewforboard);
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+
+            getCategoryBoardsdata = new ArrayList<GetCategoryBoard>();
+
+            getCategoryBoardAdapter = new GetCategoryBoardAdapter(SelectBoardActivity.this, getCategoryBoardsdata);
+            recyclerView.setAdapter(getCategoryBoardAdapter);
 
 
         /*selectBoardModels = new ArrayList<SelectBoardModel>();
@@ -72,15 +80,20 @@ public class SelectBoardActivity extends Activitycommon {
         adapter = new SelectBoardAdapter(SelectBoardActivity.this,selectBoardModels);
         recyclerView.setAdapter(adapter);*/
 
-        JSONObject obj = new JSONObject();
-        JSONObject mainobj = new JSONObject();
-        try {
-            obj.put("Type", "Category");
-            mainobj.put("FilterParameter", obj.toString());
+            JSONObject obj = new JSONObject();
+            JSONObject mainobj = new JSONObject();
+            try {
+                obj.put("Type", "Category");
+                mainobj.put("FilterParameter", obj.toString());
+            } catch (Exception e) {
+                reporterror(tag, e.toString());
+                e.printStackTrace();
+            }
+            ConnectionManager.getInstance(SelectBoardActivity.this).getcategory(mainobj.toString());
         } catch (Exception e) {
+            reporterror(tag, e.toString());
             e.printStackTrace();
         }
-        ConnectionManager.getInstance(SelectBoardActivity.this).getcategory(mainobj.toString());
     }
 
 
@@ -146,6 +159,7 @@ public class SelectBoardActivity extends Activitycommon {
                                 }
                                 cat.setGetCategorySubBoard(getCategorySubBoardsdata);
                             } catch (Exception e) {
+                                reporterror(tag, e.toString());
                                 e.printStackTrace();
                             }
                             getCategoryBoardsdata.add(cat);
@@ -157,37 +171,49 @@ public class SelectBoardActivity extends Activitycommon {
                 }
             }
         } catch (Exception e) {
+            reporterror(tag, e.toString());
             e.printStackTrace();
         }
     }
 
     public void referTo(int position, String boardvalue) {
 
-        //Toast.makeText(context, "Value is: "+getCategoryBoardsdata.get(position).getGetCategorySubBoard().size(), Toast.LENGTH_SHORT).show();
-        GlobalValues.studentProfile.setBoard_name(boardvalue);
-        Gson gson = new Gson();
 
-        String jsonstudentprofile = gson.toJson(GlobalValues.studentProfile);
-        editor.putString("studentprofiledetails", jsonstudentprofile);
-        editor.apply();
+        try {
 
-        if (getCategoryBoardsdata.get(position).getGetCategorySubBoard().size() != 0) {
-            Intent ipassboard = new Intent(SelectBoardActivity.this, BoardSubtypeSelection.class);
-            ipassboard.putExtra("textviewname", boardvalue);
+            //Toast.makeText(context, "Value is: "+getCategoryBoardsdata.get(position).getGetCategorySubBoard().size(), Toast.LENGTH_SHORT).show();
+            GlobalValues.studentProfile.setBoard_name(boardvalue);
+            Gson gson = new Gson();
 
-            String temp = GlobalValues.studentProfile.getBoard_name();
-            Log.e("entered in bsts ", temp);
-            ipassboard.putExtra("customdata", getCategoryBoardsdata.get(position).getGetCategorySubBoard());
-            startActivity(ipassboard);
-            finish();
-        } else {
-            Intent igridmain = new Intent(SelectBoardActivity.this, GridMainActivity.class);
-            igridmain.putExtra("textviewname", boardvalue);
+            String jsonstudentprofile = gson.toJson(GlobalValues.studentProfile);
+            editor.putString("studentprofiledetails", jsonstudentprofile);
+            editor.apply();
 
-            String temp = GlobalValues.studentProfile.getBoard_name();
-            Log.e("entered in grid main ", temp);
-            startActivity(igridmain);
-            finish();
+            if (getCategoryBoardsdata.get(position).getGetCategorySubBoard().size() != 0) {
+                Intent ipassboard = new Intent(SelectBoardActivity.this, BoardSubtypeSelection.class);
+                ipassboard.putExtra("textviewname", boardvalue);
+
+                String temp = GlobalValues.studentProfile.getBoard_name();
+                Log.e("entered in bsts ", temp);
+                ipassboard.putExtra("customdata", getCategoryBoardsdata.get(position).getGetCategorySubBoard());
+                startActivity(ipassboard);
+                finish();
+            } else {
+                Intent igridmain = new Intent(SelectBoardActivity.this, GridMainActivity.class);
+                igridmain.putExtra("textviewname", boardvalue);
+
+                String temp = GlobalValues.studentProfile.getBoard_name();
+                Log.e("entered in grid main ", temp);
+                startActivity(igridmain);
+                finish();
+            }
+
+
+        } catch (Exception e) {
+            reporterror(tag, e.toString());
+            e.printStackTrace();
         }
     }
+
+
 }

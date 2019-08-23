@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tellusabouttheissue"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_margin="5dp"
+            android:textColor="@color/black"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/cancel_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_cancel_black_24dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="5dp"/>
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_reason"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/Gray500"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/question_unclear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_error_question_unclear"
+            android:textColor="@color/blue1"
+            android:background="@drawable/rounded_textviewforsubject"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/wrong_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_error_wrong_answer"
+            android:textColor="@color/blue1"
+            android:background="@drawable/rounded_textviewforsubject"
+            android:layout_margin="8dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/wrong_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_error_wrong_question"
+            android:textColor="@color/blue1"
+            android:background="@drawable/rounded_textviewforsubject"
+            android:layout_margin="8dp"/>
+
+        <TextView
+            android:id="@+id/unclear_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_error_unclear_image"
+            android:textColor="@color/blue1"
+            android:background="@drawable/rounded_textviewforsubject"
+            android:layout_margin="8dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addcomment"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/Gray500"/>
+
+    <EditText
+        android:id="@+id/et_issueindetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ebs_edit_text_block_background"
+        android:paddingBottom="35dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="3dp"
+        android:layout_marginTop="10dp"
+        android:hint="@string/tellusabouttheissue"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"/>
+
+    <Button
+        android:id="@+id/button_submit_issue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_button1"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

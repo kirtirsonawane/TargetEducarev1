@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/Gray">
+    android:background="@drawable/gradient_2">
 
     <include
         layout="@layout/header_gridmain">
@@ -13,9 +14,9 @@
         android:id="@+id/recyclerviewforgrid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:scrollbars="vertical"
-        android:background="@color/white">
+        android:layout_margin="10dp"
+        android:scrollbars="vertical">
+
     </android.support.v7.widget.RecyclerView>
 
     <!--<LinearLayout

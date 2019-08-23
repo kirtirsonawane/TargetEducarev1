@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.QuestionURL;
 import com.targeteducare.GlobalValues;
 import com.targeteducare.R;
@@ -24,8 +25,14 @@ public class QuestionURLDataAdapter extends RecyclerView.Adapter<QuestionURLData
     ArrayList<QuestionURL> mdataset;
 
     public QuestionURLDataAdapter(Context mContext, ArrayList<QuestionURL> mdataset) {
-        this.mContext = mContext;
-        this.mdataset = mdataset;
+
+        try {
+            this.mContext = mContext;
+            this.mdataset = mdataset;
+        } catch (Exception e) {
+            ((Activitycommon) mContext).reporterror("QuestionURLDataAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -52,30 +59,30 @@ public class QuestionURLDataAdapter extends RecyclerView.Adapter<QuestionURLData
             holder.imageView1.getLayoutParams().width = (GlobalValues.width - 90);
             holder.imageView1.setImageBitmap(bitmap);
 
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)  holder.imageView1.getLayoutParams();
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) holder.imageView1.getLayoutParams();
             params.width = (GlobalValues.width - 90);
             params.height = pxToDp(bitmap.getHeight());
             holder.imageView1.setLayoutParams(params);
         /*    holder.mLayout.getLayoutParams().height = height;
             holder.mLayout.getLayoutParams().width = (GlobalValues.width - 90);*/
-           // holder.imageView1.setVisibility(View.GONE);
+            // holder.imageView1.setVisibility(View.GONE);
            /* holder.web.getSettings().setJavaScriptEnabled(true);
             holder.web.getSettings().setAllowFileAccess(true);
             holder.web.getSettings().setBuiltInZoomControls(true);
             holder.web.getSettings().setSupportZoom(true);
             holder.web.loadUrl("file:///"+ mdataset.get(position).getImagemainsource());*/
-        //    holder.web.loadDataWithBaseURL("file:///", mdataset.get(position).getImagemainsource(), "text/html", "utf-8", null);
+            //    holder.web.loadDataWithBaseURL("file:///", mdataset.get(position).getImagemainsource(), "text/html", "utf-8", null);
         } catch (Exception e) {
-            Log.e("error ", "error " + e);
+            ((Activitycommon) mContext).reporterror("QuestionURLDataAdapter", e.toString());
             e.printStackTrace();
-            //  ((ActivityCommon) context).reporterror("ImagePagerAdapter", e.toString());
-
         }
     }
+
     public static int pxToDp(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
         // return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
+
     @Override
     public int getItemCount() {
         return mdataset.size();
@@ -84,13 +91,13 @@ public class QuestionURLDataAdapter extends RecyclerView.Adapter<QuestionURLData
     public class viewHolder extends RecyclerView.ViewHolder {
         TouchImageView imageView1;
         LinearLayout mLayout;
-       // WebView web;
+        // WebView web;
 
         public viewHolder(View itemView) {
             super(itemView);
             imageView1 = (TouchImageView) itemView.findViewById(R.id.viewPagerItem_image2);
-            mLayout=(LinearLayout)itemView.findViewById(R.id.layout_1);
-           // web = (WebView) itemView.findViewById(R.id.webview_1);
+            mLayout = (LinearLayout) itemView.findViewById(R.id.layout_1);
+            // web = (WebView) itemView.findViewById(R.id.webview_1);
         }
 
     }

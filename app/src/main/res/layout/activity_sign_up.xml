@@ -1,3 +1,255 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/background_test2"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".SignUpActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp">
+
+
+        <ScrollView
+            android:id="@+id/login_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+
+            <LinearLayout
+                android:id="@+id/email_login_form"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <org.sufficientlysecure.htmltextview.HtmlTextView
+                    android:id="@+id/html_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="@android:style/TextAppearance.Small" />
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_launcher"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textview_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Sign Up"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="32dp"/>
+
+                <EditText
+                    android:id="@+id/ip_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ip"
+                    android:drawablePadding="15dp"
+                    android:hint="@string/ip"
+                    android:padding="10dp"
+                    android:visibility="gone"
+
+                    android:textColor="@color/textcolor" />
+                <TextView
+                    android:id="@+id/setip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SET IP"
+                    android:layout_gravity="right"
+                    android:textColor="@color/redish_axis"
+                    />
+                <EditText
+                    android:id="@+id/name_signup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounded_edittext"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:padding="10dp"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/enter_mobile_number"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/referalmobileno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/enter_referralmobilenumber"
+                    android:inputType="number|textNoSuggestions"
+                    android:maxLength="10"
+                    android:padding="10dp" />
+
+                <EditText
+                    android:id="@+id/otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/enter_otp"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:padding="10dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="@string/stream"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+                <Spinner
+                    android:id="@+id/spinner_stream"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:paddingLeft="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/Gray"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_standard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:text="@string/sub_stream"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+                <Spinner
+                    android:id="@+id/spinner_standard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:paddingLeft="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+                <View
+                    android:id="@+id/viewforstandard"
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/Gray"
+                    android:padding="10dp" />
+
+                <Button
+                    android:id="@+id/button_register"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/rounded_button1"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="OR"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/sign_in_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gmailname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/gmailemail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:visibility="gone" />
+                -
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_resendotp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="@string/resend_code"
+                        android:textColor="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/tv_editnum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="end"
+                        android:text="@string/edit_mobilenumber"
+                        android:textColor="@color/colorPrimary" />
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_problemwith_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                    android:text="@string/otp_problem_message"
+                    android:textColor="@color/colorPrimary" />
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+</RelativeLayout><!--
+
+
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -35,7 +287,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Welcome"
+            android:text="@string/welcome"
             android:textColor="@color/colorPrimary"
             android:textSize="32dp"
             android:textStyle="italic" />
@@ -57,7 +309,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_edittext"
-            android:hint="Mobile Number"
+            android:hint="@string/enter_mobile_number"
             android:inputType="number"
             android:maxLength="10"
             android:padding="10dp" />
@@ -68,7 +320,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_edittext"
-            android:hint="Referral Mobile Number (Optional)"
+            android:hint="@string/enter_referralmobilenumber"
             android:inputType="number"
             android:maxLength="10"
             android:padding="10dp" />
@@ -79,7 +331,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_edittext"
-            android:hint="Enter the OTP"
+            android:hint="@string/enter_otp"
             android:inputType="number"
             android:maxLength="6"
             android:padding="10dp"
@@ -90,7 +342,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingLeft="10dp"
-            android:text="Stream"
+            android:text="@string/stream"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             />
 
@@ -116,7 +368,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingLeft="10dp"
-            android:text="Standard (in Academic Year)"
+            android:text="@string/sub_stream"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             />
 
@@ -144,7 +396,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/rounded_button1"
-            android:text="Submit"
+            android:text="@string/submit"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -189,7 +441,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="Resend Code"
+                android:text="@string/resend_code"
                 android:textColor="@color/blue" />
 
             <TextView
@@ -199,11 +451,11 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="end"
-                android:text="Edit Number"
+                android:text="@string/edit_mobilenumber"
                 android:textColor="@color/blue" />
         </LinearLayout>
 
 
     </LinearLayout>
 
-</RelativeLayout>
+</RelativeLayout>-->

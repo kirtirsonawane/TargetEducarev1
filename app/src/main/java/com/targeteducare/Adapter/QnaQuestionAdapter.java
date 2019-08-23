@@ -12,6 +12,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.Classes.QnAData;
 import com.targeteducare.Classes.QnaDataModel;
 import com.targeteducare.Classes.QnaQuestionModel;
@@ -30,9 +31,16 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
 
 
     public QnaQuestionAdapter(Context context, ArrayList<QnaQuestionModel> data) {
-        this.dataSet = data;
-        this.context=context;
+
+        try {
+            this.dataSet = data;
+            this.context = context;
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("QnaQuestionAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_details, parent, false);
@@ -46,20 +54,28 @@ public class QnaQuestionAdapter extends RecyclerView.Adapter<QnaQuestionAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int i) {
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);;
-        holder.main_question.setText(dataSet.get(i).getMain_question());
-        holder.followers.setText(dataSet.get(i).getFollowers()+" followers");
-        holder.answers.setText(dataSet.get(i).getAnswers()+" answers");
-        holder.recyclerView.setLayoutManager(layoutManager);
 
-        data = new ArrayList<QnaDataModel>();
-        for(int j=0;j<QnAData.profile_pics.length;j++){
-            data.add(new QnaDataModel(
-                    QnAData.profile_pics[j],QnAData.name[j],QnAData.time[j],QnAData.paragraphs[j]
-            ));
+        try {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+            ;
+            holder.main_question.setText(dataSet.get(i).getMain_question());
+            holder.followers.setText(dataSet.get(i).getFollowers() + " " + context.getResources().getString(R.string.qna_followers));
+            holder.answers.setText(dataSet.get(i).getAnswers() + " " + context.getResources().getString(R.string.qna_answers));
+            holder.recyclerView.setLayoutManager(layoutManager);
+
+            data = new ArrayList<QnaDataModel>();
+            for (int j = 0; j < QnAData.profile_pics.length; j++) {
+                data.add(new QnaDataModel(
+                        QnAData.profile_pics[j], QnAData.name[j], QnAData.time[j], QnAData.paragraphs[j]
+                ));
+            }
+            QnAdapterRecyclerView adapter = new QnAdapterRecyclerView(context, data);
+            holder.recyclerView.setAdapter(adapter);
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("QnaQuestionAdapter", e.toString());
+            e.printStackTrace();
         }
-        QnAdapterRecyclerView adapter = new QnAdapterRecyclerView(context,data);
-        holder.recyclerView.setAdapter(adapter);
 
     }
 

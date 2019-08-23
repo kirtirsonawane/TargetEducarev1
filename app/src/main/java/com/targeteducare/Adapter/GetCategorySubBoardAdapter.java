@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.targeteducare.Activitycommon;
 import com.targeteducare.BoardSubtypeSelection;
 import com.targeteducare.Classes.GetCategorySubBoard;
 import com.targeteducare.R;
@@ -18,16 +19,24 @@ public class GetCategorySubBoardAdapter extends RecyclerView.Adapter<GetCategory
 
     Context context;
     ArrayList<GetCategorySubBoard> getCategorySubBoards;
-    public GetCategorySubBoardAdapter(Context context, ArrayList<GetCategorySubBoard> getCategorySubBoards){
-        this.context = context;
-        this.getCategorySubBoards = getCategorySubBoards;
+
+    public GetCategorySubBoardAdapter(Context context, ArrayList<GetCategorySubBoard> getCategorySubBoards) {
+
+        try {
+            this.context = context;
+            this.getCategorySubBoards = getCategorySubBoards;
+
+        } catch (Exception e) {
+            ((Activitycommon) context).reporterror("GetCategorySubBoardAdapter", e.toString());
+            e.printStackTrace();
+        }
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_board_select,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_board_select, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -39,7 +48,14 @@ public class GetCategorySubBoardAdapter extends RecyclerView.Adapter<GetCategory
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((BoardSubtypeSelection)context).referTo(position);
+
+                try {
+                    ((BoardSubtypeSelection) context).referTo(position);
+
+                } catch (Exception e) {
+                    ((Activitycommon) context).reporterror("GetCategorySubBoardAdapter", e.toString());
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -52,6 +68,7 @@ public class GetCategorySubBoardAdapter extends RecyclerView.Adapter<GetCategory
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_subboard;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             tv_subboard = itemView.findViewById(R.id.textviewsubselectboard);
