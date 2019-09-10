@@ -8,13 +8,16 @@ import java.io.Serializable;
 
 public class EbookPageDetails implements Serializable {
     String PageContent = "";
-    int PageId = 0;
+    int PageNo = 0;
     boolean isBookmark = false;
     boolean isFavorite = false;
 
     public EbookPageDetails(JSONObject obj){
         if(obj.has("PageContent")){
             this.PageContent = obj.optString("PageContent");
+        }
+        if(obj.has("PageNo")){
+            this.PageNo = obj.optInt("PageNo");;
         }
     }
 
@@ -42,12 +45,12 @@ public class EbookPageDetails implements Serializable {
         isFavorite = favorite;
     }
 
-    public int getPageId() {
-        return PageId;
+    public int getPageNo() {
+        return PageNo;
     }
 
-    public void setPageId(int pageId) {
-        PageId = pageId;
+    public void setPageNo(int pageNo) {
+        PageNo = pageNo;
     }
 
     @Override

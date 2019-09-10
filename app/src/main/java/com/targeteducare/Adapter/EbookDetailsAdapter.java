@@ -24,7 +24,7 @@ public class EbookDetailsAdapter extends RecyclerView.Adapter<EbookDetailsAdapte
     ArrayList<EbookDetails> ebookDetails = new ArrayList<>();
     String lang = "";
 
-    public EbookDetailsAdapter(Context context, ArrayList<EbookDetails> ebookDetails, String lang){
+    public EbookDetailsAdapter(Context context, ArrayList<EbookDetails> ebookDetails, String lang) {
         this.context = context;
         this.ebookDetails = ebookDetails;
         this.lang = lang;
@@ -41,6 +41,7 @@ public class EbookDetailsAdapter extends RecyclerView.Adapter<EbookDetailsAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, final int i) {
 
+        myViewHolder.chapterno.setText(""+(i+1));
         myViewHolder.tv_name.setText(ebookDetails.get(i).getName());
         myViewHolder.tv_description.setText(ebookDetails.get(i).getDescription());
         Picasso.with(context)
@@ -53,7 +54,13 @@ public class EbookDetailsAdapter extends RecyclerView.Adapter<EbookDetailsAdapte
             @Override
             public void onClick(View v) {
 
-                    ((EbookSubjectActivity)context).gotogetbeookcontent(ebookDetails.get(i));
+                try {
+
+                    ((EbookSubjectActivity) context).gotogetbeookcontent(ebookDetails.get(i));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
         });
@@ -65,13 +72,15 @@ public class EbookDetailsAdapter extends RecyclerView.Adapter<EbookDetailsAdapte
         return ebookDetails.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView iv_subject;
-        TextView tv_name, tv_description;
+        TextView chapterno, tv_name, tv_description;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            chapterno = itemView.findViewById(R.id.chapterno);
             iv_subject = itemView.findViewById(R.id.iv_subject);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_description = itemView.findViewById(R.id.tv_description);

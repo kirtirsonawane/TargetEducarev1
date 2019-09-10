@@ -21,9 +21,11 @@ import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -61,7 +63,8 @@ public class ConnectionManager extends Activitycommon {
         GlobalValues.TEMP_STR = GlobalValues.TEMP_STR.replace("\\r", " ");
         GlobalValues.TEMP_STR = GlobalValues.TEMP_STR.replace("\\", "");
     }
-    private void isSpeacialChar(){
+
+    private void isSpeacialChar() {
         GlobalValues.TEMP_STR = GlobalValues.TEMP_STR.replace("\\r", " ");
     }
 
@@ -343,8 +346,11 @@ public class ConnectionManager extends Activitycommon {
                 try {
                     Request request = new Request.Builder().url(URLS.sendotp(msg, otp)).build();
                     Response response = client.newCall(request).execute();
+                    //URL url = new URL(URLS.sendotp(msg, otp));
+                    //InputStream in = url.openStream();
+
                     GlobalValues.TEMP_STR = response.body().string();
-                    isDotNet();
+                    //isDotNet();
                     final int code = response.code();
                     if (code != Constants.STATUS_OK) {
                         publishBroadcast(Constants.STATUS_OK, Connection.OTPEXCEPTION.ordinal());
@@ -1507,7 +1513,7 @@ public class ConnectionManager extends Activitycommon {
             @Override
             public void run() {
                 try {
-                    Log.d("json ", json + " url " + URLS.student_ebookget() );
+                    Log.d("json ", json + " url " + URLS.student_ebookget());
                     RequestBody body = RequestBody.create(Constants.JSON, json);
                     Request request = new Request.Builder().url(URLS.student_ebookget()).post(body).build();
                     Response response = client.newCall(request).execute();
@@ -1565,7 +1571,7 @@ public class ConnectionManager extends Activitycommon {
             @Override
             public void run() {
                 try {
-                    Log.e("json ", json + " url " + URLS.ebook_contentget() );
+                    Log.e("json ", json + " url " + URLS.ebook_contentget());
                     RequestBody body = RequestBody.create(Constants.JSON, json);
                     Request request = new Request.Builder().url(URLS.ebook_contentget()).post(body).build();
                     Response response = client.newCall(request).execute();
@@ -1580,27 +1586,129 @@ public class ConnectionManager extends Activitycommon {
 
                         if (json instanceof JSONArray) {
                             array = obj1.optJSONArray("subroot");
-                            ContentValues c = new ContentValues();
-                            c.put(DatabaseHelper.JSONDATA, array.toString());
-                            c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
-                            c.put(DatabaseHelper.EBOOK_ID, ebook_id);
-                            c.put(DatabaseHelper.TYPE, type);
-                            DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c);
-                            //Log.e("array valid course ",array.toString() );
+
+
+                            for(int a = 0; a< array.length(); a++){
+                                ContentValues c = new ContentValues();
+                                c.put(DatabaseHelper.JSONDATA, array.toString());
+                                c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                                c.put(DatabaseHelper.UNIT_ID, array.optJSONObject(a).optInt("unitid"));
+                                c.put(DatabaseHelper.EBOOK_ID, ebook_id);
+                                c.put(DatabaseHelper.TYPE, type);
+                                DatabaseHelper.getInstance(ConnectionManager.this).save_ebookdetails(c, ebook_id);
+                                //JSONObject c1 = array.optJSONObject(a);
+
+                                if(array.optJSONObject(a).has("ContentDetails")){
+
+                                    JSONArray contentdetails = new JSONArray();
+                                    Object chk = array.optJSONObject(a).opt("ContentDetails");
+
+                                    if(chk instanceof JSONArray){
+
+                                        JSONArray arrcontentdetails = array.optJSONObject(a).optJSONArray("ContentDetails");
+                                        for(int i =0; i<arrcontentdetails.length(); i++){
+
+                                            //JSONObject obj = arrcontentdetails.optJSONObject(i);
+                                            contentdetails = new JSONArray();
+                                            contentdetails.put(arrcontentdetails.optJSONObject(i));
+                                            ContentValues c2 = new ContentValues();
+                                            c2.put(DatabaseHelper.JSONDATA, contentdetails.toString());
+                                            c2.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                                            c2.put(DatabaseHelper.UNIT_ID, arrcontentdetails.optJSONObject(i).optInt("unitid"));
+                                            c2.put(DatabaseHelper.EBOOK_ID, ebook_id);
+                                            c2.put(DatabaseHelper.CHAPTER_ID, arrcontentdetails.optJSONObject(i).optInt("chapterid"));
+                                            c2.put(DatabaseHelper.TYPE, type);
+
+                                            DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c2, ebook_id, arrcontentdetails.optJSONObject(i).optInt("unitid"), arrcontentdetails.optJSONObject(i).optInt("chapterid"));
+
+                                        }
+
+                                    }else{
+
+                                        contentdetails.put(array.optJSONObject(a).optJSONObject("ContentDetails"));
+
+                                        ContentValues c2 = new ContentValues();
+                                        c2.put(DatabaseHelper.JSONDATA, contentdetails.toString());
+                                        c2.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                                        c2.put(DatabaseHelper.UNIT_ID, array.optJSONObject(a).optJSONObject("ContentDetails").optInt("unitid"));
+                                        c2.put(DatabaseHelper.EBOOK_ID, ebook_id);
+                                        c2.put(DatabaseHelper.CHAPTER_ID, array.optJSONObject(a).optJSONObject("ContentDetails").optInt("chapterid"));
+                                        c2.put(DatabaseHelper.TYPE, type);
+
+                                        DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c2, ebook_id, array.optJSONObject(a).optJSONObject("ContentDetails").optInt("unitid"), array.optJSONObject(a).optJSONObject("ContentDetails").optInt("chapterid"));
+                                    }
+
+                                }
+
+                            }
+
+
 
                         } else {
                             array.put(obj1.optJSONObject("subroot"));
                             ContentValues c1 = new ContentValues();
                             c1.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                            c1.put(DatabaseHelper.EBOOK_ID, ebook_id);
+                            c1.put(DatabaseHelper.UNIT_ID, obj1.optJSONObject("subroot").optInt("unitid"));
                             c1.put(DatabaseHelper.JSONDATA, array.toString());
                             c1.put(DatabaseHelper.TYPE, type);
-                            DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c1);
+                            DatabaseHelper.getInstance(ConnectionManager.this).save_ebookdetails(c1, ebook_id);
+
+
+                            for(int a = 0; a< array.length(); a++){
+
+                                //JSONObject c2 = array.optJSONObject(a);
+
+                                if(array.optJSONObject(a).has("ContentDetails")){
+
+                                    JSONArray contentdetails = new JSONArray();
+                                    Object chk = array.optJSONObject(a).opt("ContentDetails");
+
+                                    if(chk instanceof JSONArray){
+
+                                        JSONArray arrcontentdetails = array.optJSONObject(a).optJSONArray("ContentDetails");
+                                        for(int i =0; i<arrcontentdetails.length(); i++){
+                                            contentdetails = new JSONArray();
+
+                                            //JSONObject obj = arrcontentdetails.optJSONObject(i);
+                                            contentdetails.put(arrcontentdetails.optJSONObject(i));
+
+                                            ContentValues c3 = new ContentValues();
+                                            c3.put(DatabaseHelper.JSONDATA, contentdetails.toString());
+                                            c3.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                                            c3.put(DatabaseHelper.UNIT_ID, arrcontentdetails.optJSONObject(i).optInt("unitid"));
+                                            c3.put(DatabaseHelper.EBOOK_ID, ebook_id);
+                                            c3.put(DatabaseHelper.CHAPTER_ID, arrcontentdetails.optJSONObject(i).optInt("chapterid"));
+                                            c3.put(DatabaseHelper.TYPE, type);
+
+                                            DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c3, ebook_id, arrcontentdetails.optJSONObject(i).optInt("unitid"), arrcontentdetails.optJSONObject(i).optInt("chapterid"));
+
+                                        }
+
+                                    }else{
+
+                                        contentdetails.put(array.optJSONObject(a).optJSONObject("ContentDetails"));
+
+                                        ContentValues c4 = new ContentValues();
+                                        c4.put(DatabaseHelper.JSONDATA, contentdetails.toString());
+                                        c4.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+                                        c4.put(DatabaseHelper.UNIT_ID, array.optJSONObject(a).optJSONObject("ContentDetails").optInt("unitid"));
+                                        c4.put(DatabaseHelper.EBOOK_ID, ebook_id);
+                                        c4.put(DatabaseHelper.CHAPTER_ID, array.optJSONObject(a).optJSONObject("ContentDetails").optInt("chapterid"));
+                                        c4.put(DatabaseHelper.TYPE, type);
+
+                                        DatabaseHelper.getInstance(ConnectionManager.this).save_contentdetails(c4, ebook_id, array.optJSONObject(a).optJSONObject("ContentDetails").optInt("unitid"), array.optJSONObject(a).optJSONObject("ContentDetails").optInt("chapterid"));
+                                    }
+
+                                }
+
+                            }
+
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     final int code = response.code();
                     if (code != Constants.STATUS_OK) {
                         publishBroadcast(Constants.STATUS_OK, Connection.GET_EBOOKCONTENT_EXCEPTION.ordinal());

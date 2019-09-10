@@ -13,10 +13,12 @@ import android.support.v4.app.FragmentManager;
 public class EbookPagerAdapter extends FragmentStatePagerAdapter {
 
     ArrayList<EbookPageDetails> ebookPageDetails;
+    int unitid = 0;
 
-    public EbookPagerAdapter(FragmentManager fragmentManager, ArrayList<EbookPageDetails> ebookPageDetails) {
+    public EbookPagerAdapter(FragmentManager fragmentManager, ArrayList<EbookPageDetails> ebookPageDetails, int unitid) {
         super(fragmentManager);
         this.ebookPageDetails = ebookPageDetails;
+        this.unitid = unitid;
 
     }
 
@@ -27,6 +29,6 @@ public class EbookPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return EbookPagesFragment.newInstance(ebookPageDetails.get(position), "data");
+        return EbookPagesFragment.newInstance(ebookPageDetails.get(position), "data", unitid);
     }
 }

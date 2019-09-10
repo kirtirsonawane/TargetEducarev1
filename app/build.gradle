@@ -18,8 +18,8 @@ android {
         multiDexEnabled true
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 8
-        versionName '1.8'
+        versionCode 9
+        versionName '1.9'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [onesignal_app_id               : "4978e0d2-d78e-4550-8412-195ecdb9f66c",
                                 onesignal_google_project_number: "REMOTE"]

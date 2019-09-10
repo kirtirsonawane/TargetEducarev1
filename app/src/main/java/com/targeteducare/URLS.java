@@ -210,19 +210,19 @@ public class URLS {
     }
 
     public static String student_ebookget() {
-        return "http://192.168.1.59:8097/ExamRoute/Api_Student_Ebook_Get";
+        return getBaseUrlup() + "Api_Student_Ebook_Get";
     }
 
     public static String ebook_contentget() {
-        return "http://192.168.1.59:8097/ExamRoute/Api_Ebook_GetContent";
+        return getBaseUrlup() + "Api_Ebook_GetContent";
     }
 
     public static String image_url_ebooktemp() {
-        return "http://192.168.1.59:8097/images/uploadimages/";
+        return "http://"+"192.168.1.59:8097"+"/images/uploadimages/";
     }
 
     public static String url_ebook_content() {
-        return "http://192.168.1.59:8097/";
+        return "http://"+"192.168.1.59:8097"+"/";
     }
 
 }

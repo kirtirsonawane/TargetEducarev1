@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
@@ -25,27 +26,9 @@ import io.fabric.sdk.android.Fabric;
 
 public class App extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {//implements AppForegroundStateManager.OnAppForegroundStateChangeListener{
     private int activityReferences = 0;
-    // long currentmillies = 0;
+
     private boolean isActivityChangingConfigurations = false;
-   /* public App(){
-        defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
-    }*/
 
-    /*    private Thread.UncaughtExceptionHandler defaultUEH;
-
-        private Thread.UncaughtExceptionHandler _unCaughtExceptionHandler =
-                new Thread.UncaughtExceptionHandler() {
-                    @Override
-                    public void uncaughtException(Thread thread, Throwable ex) {
-
-                        // here I do logging of exception to a db
-                        Log.e("MyApp", "Uncaught exception.");
-                        // Do what you want.
-
-                        // re-throw exception to O.S. if that is serious and need to be handled by o.s. Uncomment the next line that time.
-                        //defaultUEH.uncaughtException(thread, ex);
-                    }
-                };*/
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -59,13 +42,14 @@ public class App extends MultiDexApplication implements Application.ActivityLife
 
         try {
             registerActivityLifecycleCallbacks(this);
-            //   AppForegroundStateManager.getInstance().addListener(this);
+
             OneSignal.startInit(this)
                     .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
                     .unsubscribeWhenNotificationsAreDisabled(true)
                     .setNotificationOpenedHandler(new mNotificationOpenedHandler(this))
                     .setNotificationReceivedHandler(new mNotificationOpenedHandler(this))
                     .init();
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,7 +75,6 @@ public class App extends MultiDexApplication implements Application.ActivityLife
                             GlobalValues.student.setUseractive(1);
                             GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
 
-
                             CheckUsers(GlobalValues.student.getMobile(), true);
                         }
                     }
@@ -114,79 +97,51 @@ public class App extends MultiDexApplication implements Application.ActivityLife
                 DatabaseReference databaseReference;
                 databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
 
-                databaseReference.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        try {
-                            if (dataSnapshot != null) {
-                                if (dataSnapshot.getValue() != null) {
-                                    if (dataSnapshot.exists()) {
-                                        Log.e("exists ", "exists " + dataSnapshot.toString());
-                                        Student s = dataSnapshot.getValue(Student.class);
-                                        if (s.getIEMIno().length() > 0) {
-                                            if (!s.getIEMIno().equalsIgnoreCase(GlobalValues.student.getIEMIno())) {
-                                                return;
-                                            }
-                                        }
-                                        if (isstart)
-                                            GlobalValues.student.setTimetaken(s.getTimetaken());
+                if ((!uId.trim().equalsIgnoreCase("")) && uId.length() >= 10) {
+                    databaseReference.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            try {
+                                if (dataSnapshot != null) {
+                                    if (dataSnapshot.getValue() != null) {
+                                        if (dataSnapshot.exists()) {
 
-                                        GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
-                                        addtofirebasedb(0);
+                                            Log.e("exists ", "exists " + dataSnapshot.toString());
+                                            Student s = dataSnapshot.getValue(Student.class);
+                                            if (s.getIEMIno().length() > 0) {
+                                                if (!s.getIEMIno().equalsIgnoreCase(GlobalValues.student.getIEMIno())) {
+                                                    return;
+                                                }
+                                            }
+                                            if (isstart)
+                                                GlobalValues.student.setTimetaken(s.getTimetaken());
+
+                                            GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
+                                            addtofirebasedb(0);
+
+
+                                        } else {
+                                            Log.e("nt exists ", "nt exists " + dataSnapshot.toString());
+                                            addtofirebasedb(1);
+                                        }
                                     } else {
-                                        Log.e("nt exists ", "nt exists " + dataSnapshot.toString());
                                         addtofirebasedb(1);
                                     }
                                 } else {
                                     addtofirebasedb(1);
                                 }
-                            } else {
-                                addtofirebasedb(1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
-
-                databaseReference.child(uId).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        try {
-                            Log.e("Datas   ", "" + dataSnapshot.toString());
-                            if (dataSnapshot.getValue() != null) {
-                                Student s = dataSnapshot.getValue(Student.class);
-                                // Log.e("data ", s.getMobile() + " " + s.getId() + " " + s.getTimetaken());
-                                if (!dataSnapshot.exists()) {
-                                    if (s.getIEMIno().length() > 0) {
-                                        if (!s.getIEMIno().equalsIgnoreCase(GlobalValues.student.getIEMIno())) {
-                                            return;
-                                        }
-                                    }
-
-                                    GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
-                                    addtofirebasedb(1);
-                                } else {
-                                   /* GlobalValues.student.setTimetaken(s.getTimetaken());
-                                    GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
-                                    addtofirebasedb();*/
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
+                    });
+                }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,6 +183,7 @@ public class App extends MultiDexApplication implements Application.ActivityLife
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

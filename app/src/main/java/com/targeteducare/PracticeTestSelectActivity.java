@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.targeteducare.Adapter.Course_New_Adapter;
+import com.targeteducare.Adapter.PeakNewAdapter;
 import com.targeteducare.Classes.Course_New;
 import com.targeteducare.database.DatabaseHelper;
 
@@ -18,10 +20,11 @@ import java.util.ArrayList;
 
 public class PracticeTestSelectActivity extends Activitycommon {
 
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, recycler_view_peak;
     Course_New_Adapter course_new_adapter;
-    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.LayoutManager layoutManager, layoutManager1;
     ArrayList<Course_New> course_new = new ArrayList<>();
+    PeakNewAdapter peakNewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,10 @@ public class PracticeTestSelectActivity extends Activitycommon {
             recyclerView = findViewById(R.id.recycler_course);
             layoutManager = new LinearLayoutManager(PracticeTestSelectActivity.this);
             recyclerView.setLayoutManager(layoutManager);
+
+            recycler_view_peak = findViewById(R.id.recycler_view_peak);
+            layoutManager1 = new LinearLayoutManager(PracticeTestSelectActivity.this);
+            recycler_view_peak.setLayoutManager(layoutManager1);
 
             course_new_adapter = new Course_New_Adapter(PracticeTestSelectActivity.this, course_new, lang);
             recyclerView.setAdapter(course_new_adapter);
@@ -150,4 +157,17 @@ public class PracticeTestSelectActivity extends Activitycommon {
         }
 
     }
+
+    /*public void gotopeakadapter(Course_New course_new, int i) {
+
+        if(i == 0){
+            recycler_view_peak.setVisibility(View.GONE);
+        }else{
+
+            peakNewAdapter = new PeakNewAdapter(PracticeTestSelectActivity.this, course_new, lang);
+            recycler_view_peak.setAdapter(peakNewAdapter);
+            peakNewAdapter.notifyDataSetChanged();
+            recycler_view_peak.setVisibility(View.VISIBLE);
+        }
+    }*/
 }

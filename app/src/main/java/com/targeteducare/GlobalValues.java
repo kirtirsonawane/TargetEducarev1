@@ -9,8 +9,8 @@ public class GlobalValues {
     public static String TEMP_STR = "";
     public static Student student = new Student();
     public static int width = 500;
-    public static String IP = "exam.targeteducare.com";
-  // public static String IP = "192.168.1.59:8097";
+    //public static String IP = "exam.targeteducare.com";
+    public static String IP = "192.168.1.59:8097";
    // public static String IP = "13.232.35.201";
     public static String bilid = "0";
     public static String selectedtesttype = "";

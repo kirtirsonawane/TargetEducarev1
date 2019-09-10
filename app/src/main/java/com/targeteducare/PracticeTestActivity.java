@@ -247,7 +247,8 @@ public class PracticeTestActivity extends Activitycommon {
     public void gotoAction(Exam exam) {
         try {
             Intent iprogrprt = new Intent(PracticeTestActivity.this, ProgressReportActivity.class);
-            iprogrprt.putExtra("progressreport", exam);
+            //iprogrprt.putExtra("progressreport", exam);
+            iprogrprt.putExtra("examidprogress", exam.getExamid());
             iprogrprt.putExtra("flag", 1);
             startActivity(iprogrprt);
         } catch (Exception e) {

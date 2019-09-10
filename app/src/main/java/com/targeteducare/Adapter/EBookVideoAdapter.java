@@ -25,7 +25,7 @@ public class EBookVideoAdapter extends RecyclerView.Adapter<EBookVideoAdapter.My
     String lang = "";
     boolean playWhenReady = true;
 
-    public EBookVideoAdapter(Context context, ArrayList<EbookVideoDetails> ebookVideoDetails, String lang){
+    public EBookVideoAdapter(Context context, ArrayList<EbookVideoDetails> ebookVideoDetails, String lang) {
         this.context = context;
         this.ebookVideoDetails = ebookVideoDetails;
         this.lang = lang;
@@ -53,11 +53,17 @@ public class EBookVideoAdapter extends RecyclerView.Adapter<EBookVideoAdapter.My
             myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((EBookContentDisplayActivity)context).gotoebookfragment(ebookVideoDetails.get(i));
+                    try {
+
+                        ((EBookContentDisplayActivity) context).gotoebookfragment(ebookVideoDetails.get(i));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -68,7 +74,7 @@ public class EBookVideoAdapter extends RecyclerView.Adapter<EBookVideoAdapter.My
         return ebookVideoDetails.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_videotitle;
         ImageView iv_video;

@@ -75,18 +75,27 @@ public class EbookVideoPlayerActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_ebook_video_player);
 
-        if (savedInstanceState != null) {
-            mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
-            mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
-            mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+        try {
+            if (savedInstanceState != null) {
+                mResumeWindow = savedInstanceState.getInt(STATE_RESUME_WINDOW);
+                mResumePosition = savedInstanceState.getLong(STATE_RESUME_POSITION);
+                mExoPlayerFullscreen = savedInstanceState.getBoolean(STATE_PLAYER_FULLSCREEN);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        Bundle b = getIntent().getExtras();
-        if(b!=null){
-            ebookVideoDetails = (EbookVideoDetails) b.getSerializable("videodetails");
-            links = ebookVideoDetails.getVideo();
-        }
 
+        try {
+            Bundle b = getIntent().getExtras();
+            if (b != null) {
+                ebookVideoDetails = (EbookVideoDetails) b.getSerializable("videodetails");
+                links = ebookVideoDetails.getVideo();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -94,42 +103,62 @@ public class EbookVideoPlayerActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
-        outState.putLong(STATE_RESUME_POSITION, mResumePosition);
-        outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
+        try {
+
+            outState.putInt(STATE_RESUME_WINDOW, mResumeWindow);
+            outState.putLong(STATE_RESUME_POSITION, mResumePosition);
+            outState.putBoolean(STATE_PLAYER_FULLSCREEN, mExoPlayerFullscreen);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         super.onSaveInstanceState(outState);
     }
 
     private void initFullscreenDialog() {
 
-        mFullScreenDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
-            public void onBackPressed() {
-                if (mExoPlayerFullscreen)
-                    closeFullscreenDialog();
-                super.onBackPressed();
-            }
-        };
+        try {
+
+            mFullScreenDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+                public void onBackPressed() {
+                    if (mExoPlayerFullscreen)
+                        closeFullscreenDialog();
+                    super.onBackPressed();
+                }
+            };
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void openFullscreenDialog() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
-        mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_back));
-        mExoPlayerFullscreen = true;
-        mFullScreenDialog.show();
+        try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_back));
+            mExoPlayerFullscreen = true;
+            mFullScreenDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void closeFullscreenDialog() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
-        ((LinearLayout) findViewById(R.id.mainframe)).addView(mExoPlayerView);
-        mExoPlayerFullscreen = false;
-        mFullScreenDialog.dismiss();
-        mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_dot_yellow1));
+
+        try {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+            ((LinearLayout) findViewById(R.id.mainframe)).addView(mExoPlayerView);
+            mExoPlayerFullscreen = false;
+            mFullScreenDialog.dismiss();
+            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_dot_yellow1));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -138,46 +167,58 @@ public class EbookVideoPlayerActivity extends AppCompatActivity {
         //PlaybackControlView controlView = mExoPlayerView.findViewById(R.id.exo_controller);
         //mFullScreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
         //mFullScreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
-        mFullScreenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mExoPlayerFullscreen)
-                    openFullscreenDialog();
-                else
-                    closeFullscreenDialog();
-            }
-        });
+
+        try {
+            mFullScreenButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!mExoPlayerFullscreen)
+                        openFullscreenDialog();
+                    else
+                        closeFullscreenDialog();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initExoPlayer() {
 
-        mExoPlayerView = findViewById(R.id.video_view);
-        mainHandler = new Handler();
-        bandwidthMeter = new DefaultBandwidthMeter();
-        videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        trackSelector =
-                new DefaultTrackSelector(videoTrackSelectionFactory);
-        LoadControl loadControl = new DefaultLoadControl();
-        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
-        mExoPlayerView.setPlayer(player);
+        try {
+
+            mExoPlayerView = findViewById(R.id.video_view);
+            mainHandler = new Handler();
+            bandwidthMeter = new DefaultBandwidthMeter();
+            videoTrackSelectionFactory =
+                    new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            trackSelector =
+                    new DefaultTrackSelector(videoTrackSelectionFactory);
+            LoadControl loadControl = new DefaultLoadControl();
+            player = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
+            mExoPlayerView.setPlayer(player);
 // Measures bandwidth during playback. Can be null if not required.
-        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
 // Produces DataSource instances through which media data is loaded.
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "OnlineLearningSystem"), bandwidthMeter);
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+                    Util.getUserAgent(this, "OnlineLearningSystem"), bandwidthMeter);
 // This is the MediaSource representing the media to be played.
-        mVideoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(links));
+            mVideoSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(links));
 // Prepare the player with the source.
 
-        boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
+            boolean haveResumePosition = mResumeWindow != C.INDEX_UNSET;
 
-        if (haveResumePosition) {
-            mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+            if (haveResumePosition) {
+                mExoPlayerView.getPlayer().seekTo(mResumeWindow, mResumePosition);
+            }
+
+            player.prepare(mVideoSource);
+            player.setPlayWhenReady(true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        player.prepare(mVideoSource);
-        player.setPlayWhenReady(true);
     }
 
 
@@ -186,27 +227,32 @@ public class EbookVideoPlayerActivity extends AppCompatActivity {
 
         super.onResume();
 
-        if (mExoPlayerView == null) {
+        try {
+            if (mExoPlayerView == null) {
 
-            mExoPlayerView = findViewById(R.id.video_view);
-            //initFullscreenDialog();
-            //initFullscreenButton();
+                mExoPlayerView = findViewById(R.id.video_view);
+                //initFullscreenDialog();
+                //initFullscreenButton();
 
-            String userAgent = Util.getUserAgent(this, getApplicationContext().getApplicationInfo().packageName);
-            DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS, DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, true);
-            DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, null, httpDataSourceFactory);
-            Uri daUri = Uri.parse("http://192.168.1.59:8097//images/Uploadvideos/20190821174916_SampleVideo_360x240_30mb.mp4");
+                String userAgent = Util.getUserAgent(this, getApplicationContext().getApplicationInfo().packageName);
+                DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS, DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS, true);
+                DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(this, null, httpDataSourceFactory);
+                Uri daUri = Uri.parse("http://192.168.1.59:8097//images/Uploadvideos/20190821174916_SampleVideo_360x240_30mb.mp4");
 
-            mVideoSource = new HlsMediaSource(daUri, dataSourceFactory, 1, null, null);
-        }
+                mVideoSource = new HlsMediaSource(daUri, dataSourceFactory, 1, null, null);
+            }
 
-        initExoPlayer();
+            initExoPlayer();
 
-        if (mExoPlayerFullscreen) {
-            ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
-            mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_attach));
-            mFullScreenDialog.show();
+            if (mExoPlayerFullscreen) {
+                ((ViewGroup) mExoPlayerView.getParent()).removeView(mExoPlayerView);
+                mFullScreenDialog.addContentView(mExoPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                mFullScreenIcon.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_attach));
+                mFullScreenDialog.show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -216,23 +262,35 @@ public class EbookVideoPlayerActivity extends AppCompatActivity {
 
         super.onPause();
 
-        if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
-            mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
-            mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
 
-            mExoPlayerView.getPlayer().release();
+        try {
+            if (mExoPlayerView != null && mExoPlayerView.getPlayer() != null) {
+                mResumeWindow = mExoPlayerView.getPlayer().getCurrentWindowIndex();
+                mResumePosition = Math.max(0, mExoPlayerView.getPlayer().getContentPosition());
+
+                mExoPlayerView.getPlayer().release();
+            }
+
+            if (mFullScreenDialog != null)
+                mFullScreenDialog.dismiss();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        if (mFullScreenDialog != null)
-            mFullScreenDialog.dismiss();
     }
 
 
     @Override
     protected void onDestroy() {
 
-        if (player != null) {
-            player.stop();
+        try {
+
+            if (player != null) {
+                player.stop();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         super.onDestroy();
     }

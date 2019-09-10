@@ -179,34 +179,45 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
             });
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
-            databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    try {
-                        if (dataSnapshot != null) {
-                            if (dataSnapshot.getValue() != null) {
-                                if (dataSnapshot.exists()) {
-                                    addtofirebasedb(0);
+
+            if(mobilenotblankandlengthten(GlobalValues.student.getMobile())){
+                databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            if (dataSnapshot != null) {
+                                if (dataSnapshot.getValue() != null) {
+                                    if (dataSnapshot.exists()) {
+                                        if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                            String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                            if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+                                                addtofirebasedb(0);
+                                            }
+                                        }
+
+                                    } else {
+                                        Log.e("nt exists ", "nt exists " + dataSnapshot.toString());
+                                        addtofirebasedb(1);
+                                    }
                                 } else {
-                                    Log.e("nt exists ", "nt exists " + dataSnapshot.toString());
                                     addtofirebasedb(1);
                                 }
                             } else {
                                 addtofirebasedb(1);
                             }
-                        } else {
-                            addtofirebasedb(1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
+
 
             result = (TextView) findViewById(R.id.textview_result);
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -1613,26 +1624,34 @@ public class ExamActivity extends Activitycommon implements NavigationView.OnNav
             if (InternetUtils.getInstance(getApplicationContext()).available()) {
                 DatabaseReference databaseReference;
                 databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
-                Map<String, Object> childUpdates = new HashMap<>();
-                Map<String, Object> values = new HashMap<>();
-                values.put("examid", exam.getExamid());
-                values.put("examname", exam.getExamname());
-                values.put("isattempted", 1);
-                values.put("type", type);
-                Log.e("data saved ", "data saved " + exam.getExamid() + " " + exam.getExamname() + " " + exam.getExam_type());
-                childUpdates.put( ""+ exam.getExamid(), values);
-                if (flag == 0) {
-                    databaseReference.child(GlobalValues.student.getMobile()).child("Exam").updateChildren(childUpdates);
-                } else {
+
+                if(mobilenotblankandlengthten(GlobalValues.student.getMobile())){
+
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    Map<String, Object> values = new HashMap<>();
+                    values.put("examid", exam.getExamid());
+                    values.put("examname", exam.getExamname());
+                    values.put("isattempted", 1);
+                    values.put("type", type);
+                    values.put("IEMIno", Constants.IEMIno);
+                    values.put("Mobile", GlobalValues.student.getMobile());
+                    Log.e("data saved ", "data saved " + exam.getExamid() + " " + exam.getExamname() + " " + exam.getExam_type());
+                    childUpdates.put( ""+ exam.getExamid(), values);
+                    if (flag == 0) {
+                        databaseReference.child(GlobalValues.student.getMobile()).child("Exam").updateChildren(childUpdates);
+                    } else {
                    /* Map<String, Object> childUpdates = new HashMap<>();
                     //  childUpdates.put("/posts/" + key, postValues);
                     Map<String, Object> values = new HashMap<>();
                     values.put("examname", exam.getExamname());
                     values.put("isattempted", 1);
                     childUpdates.put(GlobalValues.student.getMobile() + "/Exam/"+exam.getExamid(), values);*/
-                    databaseReference.child(GlobalValues.student.getMobile()).child("Exam").setValue(childUpdates);
-                    // Log.e("update ","insert ");
+                        databaseReference.child(GlobalValues.student.getMobile()).child("Exam").setValue(childUpdates);
+                        // Log.e("update ","insert ");
+                    }
+
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -38,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.targeteducare.Adapter.AdapterNotification;
 import com.targeteducare.Adapter.CustomAdapterforGridMain;
 import com.targeteducare.Classes.Chat;
+import com.targeteducare.Classes.EbookVideoDetails;
 import com.targeteducare.Classes.Menu;
 import com.targeteducare.Classes.QnaQuestionModel;
 import com.targeteducare.Classes.Student;
@@ -66,6 +67,9 @@ public class GridMainActivity extends Activitycommon {
     ArrayList<Chat> chatdata = new ArrayList<>();
     // long currentmillies = 0;
     String tag = "";
+    String chatmsg = "";
+    String chatdate = "";
+    String isfetched = "";
 
     AdapterNotification adapterNotification;
     ArrayList<String> chats = new ArrayList<>();
@@ -107,7 +111,16 @@ public class GridMainActivity extends Activitycommon {
                     databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
                     GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
                     GlobalValues.student.setUseractive(1);
-                    CheckUsers(GlobalValues.student.getMobile());
+
+                    if(mobilenotblankandlengthten(GlobalValues.student.getMobile())){
+                        CheckUsers(GlobalValues.student.getMobile());
+                        if(!Constants.IEMIno.equals("")){
+                            check_chat_available(GlobalValues.student.getMobile(), Constants.IEMIno);
+                        }
+
+                    }
+
+
 
 
                    /* try {
@@ -119,7 +132,7 @@ public class GridMainActivity extends Activitycommon {
                     }*/
 
 
-                    check_chat_available(GlobalValues.student.getMobile());
+
 
                 }
             } catch (Exception e) {
@@ -289,6 +302,8 @@ public class GridMainActivity extends Activitycommon {
         super.onResume();
         try {
             databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+
+
             databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -420,8 +435,9 @@ public class GridMainActivity extends Activitycommon {
                 startActivity(imainsubjselect);
                 break;*/
                 case R.mipmap.news:
-                    Log.e("Ebbok ", "Ebook ");
-                    Intent intent = new Intent(GridMainActivity.this, ActivityNews.class);
+                    //Log.e("Ebbok ", "Ebook ");
+                    Intent intent = new Intent(GridMainActivity.this, EbookSubjectActivity.class);
+                    intent.putExtra("video", 1);
                     startActivity(intent);
                     break;
                 case R.mipmap.profile:
@@ -431,6 +447,7 @@ public class GridMainActivity extends Activitycommon {
 
                 case R.mipmap.annoucement:
                     Intent iengcolg = new Intent(GridMainActivity.this, EbookSubjectActivity.class);
+                    iengcolg.putExtra("video", 0);
                     startActivity(iengcolg);
                     break;
 
@@ -485,44 +502,47 @@ public class GridMainActivity extends Activitycommon {
                         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
                         Map<String, Object> values = GlobalValues.student.toMap();
 
-                        databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot != null) {
-                                    if (dataSnapshot.getValue() != null) {
-                                        if (dataSnapshot.exists()) {
-                                            //  Log.e("exists ", "exists " + dataSnapshot.toString());
-                                            Student s = dataSnapshot.getValue(Student.class);
-                                            if (s.getIEMIno().length() > 0) {
-                                                if (!s.getIEMIno().equalsIgnoreCase(GlobalValues.student.getIEMIno())) {
-                                                    return;
-                                                }
-                                            }
+                        if (mobilenotblankandlengthten(GlobalValues.student.getMobile())) {
 
-                                            long totalmillies = System.currentTimeMillis() - GlobalValues.currentmillies;
-                                            long timetaken = GlobalValues.student.getTimetaken() + (totalmillies / 1000);
-                                            Map<String, Object> childUpdates = new HashMap<>();
-                                            childUpdates.put("timetaken", timetaken);
-                                            childUpdates.put("useractive", 0);
-                                            childUpdates.put("lasttimetaken", totalmillies / 1000);
-                                            childUpdates.put("islogin", 0);
-                                            databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);
+                            databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot != null) {
+                                        if (dataSnapshot.getValue() != null) {
+                                            if (dataSnapshot.exists()) {
+                                                //  Log.e("exists ", "exists " + dataSnapshot.toString());
+                                                Student s = dataSnapshot.getValue(Student.class);
+                                                if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                                    String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                                    if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+                                                        addtofirebasedb(0);
+                                                    }
+                                                }
+                                                /*if (s.getIEMIno().length() > 0) {
+                                                    if (!s.getIEMIno().equalsIgnoreCase(GlobalValues.student.getIEMIno())) {
+                                                        return;
+                                                    }
+                                                }*/
+
+                                            } else {
+                                                addtofirebasedb(1);
+                                            }
                                         } else {
                                             addtofirebasedb(1);
                                         }
                                     } else {
                                         addtofirebasedb(1);
                                     }
-                                } else {
-                                    addtofirebasedb(1);
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
+                                }
+                            });
+
+                        }
                     }
                 }
             }
@@ -822,13 +842,22 @@ public class GridMainActivity extends Activitycommon {
                 //  databaseReference.child(GlobalValues.student.getMobile()).setValue(values);
 
                 if (flag == 0) {
-                    Map<String, Object> childUpdates = new HashMap<>();
+                    /*Map<String, Object> childUpdates = new HashMap<>();
 
                     Log.e("Timetaken ", "timetaken " + GlobalValues.student.getTimetaken());
                     childUpdates.put("useractive", 1);
                     childUpdates.put("timetaken", GlobalValues.student.getTimetaken());
                     childUpdates.put("lasttimetaken", GlobalValues.student.getLasttimetaken());
                     childUpdates.put("lastvisiteddate", GlobalValues.student.getLastvisiteddate());
+                    databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);*/
+
+                    long totalmillies = System.currentTimeMillis() - GlobalValues.currentmillies;
+                    long timetaken = GlobalValues.student.getTimetaken() + (totalmillies / 1000);
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("timetaken", timetaken);
+                    childUpdates.put("useractive", 0);
+                    childUpdates.put("lasttimetaken", totalmillies / 1000);
+                    childUpdates.put("islogin", 0);
                     databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);
 
                 } else {
@@ -862,17 +891,26 @@ public class GridMainActivity extends Activitycommon {
     }*/
 
 
- public void check_chat_available(String uId){
-     try {
-         if (databaseReference != null) {
+    public void check_chat_available(final String uId, final String IEMi) {
+        try {
+            if (databaseReference != null) {
 
-             databaseReference.child(uId).child("chat").addChildEventListener(new ChildEventListener() {
-                 @Override
-                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                     try {
-                         if (dataSnapshot != null) {
-                             if (dataSnapshot.getValue() != null) {
-                                 if (dataSnapshot.exists()) {
+                databaseReference.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if(dataSnapshot.exists()) {
+                            if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+                                    databaseReference.child(uId).child("chat").addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                            try {
+                                                if (dataSnapshot != null) {
+                                                    if (dataSnapshot.getValue() != null) {
+                                                        if (dataSnapshot.exists()) {
 
 
                                         /*String key = dataSnapshot.getKey();
@@ -885,26 +923,37 @@ public class GridMainActivity extends Activitycommon {
                                         Log.e("chat data val ", name);
                                         chats.add(name);*/
 
-                                     try {
-                                         String key = dataSnapshot.getKey();
-                                         String chatmsg = dataSnapshot.child("data").getValue(String.class);
-                                         String chatdate = dataSnapshot.child("date").getValue(String.class);
-                                         String isread = dataSnapshot.child("isread").getValue(String.class);
-                                         JSONObject jsonobj = new JSONObject();
-                                         jsonobj.put("time", chatdate);
-                                         jsonobj.put("header", "TARGET EDUCARE PEAK app");
-                                         jsonobj.put("desc", chatmsg);
-                                         jsonobj.put("imageurl", "");
-                                         jsonobj.put("key", key);
-                                         jsonobj.put("isread", isread);
+                                                            try {
+                                                                String key = dataSnapshot.getKey();
+                                                                chatmsg = dataSnapshot.child("data").getValue(String.class);
+                                                                chatdate = dataSnapshot.child("date").getValue(String.class);
+                                                                isfetched = dataSnapshot.child("isfetched").getValue(String.class);
 
-                                         DatabaseHelper.getInstance(context).savenotificationData(DatabaseHelper.TABLE_NOTIFICATION,  jsonobj.toString());
-                                         DatabaseHelper.getInstance(context).getnotificationdata(DatabaseHelper.TABLE_NOTIFICATION);
+                                                                JSONObject jsonobj = new JSONObject();
+                                                                jsonobj.put("time", chatdate);
+                                                                jsonobj.put("header", "TARGET EDUCARE PEAK app");
+                                                                jsonobj.put("desc", chatmsg);
+                                                                jsonobj.put("imageurl", "");
+                                                                Log.e("key val ","" + key);
+                                                                //jsonobj.put("key", key);
 
+                                                                try {
+                                                                    if (isfetched.equalsIgnoreCase("0")) {
+                                                                        DatabaseHelper.getInstance(context).savenotificationData(DatabaseHelper.TABLE_NOTIFICATION, jsonobj.toString());
+                                                                        DatabaseHelper.getInstance(context).getnotificationdata(DatabaseHelper.TABLE_NOTIFICATION);
+                                                                        onfetchcomplete(uId, key);
+                                                                        Intent resultIntent = new Intent(GridMainActivity.this, NotificationActionService.class);
+                                                                        resultIntent.putExtra("notificationtitle", "TARGET EDUCARE PEAK app");
+                                                                        resultIntent.putExtra("notificationbody", chatmsg );
+                                                                        startService(resultIntent);
+                                                                    }
+                                                                } catch (Exception e) {
+                                                                    e.printStackTrace();
+                                                                }
 
-                                     } catch (Exception e) {
-                                         e.printStackTrace();
-                                     }
+                                                            } catch (Exception e) {
+                                                                e.printStackTrace();
+                                                            }
 
 
                                         /*Iterable<DataSnapshot> contactChildren = dataSnapshot.getChildren();
@@ -916,41 +965,78 @@ public class GridMainActivity extends Activitycommon {
                                             }
                                         }*/
 
-                                 }
-                             }
-                         }
-                     } catch (Exception e) {
-                         e.printStackTrace();
-                     }
-                 }
+                                                        }
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
 
-                 @Override
-                 public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                        @Override
+                                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                 }
+                                        }
 
-                 @Override
-                 public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                                        @Override
+                                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
-                 }
+                                        }
 
-                 @Override
-                 public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                                        @Override
+                                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                 }
+                                        }
 
-                 @Override
-                 public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                 }
-             });
-         }
-     } catch (Exception e) {
-         e.printStackTrace();
-     }
- }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                    }
+                });
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onfetchcomplete(final String uId, final String key) {
+
+        try {
+            if (InternetUtils.getInstance(getApplicationContext()).available()) {
+                DatabaseReference databaseReference;
+                databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+
+                //  databaseReference.child(GlobalValues.student.getMobile()).setValue(values);
+                Map<String, Object> childUpdates = new HashMap<>();
+                //  childUpdates.put("/posts/" + key, postValues);
+                Map<String, Object> values = new HashMap<>();
+                values.put("data", chatmsg);
+                values.put("date", chatdate);
+                values.put("isfetched", "1");
+                childUpdates.put("", values);
+                Log.e("key val ", "" + key);
+                //if (flag == 0) {
+                databaseReference.child(uId).child("chat").child(key).updateChildren(values);
+                /*} else {
+
+                    databaseReference.child(GlobalValues.student.getMobile()).child("Exam").setValue(childUpdates);
+
+                }*/
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -26,13 +26,15 @@ public class EbookSubjectAdapter extends RecyclerView.Adapter<EbookSubjectAdapte
     Context context;
     ArrayList<EbookSubjects> ebookSubjects = new ArrayList<>();
     String lang = "";
-    int initial = 0;
+    int mSelectedItem = 0;
+    int video;
 
 
-    public EbookSubjectAdapter(Context context, ArrayList<EbookSubjects> ebookSubjects, String lang) {
+    public EbookSubjectAdapter(Context context, ArrayList<EbookSubjects> ebookSubjects, int video, String lang) {
         this.context = context;
         this.ebookSubjects = ebookSubjects;
         this.lang = lang;
+        this.video = video;
     }
 
 
@@ -48,42 +50,27 @@ public class EbookSubjectAdapter extends RecyclerView.Adapter<EbookSubjectAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, final int i) {
+        try {
 
-        myViewHolder.tv_select.setText(Html.fromHtml(ebookSubjects.get(i).getSubjctname()));
+            myViewHolder.tv_select.setSelected(i == mSelectedItem);
 
-        if (initial == 0) {
-            initial = 1;
-            ((EbookSubjectActivity) context).goto_ontextviewselected(ebookSubjects.get(0).getEbookDetails());
-            myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_onclick);
-            ebookSubjects.get(0).setSelected(true);
-        }
+            if (myViewHolder.tv_select.isSelected()) {
+                myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_onclick);
+                ((EbookSubjectActivity) context).goto_ontextviewselected(ebookSubjects.get(i).getEbookDetails());
+            } else {
+                myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_default);
+            }
 
-        myViewHolder.tv_select.setSelected(ebookSubjects.get(i).isSelected());
+            if(video == 0){
+                myViewHolder.tv_select.setText(Html.fromHtml(ebookSubjects.get(i).getSubjctname()));
 
-        myViewHolder.tv_select.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(ebookSubjects.get(i).isSelected()){
-                    myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_onclick);
-                    ((EbookSubjectActivity) context).goto_ontextviewselected(ebookSubjects.get(i).getEbookDetails());
-                    ebookSubjects.get(i).setSelected(false);
-                }
-                else{
-                    myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_default);
-                    ebookSubjects.get(i).setSelected(true);
-                }
+            }else{
 
             }
-        });
 
-        /*if (ebookSubjects.get(i).isSelected()) {
-            myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_onclick);
-            ebookSubjects.get(i).setSelected(false);
-        } else {
-            myViewHolder.tv_select.setBackgroundResource(R.drawable.textview_default);
-            ebookSubjects.get(i).setSelected(true);
-        }*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -98,6 +85,18 @@ public class EbookSubjectAdapter extends RecyclerView.Adapter<EbookSubjectAdapte
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_select = itemView.findViewById(R.id.tv_select);
+
+            View.OnClickListener clickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSelectedItem = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            };
+            itemView.setOnClickListener(clickListener);
+            tv_select.setOnClickListener(clickListener);
+
+
         }
     }
 

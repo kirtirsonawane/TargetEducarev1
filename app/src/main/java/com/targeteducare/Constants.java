@@ -12,6 +12,7 @@ public class Constants {
 	public final static String BROADCAST_DATA = "ida_org_in_broadcast_broadcastdata";
 	public final static String BROADCAST_DATA1 = "ida_org_in_broadcast_broadcastdata1";
 	public final static String APP_NAME="INSURANCE ALERTSS";
+	public static String IEMIno = "";
 	public static String apikey="AAAAt9Ji1U4:APA91bHAj-MvGsV-K4AT0RE3_MyLgHWN9BK17dFxpcDomjobkhuIgc7Zsp8IfdSI2yr8aKpihm7UVSk1FuEbewIWkI9vEAeZW-ymCS7eBHIR6E7MbMHEoub5PYnPW68SQw7NMt6mIyke";
 	public final static String NOTIFICATION_TOKEN = "ida_news_app";
 	//public final static String NOTIFICATION_TOKEN = "ida_news_app1";

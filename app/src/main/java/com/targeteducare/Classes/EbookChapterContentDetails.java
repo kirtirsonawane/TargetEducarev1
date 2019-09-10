@@ -8,22 +8,26 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class EbookContentDetails implements Serializable {
+public class EbookChapterContentDetails implements Serializable {
 
     String EbookName = "";
     String UnitName = "";
     String ChapterName = "";
-    String Id = "";
+    int Id = 0;
+    int EbookId = 0;
     String Type = "";
-    String unitid = "";
-    String chapterid = "";
+    int unitid = 0;
+    int chapterid = 0;
     int Noofpages = 0;
     String MainPdf = "";
     String MarathiPdf = "";
+    int progress = 0;
+    int lastvisitedpage = 0;
+
     ArrayList<EbookPageDetails> ebookPageDetails = new ArrayList<>();
     ArrayList<EbookVideoDetails> ebookVideoDetails = new ArrayList<>();
 
-    public EbookContentDetails(JSONObject obj){
+    public EbookChapterContentDetails(JSONObject obj){
 
         if (obj.has("EbookName")) {
             this.EbookName = obj.optString("EbookName");
@@ -35,16 +39,19 @@ public class EbookContentDetails implements Serializable {
             this.ChapterName = obj.optString("ChapterName");
         }
         if (obj.has("Id")) {
-            this.Id = obj.optString("Id");
+            this.Id = obj.optInt("Id");
+        }
+        if (obj.has("EbookId")) {
+            this.EbookId = obj.optInt("EbookId");
         }
         if (obj.has("Type")) {
             this.Type = obj.optString("Type");
         }
         if (obj.has("unitid")) {
-            this.unitid = obj.optString("unitid");
+            this.unitid = obj.optInt("unitid");
         }
         if (obj.has("chapterid")) {
-            this.chapterid = obj.optString("chapterid");
+            this.chapterid = obj.optInt("chapterid");
         }
         if (obj.has("Noofpages")) {
             this.Noofpages = obj.optInt("Noofpages");
@@ -129,12 +136,20 @@ public class EbookContentDetails implements Serializable {
         ChapterName = chapterName;
     }
 
-    public String getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         Id = id;
+    }
+
+    public int getEbookId() {
+        return EbookId;
+    }
+
+    public void setEbookId(int ebookId) {
+        EbookId = ebookId;
     }
 
     public String getType() {
@@ -145,19 +160,19 @@ public class EbookContentDetails implements Serializable {
         Type = type;
     }
 
-    public String getUnitid() {
+    public int getUnitid() {
         return unitid;
     }
 
-    public void setUnitid(String unitid) {
+    public void setUnitid(int unitid) {
         this.unitid = unitid;
     }
 
-    public String getChapterid() {
+    public int getChapterid() {
         return chapterid;
     }
 
-    public void setChapterid(String chapterid) {
+    public void setChapterid(int chapterid) {
         this.chapterid = chapterid;
     }
 
@@ -183,6 +198,22 @@ public class EbookContentDetails implements Serializable {
 
     public void setMarathiPdf(String marathiPdf) {
         MarathiPdf = marathiPdf;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+    }
+
+    public int getLastvisitedpage() {
+        return lastvisitedpage;
+    }
+
+    public void setLastvisitedpage(int lastvisitedpage) {
+        this.lastvisitedpage = lastvisitedpage;
     }
 
     public ArrayList<EbookPageDetails> getEbookPageDetails() {

@@ -77,8 +77,8 @@ public class SignUpActivity extends Activitycommon {
     //SharedPreferences pref = getSharedPreferences("Settings", Activity.MODE_PRIVATE);
     String lang = "";
     TextView problem_with_otp;
-    private FirebaseAuth mAuth;
-    String verificationId = "";
+    //private FirebaseAuth mAuth;
+    //String verificationId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class SignUpActivity extends Activitycommon {
             super.onCreate(savedInstanceState);
             loadLocale();
             setContentView(R.layout.activity_sign_up);
-            mAuth = FirebaseAuth.getInstance();
+            //mAuth = FirebaseAuth.getInstance();
             registerreceiver();
             preferences = PreferenceManager.getDefaultSharedPreferences(SignUpActivity.this);
             edit = preferences.edit();
@@ -353,8 +353,8 @@ public class SignUpActivity extends Activitycommon {
                         if (!(et_mobileno.getText().toString().trim().length() < 10)) {
                             if (!et_mobileno.getText().toString().equals("")) {
                                 Log.e("Resent otp is ", otp);
-                                sendVerificationCode(et_mobileno.getText().toString());
-                                //ConnectionManager.getInstance(SignUpActivity.this).getotp(et_mobileno.getText().toString(), otp);
+                                //sendVerificationCode(et_mobileno.getText().toString());
+                                ConnectionManager.getInstance(SignUpActivity.this).getotp(et_mobileno.getText().toString(), getResources().getString(R.string.message_otp_verifycode) + " " + otp);
                                 Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno.getText().toString() + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
                                 register.setText(getResources().getString(R.string.verify));
                             } else {
@@ -403,8 +403,7 @@ public class SignUpActivity extends Activitycommon {
                                                                 //Toast.makeText(getApplicationContext(),"Yes clicked",Toast.LENGTH_LONG).show();
                                                                 //et_mobileno.setFocusable(false);
                                                                 //tv_otp.setVisibility(View.VISIBLE);
-                                                                et_otp.setVisibility(View.VISIBLE);
-                                                                et_otp.requestFocus();
+
                                                                 JSONObject obj = new JSONObject();
                                                                 JSONObject mainobj = new JSONObject();
                                                                 try {
@@ -433,15 +432,67 @@ public class SignUpActivity extends Activitycommon {
                                                                     e.printStackTrace();
                                                                 }
                                                                 flag = true;
-                                                                if(InternetUtils.getInstance(SignUpActivity.this).available())
-                                                                sendVerificationCode(et_mobileno.getText().toString());
-                                                                //ConnectionManager.getInstance(SignUpActivity.this).getotp(et_mobileno.getText().toString(), otp);
-                                                                Log.e("otp enter val ", "" + otp);
 
-                                                                tv_resendotp.setVisibility(View.VISIBLE);
-                                                                Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno.getText().toString() + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
-                                                                register.setText(getResources().getString(R.string.verify));
-                                                                et_mobileno.setEnabled(false);
+                                                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+                                                                if(mobilenotblankandlengthten(et_mobileno.getText().toString())){
+                                                                    databaseReference.child(et_mobileno.getText().toString()).addValueEventListener(new ValueEventListener() {
+                                                                        @Override
+                                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                                                            if(dataSnapshot.exists()){
+                                                                                if(dataSnapshot.child("IEMIno").getValue()!=null){
+                                                                                    String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                                                                    if(iemi.equalsIgnoreCase(Constants.IEMIno)){
+                                                                                        Log.e("iemi inside signup ", iemi);
+
+                                                                                        et_otp.setVisibility(View.GONE);
+                                                                                        tv_resendotp.setVisibility(View.GONE);
+                                                                                        updatedata();
+                                                                                    }else{
+                                                                                        //userexists = false;
+                                                                                        register.setText(getResources().getString(R.string.verify));
+                                                                                        et_otp.setVisibility(View.VISIBLE);
+                                                                                        tv_resendotp.setVisibility(View.VISIBLE);
+                                                                                        et_mobileno.setEnabled(false);
+                                                                                        final int random = new Random().nextInt(899999) + 100000;
+                                                                                        otp = Integer.toString(random);
+                                                                                        et_otp.requestFocus();
+                                                                                        if (InternetUtils.getInstance(SignUpActivity.this).available()){
+                                                                                            ConnectionManager.getInstance(SignUpActivity.this).getotp(et_mobileno.getText().toString(), getResources().getString(R.string.message_otp_verifycode) + " " + otp);
+                                                                                            Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                                                                                            //Log.e("otp enter val ", "" + otp);
+                                                                                        }
+
+                                                                                        //Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno.getText().toString() + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+
+
+                                                                                    }
+                                                                                }
+                                                                            }else{
+                                                                                register.setText(getResources().getString(R.string.verify));
+                                                                                et_otp.setVisibility(View.VISIBLE);
+                                                                                tv_resendotp.setVisibility(View.VISIBLE);
+                                                                                et_mobileno.setEnabled(false);
+                                                                                final int random = new Random().nextInt(899999) + 100000;
+                                                                                otp = Integer.toString(random);
+                                                                                et_otp.requestFocus();
+                                                                                if (InternetUtils.getInstance(SignUpActivity.this).available()){
+                                                                                    ConnectionManager.getInstance(SignUpActivity.this).getotp(et_mobileno.getText().toString(), getResources().getString(R.string.message_otp_verifycode) + " " +  otp);
+                                                                                    Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                                                                                    //Log.e("otp enter val ", "" + otp);
+                                                                                }
+                                                                            }
+
+
+                                                                        }
+
+                                                                        @Override
+                                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                                        }
+                                                                    });
+                                                                }
                                                             }
                                                         });
                                                 builder.show();
@@ -465,7 +516,7 @@ public class SignUpActivity extends Activitycommon {
                             }
                             et_mobileno.setEnabled(true);
                         } else {
-                            Log.e("I am in Verify", " Hi");
+                            //Log.e("I am in Verify", " Hi");
                             if (flag == true) {
                                 if (!(et_otp.getText().toString().trim().equals(""))) {
                                     if(et_mobileno.length()>9) {
@@ -867,7 +918,8 @@ public class SignUpActivity extends Activitycommon {
                    // Log.e("Timetaken ","timetaken "+GlobalValues.student.getTimetaken());
                     childUpdates.put(  "useractive",1);
                     childUpdates.put(  "lastvisiteddate",DateUtils.getSqliteTime());
-                    childUpdates.put("IEMIno",GlobalValues.student.getIEMIno());
+                    childUpdates.put("IEMIno", Constants.IEMIno);
+                    childUpdates.put("Mobile", GlobalValues.student.getMobile());
                     childUpdates.put("islogin",1);
                     databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);
 
@@ -878,7 +930,7 @@ public class SignUpActivity extends Activitycommon {
             e.printStackTrace();
         }
     }
-    private void sendVerificationCode(String mobile_no) {
+    /*private void sendVerificationCode(String mobile_no) {
         try {
             if (InternetUtils.getInstance(SignUpActivity.this).available()) {
                 PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -893,9 +945,9 @@ public class SignUpActivity extends Activitycommon {
             //reporterror(tag, e.toString());
         }
 
-    }
+    }*/
 
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    /*private PhoneAuthProvider.OnVerificationStateChangedCallbacks
             mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         @Override
@@ -925,16 +977,25 @@ public class SignUpActivity extends Activitycommon {
         @Override
         public void onVerificationFailed(FirebaseException e) {
         }
-    };
+    };*/
 
     private void verifyCode(String code) {
-        try {
+
+        if(otp.equals(code)){
+            Toast.makeText(SignUpActivity.this, "Verified successfully", Toast.LENGTH_SHORT).show();
+            updatedata();
+        }else{
+            Toast.makeText(SignUpActivity.this, "Not verified!!", Toast.LENGTH_SHORT).show();
+        }
+
+
+        /*try {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             signInwithPhoneCredential(credential);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Wrong code", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     public void updatedata() {
@@ -969,7 +1030,7 @@ public class SignUpActivity extends Activitycommon {
         }
     }
 
-    private void signInwithPhoneCredential(PhoneAuthCredential credential) {
+    /*private void signInwithPhoneCredential(PhoneAuthCredential credential) {
 
         mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -990,16 +1051,16 @@ public class SignUpActivity extends Activitycommon {
 
 
 
-                      /*  Intent i = new Intent(SignUpActivity.this, GridMainActivity.class);
+                      *//*  Intent i = new Intent(SignUpActivity.this, GridMainActivity.class);
                         edit.putBoolean("islogin", true);
                         edit.apply();
                         startActivity(i);
-                        finish();*/
+                        finish();*//*
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
+    }*/
 }

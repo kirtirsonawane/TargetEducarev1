@@ -1,6 +1,7 @@
 package com.targeteducare;
 
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,6 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.targeteducare.Classes.EbookPageDetails;
+import com.targeteducare.database.DatabaseHelper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 /**
@@ -42,6 +47,10 @@ public class EbookPagesFragment extends Fragment {
     //TextView tv_data;
     WebView webview;
     ImageView iv_fav, iv_bookmark;
+    int chapterid = 0;
+    int favorite = 0;
+    int bookmark = 0;
+    int unitid = 0;
 
     // TODO: Rename and change types of parameters
     private EbookPageDetails mParam1;
@@ -54,13 +63,14 @@ public class EbookPagesFragment extends Fragment {
     }
 
 
-    public static EbookPagesFragment newInstance(EbookPageDetails param1, String param2) {
+    public static EbookPagesFragment newInstance(EbookPageDetails param1, String param2, int unitid) {
         EbookPagesFragment fragment = new EbookPagesFragment();
         try {
             Bundle args = new Bundle();
             args.putSerializable(ARG_PARAM1, param1);
             args.putString(ARG_PARAM2, param2);
             fragment.setArguments(args);
+            fragment.unitid = unitid;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,52 +107,60 @@ public class EbookPagesFragment extends Fragment {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-        /*//stop copying from webview
+        //stop copying from webview
         webview.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 return true;
             }
         });
-        webview.setLongClickable(false);*/
+        webview.setLongClickable(false);
         webview.loadData(mParam1.getPageContent(), "text/html", null);
 
-        if (mParam1.isFavorite()) {
-            iv_fav.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
-        } else {
-            iv_fav.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-        }
+        JSONArray array = DatabaseHelper.getInstance(getActivity()).get_ebookpages(unitid, chapterid, mParam1.getPageNo());
 
-        if (mParam1.isBookmark()) {
-            iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_black_24dp);
-        } else {
-            iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp);
+        if(array.length()>0){
+            JSONObject obj = array.optJSONObject(0);
+
+            if(obj.has("favorite")){
+                Log.e("fav ", obj.optString("favorite"));
+                favorite = obj.optInt("favorite");
+                setfavorites(favorite);
+            }
+            if(obj.has("bookmark")){
+                Log.e("fav ", obj.optString("favorite"));
+                bookmark = obj.optInt("bookmark");
+                setbookmarks(bookmark);
+            }
         }
 
 
         iv_fav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mParam1.isFavorite()) {
+
+                if (!mParam1.isFavorite()) {
                     iv_fav.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
-                    mParam1.setFavorite(false);
+                    mParam1.setFavorite(true);
                 } else {
                     iv_fav.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
-                    mParam1.setFavorite(true);
+                    mParam1.setFavorite(false);
                 }
+                update_pages();
             }
         });
 
         iv_bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mParam1.isBookmark()) {
+                if (!mParam1.isBookmark()) {
                     iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_black_24dp);
-                    mParam1.setBookmark(false);
+                    mParam1.setBookmark(true);
                 } else {
                     iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp);
-                    mParam1.setBookmark(true);
+                    mParam1.setBookmark(false);
                 }
+                update_pages();
             }
         });
 
@@ -165,6 +183,47 @@ public class EbookPagesFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void setfavorites(int favorite) {
+        if(favorite == 1){
+            iv_fav.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
+            mParam1.setFavorite(true);
+        }else {
+            iv_fav.setBackgroundResource(R.drawable.ic_favorite_border_black_24dp);
+            mParam1.setFavorite(false);
+        }
+    }
+
+    private void setbookmarks(int bookmark) {
+        if(bookmark == 1){
+            iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_black_24dp);
+            mParam1.setBookmark(true);
+        }else{
+            iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_black_24dp);
+            mParam1.setBookmark(false);
+        }
+
+    }
+
+    private void update_pages(){
+        ContentValues c = new ContentValues();
+        c.put(DatabaseHelper.UNIT_ID, unitid);
+        c.put(DatabaseHelper.CHAPTER_ID, chapterid);
+        c.put(DatabaseHelper.PAGE_ID, mParam1.getPageNo());
+        if(mParam1.isFavorite())
+            c.put(DatabaseHelper.FAVORITE, 1);
+        else
+            c.put(DatabaseHelper.FAVORITE, 0);
+        if(mParam1.isBookmark())
+            c.put(DatabaseHelper.BOOKMARK, 1);
+        else
+            c.put(DatabaseHelper.BOOKMARK, 0);
+        c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+
+        DatabaseHelper.getInstance(getActivity()).save_ebookpages(c, unitid, chapterid , mParam1.getPageNo());
+
+        //Log.e("content data ", c.toString());
     }
 
 
@@ -194,7 +253,7 @@ public class EbookPagesFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                if (mParam1.getPageId() == intent.getIntExtra("Favorite", 0)) {
+                if (mParam1.getPageNo() == intent.getIntExtra("Favorite", 0)) {
                     if (mParam1.isFavorite()) {
                         iv_fav.setBackgroundResource(R.drawable.ic_favorite_black_24dp);
                     }else{
@@ -211,7 +270,7 @@ public class EbookPagesFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                if (mParam1.getPageId() == intent.getIntExtra("Bookmark", 0)) {
+                if (mParam1.getPageNo() == intent.getIntExtra("Bookmark", 0)) {
                     if (mParam1.isBookmark()) {
                         if (mParam1.isFavorite()) {
                             iv_bookmark.setBackgroundResource(R.drawable.ic_bookmark_black_24dp);

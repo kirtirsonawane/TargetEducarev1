@@ -164,7 +164,8 @@ public class UserProfileActivity extends Activitycommon {
     protected void onPostResume() {
         super.onPostResume();
 
-        tv_username.setText(GlobalValues.student.getFullname() + "\n(" + getResources().getString(R.string.terno) + ": " + GlobalValues.student.getId() + ")");
+        tv_username.setText(getResources().getString(R.string.terno) + ": " + GlobalValues.student.getId());
+        //tv_username.setText(GlobalValues.student.getFullname() + "\n(" + getResources().getString(R.string.terno) + ": " + GlobalValues.student.getId() + ")");
         StructureClass.defineContext(UserProfileActivity.this);
         try {
             File f2 = new File(StructureClass.generate(context.getResources().getString(R.string.storage_name)));
@@ -232,45 +233,11 @@ public class UserProfileActivity extends Activitycommon {
                         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
                         Map<String, Object> values = GlobalValues.student.toMap();
 
-                        databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot != null) {
-                                    if (dataSnapshot.getValue() != null) {
-                                        if (dataSnapshot.exists()) {
-                                            //  Log.e("exists ", "exists " + dataSnapshot.toString());
-                                            Student s = dataSnapshot.getValue(Student.class);
-                                            if (s.getIEMIno().length() > 0) {
-                                                if (!s.getIEMIno().equalsIgnoreCase(GlobalValues.student.getIEMIno())) {
-                                                    return;
-                                                }
-                                            }
+                        if(mobilenotblankandlengthten(GlobalValues.student.getMobile())){
 
-                                            long totalmillies = System.currentTimeMillis() - GlobalValues.currentmillies;
-                                            long timetaken = GlobalValues.student.getTimetaken() + (totalmillies / 1000);
-                                            Map<String, Object> childUpdates = new HashMap<>();
-                                            childUpdates.put( "timetaken", timetaken);
-                                            childUpdates.put(  "useractive", 0);
-                                            childUpdates.put( "lasttimetaken", totalmillies / 1000);
-                                            childUpdates.put( "islogin", 0);
-                                            databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);
-                                        } else {
+                            addtofirebasedb(0,GlobalValues.student);
 
-                                            addtofirebasedb(1);
-                                        }
-                                    } else {
-                                        addtofirebasedb(1);
-                                    }
-                                } else {
-                                    addtofirebasedb(1);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
+                        }
 
                     }
                 }
@@ -285,23 +252,34 @@ public class UserProfileActivity extends Activitycommon {
             e.printStackTrace();
         }
     }
-    public void addtofirebasedb(int flag) {
+    public void addtofirebasedb(int flag, Student student) {
         try {
             if (InternetUtils.getInstance(getApplicationContext()).available()) {
                 DatabaseReference databaseReference;
                 databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
-                Map<String, Object> values = GlobalValues.student.toMap();
+                Map<String, Object> values = student.toMap();
                 Log.e("put222 ", "put " + values.get("useractive"));
                 //  databaseReference.child(GlobalValues.student.getMobile()).setValue(values);
 
                 if (flag == 0) {
-                    Map<String, Object> childUpdates = new HashMap<>();
+                    /*Map<String, Object> childUpdates = new HashMap<>();
 
                     Log.e("Timetaken ","timetaken "+GlobalValues.student.getTimetaken());
                     childUpdates.put(  "useractive",1);
                     childUpdates.put(  "timetaken",GlobalValues.student.getTimetaken());
                     childUpdates.put(  "lasttimetaken",GlobalValues.student.getLasttimetaken());
                     childUpdates.put(  "lastvisiteddate",GlobalValues.student.getLastvisiteddate());
+                    databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);*/
+
+                    long totalmillies = System.currentTimeMillis() - GlobalValues.currentmillies;
+                    long timetaken = GlobalValues.student.getTimetaken() + (totalmillies / 1000);
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put( "timetaken", timetaken);
+                    childUpdates.put(  "useractive", 0);
+                    childUpdates.put( "lasttimetaken", totalmillies / 1000);
+                    childUpdates.put( "islogin", 0);
+                    childUpdates.put("IEMIno", Constants.IEMIno);
+                    childUpdates.put("Mobile", GlobalValues.student.getMobile());
                     databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);
 
                 } else {

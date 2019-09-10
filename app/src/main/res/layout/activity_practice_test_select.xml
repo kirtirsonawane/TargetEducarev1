@@ -13,10 +13,18 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_course"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:padding="5dp">
 
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_peak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

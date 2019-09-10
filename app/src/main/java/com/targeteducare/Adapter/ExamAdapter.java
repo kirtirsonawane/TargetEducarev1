@@ -314,12 +314,36 @@ public class ExamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 } else {
                     holder.linearlayout_color.setBackgroundColor(colorsforbackground[new Random().nextInt(colorsforbackground.length)]);
                 }
+
+                try{
+
+                    if(mdataset.get(position).getIsOmr()==1){
+                        holder.tv_omrsheet.setVisibility(View.VISIBLE);
+                    }else{
+                        holder.tv_omrsheet.setVisibility(View.GONE);
+                    }
+
+
+                    holder.tv_omrsheet.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            //http://exam.targeteducare.com/images/Temp/549_files/00090119.jpg
+
+                            ((Activitycommon) mContext).gotoviewmarksheet("http://" + GlobalValues.IP + "/images/Temp/" + mdataset.get(position).getExamid() + "_files/" + GlobalValues.student.getRollNumber()+".jpg");
+                        }
+                    });
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             Log.e("error ", "error " + e.toString());
             ((Activitycommon) mContext).reporterror("ExamAdapter", e.toString());
             e.printStackTrace();
         }
+
 
     }
 
@@ -397,7 +421,7 @@ public class ExamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         ImageView mail;
         TextView tv_chapterno, tv_attempt_exam;
         ProgressBar progressBar;
-        TextView tv_checkprogress;
+        TextView tv_checkprogress, tv_omrsheet;
         LinearLayout lprogbar;
         LinearLayout linearlayout_color;
         ImageView imgview;
@@ -425,6 +449,7 @@ public class ExamAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
             linearlayout_color = itemView.findViewById(R.id.linearlayout_color);
 
             tv_attempt_exam = itemView.findViewById(R.id.text_view_attempt);
+            tv_omrsheet = itemView.findViewById(R.id.tv_omrsheet);
 
         }
     }

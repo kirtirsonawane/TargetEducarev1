@@ -22,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -41,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -83,6 +85,7 @@ public class Activitycommon extends AppCompatActivity {
     String lang = "";
     private FirebaseAnalytics mFirebaseAnalytics;
     public static String type = "";
+    //boolean userexists = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -215,7 +218,7 @@ public class Activitycommon extends AppCompatActivity {
                 dialog = ProgressDialog.show(this, msg, getResources().getString(R.string.dialog_please_wait));
                 dialog.setCancelable(false);
             } else {
-              //  Log.e("activity", "activity is not running genloading");
+                //  Log.e("activity", "activity is not running genloading");
             }
         } catch (Exception e) {
             reporterror(tag, e.toString());
@@ -258,31 +261,33 @@ public class Activitycommon extends AppCompatActivity {
      /*   if (exam1.getIspaid() == 1) {
             gotopracticeexam(exam1);
         } else {*/
-        databaseReference.child(GlobalValues.student.getMobile() + "/Exam").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    if (dataSnapshot != null) {
-                        if (dataSnapshot.getValue() != null) {
-                            if (dataSnapshot.exists()) {
-                                //  HashMap<String, Object> data = ((HashMap<String, Object>) dataSnapshot.getValue());
-                                ArrayList<Exam> examdata = new ArrayList<>();
-                                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                                    Exam exam = postSnapShot.getValue(Exam.class);
-                                    if (exam.getType().equalsIgnoreCase("Mock Test") || exam.getType().equalsIgnoreCase("Practice Test")) {
-                                        examdata.add(exam);
+
+        if (mobilenotblankandlengthten(GlobalValues.student.getMobile())) {
+            databaseReference.child(GlobalValues.student.getMobile() + "/Exam").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        if (dataSnapshot != null) {
+                            if (dataSnapshot.getValue() != null) {
+                                if (dataSnapshot.exists()) {
+                                    //  HashMap<String, Object> data = ((HashMap<String, Object>) dataSnapshot.getValue());
+                                    ArrayList<Exam> examdata = new ArrayList<>();
+                                    for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                                        Exam exam = postSnapShot.getValue(Exam.class);
+                                        if (exam.getType().equalsIgnoreCase("Mock Test") || exam.getType().equalsIgnoreCase("Practice Test")) {
+                                            examdata.add(exam);
+                                        }
                                     }
-                                }
-                                if (examdata.size() < 5) {
-                                    // if (data.get(Integer.toString(exam1.getExamid())) != null) {
+                                    if (examdata.size() < 5) {
+                                        // if (data.get(Integer.toString(exam1.getExamid())) != null) {
                                    /* if (ActivityCompat.checkSelfPermission(Activitycommon.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                         ActivityCompat.requestPermissions(Activitycommon.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
                                     } else {
                                       //  gotopracticeexam(exam1);
                                     }*/
-                                    // }  /*else
-                                    //  Toast.makeText(getApplicationContext(), "Please buy exam package", Toast.LENGTH_LONG).show();*/
-                                } else {
+                                        // }  /*else
+                                        //  Toast.makeText(getApplicationContext(), "Please buy exam package", Toast.LENGTH_LONG).show();*/
+                                    } else {
                                      /*   ArrayList<Exam> examdata=new ArrayList<>();
                                         for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                                             Exam exam = postSnapShot.getValue(Exam.class);
@@ -290,21 +295,21 @@ public class Activitycommon extends AppCompatActivity {
                                                 examdata.add(exam);
                                             }
                                         }*/
-                                    if (examdata.size() >= 5) {
-                                        int i = 0;
-                                        for (i = 0; i < examdata.size(); i++) {
-                                            if (exam1.getExamid() == examdata.get(i).getExamid()) {
-                                                // gotopracticeexam(exam1);
-                                                break;
+                                        if (examdata.size() >= 5) {
+                                            int i = 0;
+                                            for (i = 0; i < examdata.size(); i++) {
+                                                if (exam1.getExamid() == examdata.get(i).getExamid()) {
+                                                    // gotopracticeexam(exam1);
+                                                    break;
+                                                }
                                             }
+                                            if (i >= examdata.size()) {
+                                                cangive[0] = false;
+                                                Toast.makeText(getApplicationContext(), "please buy package " + cangive[0], Toast.LENGTH_LONG).show();
+                                            }
+                                        } else {
+                                            // gotopracticeexam(exam1);
                                         }
-                                        if (i >= examdata.size()) {
-                                            cangive[0] = false;
-                                            Toast.makeText(getApplicationContext(), "please buy package " + cangive[0], Toast.LENGTH_LONG).show();
-                                        }
-                                    } else {
-                                        // gotopracticeexam(exam1);
-                                    }
                                        /* ArrayList<Exam> examdata=new ArrayList<>();
                                         for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                                             Log.e("models ", "data 1" + postSnapShot.toString());
@@ -316,32 +321,34 @@ public class Activitycommon extends AppCompatActivity {
                                         {
                                             Log.e("examdata ","examdata "+exam.getExam_type()+" "+exam.getExamid());
                                         }*/
-                                    //gotopracticeexam(exam);
+                                        //gotopracticeexam(exam);
+                                    }
+                                } else {
+                                    // gotopracticeexam(exam1);
+
                                 }
                             } else {
-                                // gotopracticeexam(exam1);
-
+                                //  gotopracticeexam(exam1);
+                                Log.e("nt exists ", "nt exists2" + dataSnapshot.toString());
                             }
                         } else {
                             //  gotopracticeexam(exam1);
-                            Log.e("nt exists ", "nt exists2" + dataSnapshot.toString());
+                            Log.e("nt exists ", "nt exists1 ");
                         }
-                    } else {
-                        //  gotopracticeexam(exam1);
-                        Log.e("nt exists ", "nt exists1 ");
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
                     }
-
-                } catch (Exception e) {
-
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                }
+            });
+        }
+
 
         Toast.makeText(getApplicationContext(), "cangive " + cangive[0], Toast.LENGTH_LONG).show();
 
@@ -381,32 +388,45 @@ public class Activitycommon extends AppCompatActivity {
                     //gotopracticeexam(exam1);
                     gotoexam(exam1, type);
                 } else {
-                    databaseReference.child(GlobalValues.student.getMobile() + "/Exam").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            try {
-                                if (dataSnapshot != null) {
-                                    if (dataSnapshot.getValue() != null) {
-                                        if (dataSnapshot.exists()) {
-                                            //  HashMap<String, Object> data = ((HashMap<String, Object>) dataSnapshot.getValue());
-                                            ArrayList<Exam> examdata = new ArrayList<>();
-                                            for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                                                Exam exam = postSnapShot.getValue(Exam.class);
-                                                if (exam.getType().equalsIgnoreCase("Mock Test") || exam.getType().equalsIgnoreCase("Practice Test")) {
-                                                    examdata.add(exam);
-                                                }
-                                            }
-                                            if (examdata.size() < 5) {
-                                                // if (data.get(Integer.toString(exam1.getExamid())) != null) {
-                                                if (ActivityCompat.checkSelfPermission(Activitycommon.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                                    ActivityCompat.requestPermissions(Activitycommon.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                                                } else {
-                                                    gotoexam(exam1, type);
-                                                    //  gotopracticeexam(exam1);
-                                                }
-                                                // }  /*else
-                                                //  Toast.makeText(getApplicationContext(), "Please buy exam package", Toast.LENGTH_LONG).show();*/
-                                            } else {
+                    if (mobilenotblankandlengthten(GlobalValues.student.getMobile())) {
+
+                        databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                        String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                        if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+
+                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+                                            Log.e("not blank ", " " + GlobalValues.student.getMobile());
+                                            databaseReference.child(GlobalValues.student.getMobile() + "/Exam").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    try {
+                                                        if (dataSnapshot != null) {
+                                                            if (dataSnapshot.getValue() != null) {
+                                                                if (dataSnapshot.exists()) {
+                                                                    //  HashMap<String, Object> data = ((HashMap<String, Object>) dataSnapshot.getValue());
+                                                                    ArrayList<Exam> examdata = new ArrayList<>();
+                                                                    for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                                                                        Exam exam = postSnapShot.getValue(Exam.class);
+                                                                        if (exam.getType().equalsIgnoreCase("Mock Test") || exam.getType().equalsIgnoreCase("Practice Test")) {
+                                                                            examdata.add(exam);
+                                                                        }
+                                                                    }
+                                                                    if (examdata.size() < 5) {
+                                                                        // if (data.get(Integer.toString(exam1.getExamid())) != null) {
+                                                                        if (ActivityCompat.checkSelfPermission(Activitycommon.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                                                            ActivityCompat.requestPermissions(Activitycommon.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                                                                        } else {
+                                                                            gotoexam(exam1, type);
+                                                                            //  gotopracticeexam(exam1);
+                                                                        }
+                                                                        // }  /*else
+                                                                        //  Toast.makeText(getApplicationContext(), "Please buy exam package", Toast.LENGTH_LONG).show();*/
+                                                                    } else {
                                      /*   ArrayList<Exam> examdata=new ArrayList<>();
                                         for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                                             Exam exam = postSnapShot.getValue(Exam.class);
@@ -414,20 +434,20 @@ public class Activitycommon extends AppCompatActivity {
                                                 examdata.add(exam);
                                             }
                                         }*/
-                                                if (examdata.size() >= 5) {
-                                                    int i = 0;
-                                                    for (i = 0; i < examdata.size(); i++) {
-                                                        if (exam1.getExamid() == examdata.get(i).getExamid()) {
-                                                            gotoexam(exam1, type);
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (i >= examdata.size()) {
-                                                        buypackage();
-                                                    }
-                                                } else {
-                                                    gotoexam(exam1, type);
-                                                }
+                                                                        if (examdata.size() >= 5) {
+                                                                            int i = 0;
+                                                                            for (i = 0; i < examdata.size(); i++) {
+                                                                                if (exam1.getExamid() == examdata.get(i).getExamid()) {
+                                                                                    gotoexam(exam1, type);
+                                                                                    break;
+                                                                                }
+                                                                            }
+                                                                            if (i >= examdata.size()) {
+                                                                                buypackage();
+                                                                            }
+                                                                        } else {
+                                                                            gotoexam(exam1, type);
+                                                                        }
                                        /* ArrayList<Exam> examdata=new ArrayList<>();
                                         for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                                             Log.e("models ", "data 1" + postSnapShot.toString());
@@ -439,34 +459,45 @@ public class Activitycommon extends AppCompatActivity {
                                         {
                                             Log.e("examdata ","examdata "+exam.getExam_type()+" "+exam.getExamid());
                                         }*/
-                                                //gotopracticeexam(exam);
-                                            }
-                                        } else {
-                                            gotoexam(exam1, type);
+                                                                        //gotopracticeexam(exam);
+                                                                    }
+                                                                } else {
+                                                                    gotoexam(exam1, type);
 
+                                                                }
+                                                            } else {
+                                                                gotoexam(exam1, type);
+                                                                Log.e("nt exists ", "nt exists2" + dataSnapshot.toString());
+                                                            }
+                                                        } else {
+                                                            gotoexam(exam1, type);
+                                                            Log.e("nt exists ", "nt exists1 ");
+                                                        }
+
+                                                    } catch (Exception e) {
+                                                        gotoexam(exam1, type);
+
+                                                        reporterror("ActivityCommon ", e.toString());
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
                                         }
-                                    } else {
-                                        gotoexam(exam1, type);
-                                        Log.e("nt exists ", "nt exists2" + dataSnapshot.toString());
                                     }
-                                } else {
-                                    gotoexam(exam1, type);
-                                    Log.e("nt exists ", "nt exists1 ");
                                 }
-
-                            } catch (Exception e) {
-                                gotoexam(exam1, type);
-
-                                reporterror("ActivityCommon ",e.toString());
-                                e.printStackTrace();
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            }
+                        });
+                    }
                 }
             } else {
                 if (exam1.getIspaid() == 1)
@@ -609,31 +640,46 @@ public class Activitycommon extends AppCompatActivity {
             if (exam1.getIspaid() == 1) {
                 gotopracticeexam(exam1);
             } else {
-                databaseReference.child(GlobalValues.student.getMobile() + "/Exam").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        try {
-                            if (dataSnapshot != null) {
-                                if (dataSnapshot.getValue() != null) {
-                                    if (dataSnapshot.exists()) {
-                                        //  HashMap<String, Object> data = ((HashMap<String, Object>) dataSnapshot.getValue());
-                                        ArrayList<Exam> examdata = new ArrayList<>();
-                                        for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                                            Exam exam = postSnapShot.getValue(Exam.class);
-                                            if (exam.getType().equalsIgnoreCase("Mock Test") || exam.getType().equalsIgnoreCase("Practice Test")) {
-                                                examdata.add(exam);
-                                            }
-                                        }
-                                        if (examdata.size() < 5) {
-                                            // if (data.get(Integer.toString(exam1.getExamid())) != null) {
-                                            if (ActivityCompat.checkSelfPermission(Activitycommon.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                                                ActivityCompat.requestPermissions(Activitycommon.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
-                                            } else {
-                                                gotopracticeexam(exam1);
-                                            }
-                                            // }  /*else
-                                            //  Toast.makeText(getApplicationContext(), "Please buy exam package", Toast.LENGTH_LONG).show();*/
-                                        } else {
+
+                if (mobilenotblankandlengthten(GlobalValues.student.getMobile())) {
+
+                    databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                    String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                    if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+                                        Log.e("not blank ", " " + GlobalValues.student.getMobile());
+                                        databaseReference.child(GlobalValues.student.getMobile() + "/Exam").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                try {
+
+                                                    if (dataSnapshot != null) {
+                                                        if (dataSnapshot.getValue() != null) {
+                                                            if (dataSnapshot.exists()) {
+                                                                //  HashMap<String, Object> data = ((HashMap<String, Object>) dataSnapshot.getValue());
+                                                                ArrayList<Exam> examdata = new ArrayList<>();
+                                                                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                                                                    Exam exam = postSnapShot.getValue(Exam.class);
+                                                                    if (exam.getType().equalsIgnoreCase("Mock Test") || exam.getType().equalsIgnoreCase("Practice Test")) {
+                                                                        examdata.add(exam);
+                                                                    }
+                                                                }
+                                                                if (examdata.size() < 5) {
+                                                                    // if (data.get(Integer.toString(exam1.getExamid())) != null) {
+                                                                    if (ActivityCompat.checkSelfPermission(Activitycommon.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                                                        ActivityCompat.requestPermissions(Activitycommon.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+                                                                    } else {
+                                                                        gotopracticeexam(exam1);
+                                                                    }
+                                                                    // }  /*else
+                                                                    //  Toast.makeText(getApplicationContext(), "Please buy exam package", Toast.LENGTH_LONG).show();*/
+                                                                } else {
                                      /*   ArrayList<Exam> examdata=new ArrayList<>();
                                         for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                                             Exam exam = postSnapShot.getValue(Exam.class);
@@ -641,20 +687,20 @@ public class Activitycommon extends AppCompatActivity {
                                                 examdata.add(exam);
                                             }
                                         }*/
-                                            if (examdata.size() >= 5) {
-                                                int i = 0;
-                                                for (i = 0; i < examdata.size(); i++) {
-                                                    if (exam1.getExamid() == examdata.get(i).getExamid()) {
-                                                        gotopracticeexam(exam1);
-                                                        break;
-                                                    }
-                                                }
-                                                if (i >= examdata.size()) {
-                                                    buypackage();
-                                                }
-                                            } else {
-                                                gotopracticeexam(exam1);
-                                            }
+                                                                    if (examdata.size() >= 5) {
+                                                                        int i = 0;
+                                                                        for (i = 0; i < examdata.size(); i++) {
+                                                                            if (exam1.getExamid() == examdata.get(i).getExamid()) {
+                                                                                gotopracticeexam(exam1);
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        if (i >= examdata.size()) {
+                                                                            buypackage();
+                                                                        }
+                                                                    } else {
+                                                                        gotopracticeexam(exam1);
+                                                                    }
                                        /* ArrayList<Exam> examdata=new ArrayList<>();
                                         for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
                                             Log.e("models ", "data 1" + postSnapShot.toString());
@@ -666,33 +712,44 @@ public class Activitycommon extends AppCompatActivity {
                                         {
                                             Log.e("examdata ","examdata "+exam.getExam_type()+" "+exam.getExamid());
                                         }*/
-                                            //gotopracticeexam(exam);
-                                        }
-                                    } else {
-                                        gotopracticeexam(exam1);
+                                                                    //gotopracticeexam(exam);
+                                                                }
+                                                            } else {
+                                                                gotopracticeexam(exam1);
 
+                                                            }
+                                                        } else {
+                                                            gotopracticeexam(exam1);
+                                                            Log.e("nt exists ", "nt exists2" + dataSnapshot.toString());
+                                                        }
+                                                    } else {
+                                                        gotopracticeexam(exam1);
+                                                        Log.e("nt exists ", "nt exists1 ");
+                                                    }
+
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    reporterror("activityCommmon ", e.toString());
+                                                    gotopracticeexam(exam1);
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
                                     }
-                                } else {
-                                    gotopracticeexam(exam1);
-                                    Log.e("nt exists ", "nt exists2" + dataSnapshot.toString());
                                 }
-                            } else {
-                                gotopracticeexam(exam1);
-                                Log.e("nt exists ", "nt exists1 ");
                             }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            reporterror("activityCommmon ",e.toString());
-                            gotopracticeexam(exam1);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                }
 
        /* if (cangive) {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -1256,5 +1313,52 @@ public class Activitycommon extends AppCompatActivity {
         }
         return obj.toString();
     }
+
+    /*public boolean checkUserAndIEMInofromdatabase(String mobile, final String Iemi) {
+
+        Log.e("iemi activity common", mobile + " " + Iemi);
+        *//*DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+
+        databaseReference.child(mobile).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child("IEMIno").getValue()!=null){
+                    String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                    if(iemi.equalsIgnoreCase(Iemi)){
+                        Log.e("iemi inside ", iemi);
+                        userexists = true;
+                    }else{
+                        userexists = false;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*//*
+
+        Log.e("user returns ", userexists + "");
+        return userexists;
+
+    }*/
+
+    public boolean mobilenotblankandlengthten(String mobile) {
+
+        if (!mobile.trim().equalsIgnoreCase("")) {
+            if (mobile.length() >= 10) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
 
 }

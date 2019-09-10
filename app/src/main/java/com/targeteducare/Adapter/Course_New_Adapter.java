@@ -13,17 +13,21 @@ import android.widget.TextView;
 
 import com.targeteducare.Classes.Course_New;
 import com.targeteducare.Classes.PeakNew_List;
+import com.targeteducare.PracticeTestSelectActivity;
 import com.targeteducare.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Course_New_Adapter extends RecyclerView.Adapter<Course_New_Adapter.MyViewHolder> {
 
     Context context;
     ArrayList<Course_New> course_new = new ArrayList<>();
+    PeakNewAdapter peakNewAdapter;
     String lang = "";
     RecyclerView.LayoutManager layoutManager;
     int initial = 0;
+    int mSelectedItem = 1;
 
 
     public Course_New_Adapter(Context context, ArrayList<Course_New> course_new, String lang) {
@@ -64,7 +68,11 @@ public class Course_New_Adapter extends RecyclerView.Adapter<Course_New_Adapter.
             e.printStackTrace();
         }
 
-        if (initial == 0) {
+        /*final PeakNewAdapter adapter = new PeakNewAdapter(context, course_new.get(i), lang);
+        myViewHolder.recycler_view_peak.setAdapter(adapter);
+        adapter.notifyDataSetChanged();*/
+
+        /*if (initial == 0) {
             course_new.get(0).setFlag(1);
             myViewHolder.iv_arrow.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_white_24dp);
             myViewHolder.recycler_view_peak.setVisibility(View.VISIBLE);
@@ -72,32 +80,39 @@ public class Course_New_Adapter extends RecyclerView.Adapter<Course_New_Adapter.
             myViewHolder.recycler_view_peak.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             initial = 1;
-        }
+        }*/
 
 
         myViewHolder.linearlayout_course.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                final PeakNewAdapter adapter = new PeakNewAdapter(context, course_new.get(i), lang);
-                myViewHolder.recycler_view_peak.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
+                /*final PeakNewAdapter adapter = new PeakNewAdapter(context, course_new.get(i), lang);
+                myViewHolder.recycler_view_peak.setAdapter(adapter);*/
+
 
                 try {
                     if (course_new.get(i).getFlag() == 0) {
                         myViewHolder.iv_arrow.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_white_24dp);
-                        myViewHolder.recycler_view_peak.setVisibility(View.VISIBLE);
+                        //myViewHolder.recycler_view_peak.setVisibility(View.VISIBLE);
                         course_new.get(i).setFlag(1);
-                        myViewHolder.recycler_view_peak.refreshDrawableState();
+                        //((PracticeTestSelectActivity)context).gotopeakadapter(course_new.get(i), 1);
+                        //myViewHolder.recycler_view_peak.refreshDrawableState();
+
+                        peakNewAdapter = new PeakNewAdapter(context, course_new.get(i), lang);
+                        myViewHolder.recycler_view_peak.setAdapter(peakNewAdapter);
+                        peakNewAdapter.notifyDataSetChanged();
+                        myViewHolder.recycler_view_peak.setVisibility(View.VISIBLE);
 
                     } else {
                         myViewHolder.iv_arrow.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_white_24dp);
                         myViewHolder.recycler_view_peak.setVisibility(View.GONE);
                         course_new.get(i).setFlag(0);
-                        adapter.notifyDataSetChanged();
-                        myViewHolder.recycler_view_peak.refreshDrawableState();
+                        //((PracticeTestSelectActivity)context).gotopeakadapter(course_new.get(i), 0);
+                        //myViewHolder.recycler_view_peak.refreshDrawableState();
                     }
-//                  adapter.notifyDataSetChanged();
+
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,7 +126,7 @@ public class Course_New_Adapter extends RecyclerView.Adapter<Course_New_Adapter.
         return course_new.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MyViewHolder extends RecyclerView.ViewHolder/* implements View.OnClickListener*/ {
 
         TextView tv_course;
         RecyclerView recycler_view_peak;
@@ -125,11 +140,43 @@ public class Course_New_Adapter extends RecyclerView.Adapter<Course_New_Adapter.
             linearlayout_course = itemView.findViewById(R.id.linearlayout_course);
             iv_arrow = itemView.findViewById(R.id.iv_arrow);
 
-            linearlayout_course.setOnClickListener(this);
+            View.OnClickListener clickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSelectedItem = getAdapterPosition();
+                    notifyDataSetChanged();
+                }
+            };
+
+            itemView.setOnClickListener(clickListener);
+            //linearlayout_course.setOnClickListener(clickListener);
+
+            //linearlayout_course.setOnClickListener(this);
 
         }
 
-        @Override
+        /*@Override
+        public void onClick(View v) {
+
+
+            if (course_new.get(getAdapterPosition()).getFlag() == 0) {
+                iv_arrow.setBackgroundResource(R.drawable.ic_keyboard_arrow_up_white_24dp);
+                recycler_view_peak.setVisibility(View.VISIBLE);
+                course_new.get(getAdapterPosition()).setFlag(1);
+
+
+            } else {
+                iv_arrow.setBackgroundResource(R.drawable.ic_keyboard_arrow_down_white_24dp);
+                recycler_view_peak.setVisibility(View.GONE);
+                course_new.get(getAdapterPosition()).setFlag(0);
+
+            }
+
+            notifyDataSetChanged();
+
+        }*/
+
+        /*@Override
         public void onClick(View v) {
             int i =getAdapterPosition();
             final PeakNewAdapter adapter = new PeakNewAdapter(context,course_new.get(i), lang);
@@ -149,6 +196,7 @@ public class Course_New_Adapter extends RecyclerView.Adapter<Course_New_Adapter.
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        }
+        }*/
     }
+
+}

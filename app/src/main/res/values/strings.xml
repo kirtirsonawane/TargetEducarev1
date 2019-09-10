@@ -194,8 +194,8 @@
     <string name="nonewtestsmessgae">No New Test available currently. Will update you soon. Keep checking</string>
     <string name="nomissedtestsmessage">Yippee!! You have No Missed Test</string>
     <string name="noattemptedtestsmessage">No Attempted Tests at the Moment</string>
-    <string name="news">News</string>
-    <string name="announcements">Syllabus</string>
+    <string name="news">Ebook Video</string>
+    <string name="announcements">Ebook</string>
     <string name="suggestions">Suggestion</string>
     <string name="explanation">Explanation</string>
     <string name="support">Support</string>
@@ -285,5 +285,8 @@ Earn reward points as maximum as possible. (1 Point = 1 Rupee)</string>
     <string name="terno">TERNo</string>
     <string name="getrewardpt">Get Reward Points on every Successful Referral</string>
     <string name="no_offline_data_available">No offline data available</string>
+    <string name="no_exam_available">No Exams Available</string>
+    <string name="message_otp_verifycode">Your verification code for Target Educare PEAK is</string>
+    <string name="view_omrsheet">View Omr sheet</string>
 
 </resources>

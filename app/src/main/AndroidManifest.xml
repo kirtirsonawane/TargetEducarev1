@@ -23,15 +23,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EbookVideoPlayerActivity"></activity>
+
+        <service
+            android:name=".NotificationActionService"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"/>
+
+        <activity android:name=".EbookUnitSelectionActivity">
+        </activity>
+        <activity
+            android:name=".EbookVideoPlayerActivity"/>
         <activity android:name=".EbookChapterSelectActivity" />
         <activity android:name=".EBookContentDisplayActivity" />
         <activity android:name=".EbookSubjectActivity" />
-
-        <service
-            android:name=".BackgroundService"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity android:name=".PracticeTestSelectActivity" />
         <activity

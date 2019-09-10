@@ -125,35 +125,49 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
 
             //Log.e("type ", "typeee Practice Activity");
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
-            databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    try {
-                        if (dataSnapshot != null) {
-                            if (dataSnapshot.getValue() != null) {
-                                if (dataSnapshot.exists()) {
 
-                                    addtofirebasedb(0);
+            if (mobilenotblankandlengthten(GlobalValues.student.getMobile())) {
+                databaseReference.child(GlobalValues.student.getMobile()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            if (dataSnapshot != null) {
+                                if (dataSnapshot.getValue() != null) {
+                                    if (dataSnapshot.exists()) {
+
+                                        if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                            String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                            if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+
+                                                addtofirebasedb(0);
+                                            }
+
+                                        }
+
+
+                                    } else {
+                                        //Log.e("nt exists ", "nt exists " + dataSnapshot.toString());
+                                        addtofirebasedb(1);
+                                    }
                                 } else {
-                                    //Log.e("nt exists ", "nt exists " + dataSnapshot.toString());
                                     addtofirebasedb(1);
                                 }
                             } else {
                                 addtofirebasedb(1);
                             }
-                        } else {
-                            addtofirebasedb(1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            }
+
 
             LocalBroadcastManager.getInstance(PracticeActivity.this).registerReceiver(recforsubmit, new IntentFilter("QuestionUpdatedSubmitFragment"));
             submitandview = findViewById(R.id.submitviewanswer);
@@ -837,75 +851,74 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
                         total_time_per_question = total_time_per_question + time_taken_per_question;
 
 
-
                         loadLocale();
                         try {
-                        if (position < qdata.size()) {
-                            if (position == 0) {
-                                bt2.setVisibility(View.GONE);
-                                if (qdata.get(position).isIsanswered()) {
+                            if (position < qdata.size()) {
+                                if (position == 0) {
+                                    bt2.setVisibility(View.GONE);
+                                    if (qdata.get(position).isIsanswered()) {
                          /*   submitandview.setVisibility(View.GONE);
                             bt5.setVisibility(View.VISIBLE);*/
-                                    if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
-                                        submitandview.setVisibility(View.GONE);
-                                        bt5.setVisibility(View.VISIBLE);
+                                        if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
+                                            submitandview.setVisibility(View.GONE);
+                                            bt5.setVisibility(View.VISIBLE);
+                                        } else {
+                                            // Log.e("here ", "3");
+                                            submitandview.setText(PracticeActivity.this.getResources().getString(R.string.submit));
+                                            submitandview.setBackgroundResource(R.drawable.rounded_button_layout_submit);
+                                            submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.white));
+                                            submitandview.setVisibility(View.VISIBLE);
+                                            bt5.setVisibility(View.GONE);
+                                        }
                                     } else {
-                                        // Log.e("here ", "3");
-                                        submitandview.setText(PracticeActivity.this.getResources().getString(R.string.submit));
-                                        submitandview.setBackgroundResource(R.drawable.rounded_button_layout_submit);
-                                        submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.white));
-                                        submitandview.setVisibility(View.VISIBLE);
-                                        bt5.setVisibility(View.GONE);
+                                        if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
+                                            //   Log.e("here ", "4");
+                                            submitandview.setVisibility(View.GONE);
+                                            bt5.setVisibility(View.VISIBLE);
+                                        } else {
+
+                                            //  Log.e("here ", "5");
+                                            submitandview.setText(getResources().getString(R.string.skip_question));
+                                            submitandview.setBackgroundResource(R.drawable.rounded_button_layout);
+                                            submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.Gray500));
+                                            submitandview.setVisibility(View.VISIBLE);
+                                            bt5.setVisibility(View.GONE);
+                                        }
                                     }
                                 } else {
-                                    if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
-                                        //   Log.e("here ", "4");
-                                        submitandview.setVisibility(View.GONE);
-                                        bt5.setVisibility(View.VISIBLE);
+                                    //Log.e("visible4 ","visible ");
+                                    bt2.setVisibility(View.VISIBLE);
+                                    if (qdata.get(position).isIsanswered()) {
+                                        if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
+                                            //Log.e("visible3 ","visible ");
+                                            submitandview.setVisibility(View.GONE);
+                                            bt5.setVisibility(View.VISIBLE);
+                                        } else {
+                                            //Log.e("visible2 ","visible ");
+                                            submitandview.setText(getResources().getString(R.string.submit));
+                                            submitandview.setBackgroundResource(R.drawable.rounded_button_layout_submit);
+                                            submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.white));
+                                            submitandview.setVisibility(View.VISIBLE);
+                                            bt5.setVisibility(View.GONE);
+                                        }
                                     } else {
+                                        //Log.e("visible1 ","visible ");
+                                        if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
+                                            submitandview.setVisibility(View.GONE);
+                                            bt5.setVisibility(View.VISIBLE);
+                                        } else {
+                                            //Log.e("visible ","visible ");
+                                            submitandview.setText(getResources().getString(R.string.skip_question));
+                                            submitandview.setBackgroundResource(R.drawable.rounded_button_layout);
+                                            submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.Gray500));
+                                            submitandview.setVisibility(View.VISIBLE);
+                                            bt5.setVisibility(View.GONE);
 
-                                        //  Log.e("here ", "5");
-                                        submitandview.setText(getResources().getString(R.string.skip_question));
-                                        submitandview.setBackgroundResource(R.drawable.rounded_button_layout);
-                                        submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.Gray500));
-                                        submitandview.setVisibility(View.VISIBLE);
-                                        bt5.setVisibility(View.GONE);
-                                    }
-                                }
-                            } else {
-                                //Log.e("visible4 ","visible ");
-                                bt2.setVisibility(View.VISIBLE);
-                                if (qdata.get(position).isIsanswered()) {
-                                    if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
-                                        //Log.e("visible3 ","visible ");
-                                        submitandview.setVisibility(View.GONE);
-                                        bt5.setVisibility(View.VISIBLE);
-                                    } else {
-                                        //Log.e("visible2 ","visible ");
-                                        submitandview.setText(getResources().getString(R.string.submit));
-                                        submitandview.setBackgroundResource(R.drawable.rounded_button_layout_submit);
-                                        submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.white));
-                                        submitandview.setVisibility(View.VISIBLE);
-                                        bt5.setVisibility(View.GONE);
-                                    }
-                                } else {
-                                    //Log.e("visible1 ","visible ");
-                                    if (qdata.get(position).isIsskipped() || qdata.get(position).isIssubmit()) {
-                                        submitandview.setVisibility(View.GONE);
-                                        bt5.setVisibility(View.VISIBLE);
-                                    } else {
-                                        //Log.e("visible ","visible ");
-                                        submitandview.setText(getResources().getString(R.string.skip_question));
-                                        submitandview.setBackgroundResource(R.drawable.rounded_button_layout);
-                                        submitandview.setTextColor(PracticeActivity.this.getResources().getColor(R.color.Gray500));
-                                        submitandview.setVisibility(View.VISIBLE);
-                                        bt5.setVisibility(View.GONE);
-
-                                        //Log.e("visible ","visible "+submitandview.getText().toString());
+                                            //Log.e("visible ","visible "+submitandview.getText().toString());
+                                        }
                                     }
                                 }
                             }
-                        }
                             sbtxt.setText(qdata.get(position).getSubjectname());
                             qdata.get(position).setIsvisited(true);
 
@@ -996,8 +1009,7 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
-            if(exam.getIsOmr()==0)
-            {
+            if (exam.getIsOmr() == 0) {
                 if (!exam.getExamstatus().equalsIgnoreCase("Attempted")) {
                     MenuInflater inflater = getMenuInflater();
                     inflater.inflate(R.menu.examend, menu);
@@ -1543,23 +1555,20 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
             }
 
 
-
-
             //for (int i = 0; i < practiceTestModels.size(); i++) {
-                JSONArray array1 = DatabaseHelper.getInstance(PracticeActivity.this).getexamdetails(exam.getExamid(), exam.getExam_type());
-                if (array1.length() > 0) {
-                    JSONObject obj1 = array1.getJSONObject(0);
-                    int lastq=obj1.getInt(DatabaseHelper.LAST_QID);
-                    if(lastq==0)
-                    {
-                        if(mPager.getAdapter().getCount()>=lastq) {
-                            mPager.setCurrentItem(lastq);
-                        }
-                    }else {
-                        if(mPager.getAdapter().getCount()>=lastq) {
-                            mPager.setCurrentItem(lastq);
-                        }
+            JSONArray array1 = DatabaseHelper.getInstance(PracticeActivity.this).getexamdetails(exam.getExamid(), exam.getExam_type());
+            if (array1.length() > 0) {
+                JSONObject obj1 = array1.getJSONObject(0);
+                int lastq = obj1.getInt(DatabaseHelper.LAST_QID);
+                if (lastq == 0) {
+                    if (mPager.getAdapter().getCount() >= lastq) {
+                        mPager.setCurrentItem(lastq);
                     }
+                } else {
+                    if (mPager.getAdapter().getCount() >= lastq) {
+                        mPager.setCurrentItem(lastq);
+                    }
+                }
               /*      practiceTestModels.get(i).setSkipp(obj.getInt(DatabaseHelper.SKIPP));
                     practiceTestModels.get(i).setAnswered(obj.getInt(DatabaseHelper.ANSWERED));
                     practiceTestModels.get(i).setWrong(obj.getInt(DatabaseHelper.WRONG));
@@ -1570,8 +1579,8 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
                     practiceTestModels.get(i).setTimetaken(obj.getLong(DatabaseHelper.TIMETAKEN));
                     exam.setTimetaken(obj.getLong(DatabaseHelper.TIMETAKEN));
                     practiceTestModels.get(i).setSpeed(obj.getDouble(DatabaseHelper.SPEED));*/
-                    //practiceTestModels.get(i).setTotal_questions(obj.getString(DatabaseHelper.QUESTION));
-                }
+                //practiceTestModels.get(i).setTotal_questions(obj.getString(DatabaseHelper.QUESTION));
+            }
             //}
 
 
@@ -1755,7 +1764,7 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
             c1.put(DatabaseHelper.EXAMTYPE, exam.getExam_type());
 
 
-            c1.put(DatabaseHelper.LAST_QID,mPager.getCurrentItem());
+            c1.put(DatabaseHelper.LAST_QID, mPager.getCurrentItem());
             c1.put(DatabaseHelper.PROGRESS, progresstext.getText().toString().replace("%", ""));
             long sec = 1;
             long sp = 1;
@@ -1773,7 +1782,7 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
 
             try {
                 DatabaseHelper.getInstance(PracticeActivity.this).saveexaminationdetails(c1, exam.getExamid());
-            }catch (Exception e){
+            } catch (Exception e) {
                 reporterror(tag, e.toString());
                 e.printStackTrace();
             }
@@ -1848,7 +1857,7 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
                 e.printStackTrace();
             }
 
-          //  exam.setExamstatus("Attempted");
+            //  exam.setExamstatus("Attempted");
             Intent i = new Intent(PracticeActivity.this, ProgressReportActivity.class);
             //i.putExtra("progressreport", exam);
             i.putExtra("examidprogress", exam.getExamid());
@@ -1915,10 +1924,10 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
             }
             c1.put(DatabaseHelper.SPEED, Long.toString(sec));
 
-            try{
-            DatabaseHelper.getInstance(PracticeActivity.this).saveexaminationdetails(c1, exam.getExamid());
+            try {
+                DatabaseHelper.getInstance(PracticeActivity.this).saveexaminationdetails(c1, exam.getExamid());
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 reporterror(tag, e.toString());
                 e.printStackTrace();
             }
@@ -2361,9 +2370,9 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
 
         c1.put(DatabaseHelper.SPEED, Long.toString(sec));
 
-        try{
-        DatabaseHelper.getInstance(PracticeActivity.this).saveexaminationdetails(c1, exam.getExamid());
-        }catch (Exception e){
+        try {
+            DatabaseHelper.getInstance(PracticeActivity.this).saveexaminationdetails(c1, exam.getExamid());
+        } catch (Exception e) {
             reporterror(tag, e.toString());
             e.printStackTrace();
         }
@@ -2374,27 +2383,32 @@ public class PracticeActivity extends Activitycommon implements NavigationView.O
             if (InternetUtils.getInstance(getApplicationContext()).available()) {
                 DatabaseReference databaseReference;
                 databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
-
                 //  databaseReference.child(GlobalValues.student.getMobile()).setValue(values);
-                Map<String, Object> childUpdates = new HashMap<>();
-                //  childUpdates.put("/posts/" + key, postValues);
-                Map<String, Object> values = new HashMap<>();
-                values.put("examid", exam.getExamid());
-                values.put("examname", exam.getExamname());
-                values.put("isattempted", 1);
-                values.put("type", "Practice Test");
-                childUpdates.put("" + exam.getExamid(), values);
-                if (flag == 0) {
-                    databaseReference.child(GlobalValues.student.getMobile()).child("Exam").updateChildren(childUpdates);
-                } else {
+
+                if (mobilenotblankandlengthten(GlobalValues.student.getMobile())) {
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    //  childUpdates.put("/posts/" + key, postValues);
+                    Map<String, Object> values = new HashMap<>();
+                    values.put("examid", exam.getExamid());
+                    values.put("examname", exam.getExamname());
+                    values.put("isattempted", 1);
+                    values.put("type", "Practice Test");
+                    values.put("IEMIno", Constants.IEMIno);
+                    values.put("Mobile", GlobalValues.student.getMobile());
+                    childUpdates.put("" + exam.getExamid(), values);
+                    if (flag == 0) {
+
+                        databaseReference.child(GlobalValues.student.getMobile()).child("Exam").updateChildren(childUpdates);
+                    } else {
                    /*Map<String, Object> childUpdates = new HashMap<>();
                     //childUpdates.put("/posts/" + key, postValues);
                     Map<String, Object> values = new HashMap<>();
                     values.put("examname", exam.getExamname());
                     values.put("isattempted", 1);
                     childUpdates.put(GlobalValues.student.getMobile() + "/Exam/"+exam.getExamid(), values);*/
-                    databaseReference.child(GlobalValues.student.getMobile()).child("Exam").setValue(childUpdates);
-                    // Log.e("update ","insert ");
+                        databaseReference.child(GlobalValues.student.getMobile()).child("Exam").setValue(childUpdates);
+                        // Log.e("update ","insert ");
+                    }
                 }
             }
         } catch (Exception e) {

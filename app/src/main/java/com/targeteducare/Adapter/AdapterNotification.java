@@ -135,6 +135,7 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             if (obj.has("imageurl")) {
                 holderNotification.img.setVisibility(View.VISIBLE);
                 String imgurl = obj.getString("imageurl");
+                Log.e("image ", imgurl);
                 if (!imgurl.equalsIgnoreCase("")) {
                     Picasso.with(mContext)
                             .load(imgurl)
@@ -158,9 +159,9 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
                 }
             }*/
 
-            if(obj.has("key")){
+            /*if(obj.has("key")){
                 key = obj.optString("key");
-            }
+            }*/
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -220,19 +221,19 @@ public class AdapterNotification extends RecyclerView.Adapter<AdapterNotificatio
             JSONObject obj;
             try {
                 obj = new JSONObject(list.get(tag));
-                if(obj.has("isread")){
+                /*if(obj.has("isread")){
                     //update_chat(obj);
-                }
+                }*/
 
                 DatabaseHelper.getInstance(mContext).deletebyid("table_notification", obj.getLong("id"));
                 list.remove(tag);
 
-                Map<String, String> driverdetails = new HashMap<>();
+                /*Map<String, String> driverdetails = new HashMap<>();
                 driverdetails.put("data", "test");
                 driverdetails.put("date", "12");
                 driverdetails.put("isread", "1");
                 update = databaseReference.child(GlobalValues.student.getMobile()).child("chat").child(key);
-                update.setValue(driverdetails);
+                update.setValue(driverdetails);*/
 
             } catch (JSONException e) {
                 // TODO Auto-generated catch block

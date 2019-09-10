@@ -246,6 +246,16 @@
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                         android:textColor="@color/blue" />
 
+                    <TextView
+                        android:id="@+id/tv_omrsheet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/view_omrsheet"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:textColor="@color/blue"
+                        android:visibility="gone"/>
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

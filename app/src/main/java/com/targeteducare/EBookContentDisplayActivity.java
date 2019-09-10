@@ -1,31 +1,30 @@
 package com.targeteducare;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.content.ContentValues;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.targeteducare.Adapter.EBookVideoAdapter;
 import com.targeteducare.Adapter.EbookPagerAdapter;
-import com.targeteducare.Classes.EbookChapter;
-import com.targeteducare.Classes.EbookContentDetails;
+
+import com.targeteducare.Classes.EbookChapterContentDetails;
 import com.targeteducare.Classes.EbookPageDetails;
 import com.targeteducare.Classes.EbookVideoDetails;
+import com.targeteducare.database.DatabaseHelper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,7 @@ public class EBookContentDisplayActivity extends Activitycommon {
     ViewPager pager;
     ArrayList<EbookPageDetails> ebookPageDetails = new ArrayList<>();
     ArrayList<EbookVideoDetails> ebookVideoDetails = new ArrayList<>();
-    ArrayList<EbookContentDetails> ebookContentDetails = new ArrayList<>();
+    EbookChapterContentDetails ebookContentDetails;
     EbookPagerAdapter ebookPagerAdapter;
     EBookVideoAdapter eBookVideoAdapter;
     Bundle b;
@@ -48,6 +47,9 @@ public class EBookContentDisplayActivity extends Activitycommon {
     LinearLayout layout_contentdisplay;
     int total_pages = 0;
     SeekBar seekbar;
+    int chapterid = 0;
+    int ebookid = 0;
+    int unitid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,45 +81,339 @@ public class EBookContentDisplayActivity extends Activitycommon {
 
             //LocalBroadcastManager.getInstance(EBookContentDisplayActivity.this).registerReceiver(recforfav, new IntentFilter("Favorite"));
             //LocalBroadcastManager.getInstance(EBookContentDisplayActivity.this).registerReceiver(recforbookmark, new IntentFilter("Bookmark"));
-            b = getIntent().getExtras();
+
+            try {
+
+                b = getIntent().getExtras();
+
+                if (b != null) {
+
+                    if (b.containsKey("typebook")) {
+                        type_ebook = b.getString("typebook");
+                    }
+                /*if (b.containsKey("ebookcontentselect")) {
+
+                    ebookContentDetails = (EbookChapterContentDetails) b.getSerializable("ebookcontentselect");
+
+                }*/
 
 
-            if(b!=null){
-
-                if(b.containsKey("typebook")){
-                    type_ebook = b.getString("typebook");
+                    if (b.containsKey("unitid")) {
+                        unitid = b.getInt("unitid");
+                    }
+                    if (b.containsKey("ebookid")) {
+                        ebookid = b.getInt("ebookid");
+                    }
+                    if (b.containsKey("chapterid")) {
+                        chapterid = b.getInt("chapterid");
+                    }
                 }
-                if(b.containsKey("ebookcontent")){
 
-                    ebookContentDetails = (ArrayList<EbookContentDetails>) b.getSerializable("ebookcontent");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+            JSONArray array = DatabaseHelper.getInstance(EBookContentDisplayActivity.this).get_contentdetails_withchapter(type_ebook, ebookid, unitid, chapterid);
+
+            if (array.length() > 0) {
+
+                //Log.e("arr ", array.toString() + " size " + array.length());
+
+                for (int i = 0; i < array.length(); i++) {
+
+                    JSONObject obj = array.optJSONObject(i);
+                    String a = obj.optString("JSONDATA");
+                    JSONArray arr = new JSONArray(a);
+                    //Log.e("chapter get ", arr + "");
+
+                    for (int j = 0; j < arr.length(); j++) {
+
+                        JSONObject objectdetails = arr.optJSONObject(j);
+                        //Log.e("chapter get", objectdetails + "");
+                        ebookContentDetails = new EbookChapterContentDetails(objectdetails);
+
+                    }
 
                 }
             }
 
-            if(type_ebook.equalsIgnoreCase("Ebook")){
+            if (type_ebook.equalsIgnoreCase("Ebook")) {
 
                 try {
                     linearlayout_content.setVisibility(View.VISIBLE);
                     linearlayout_pdf.setVisibility(View.GONE);
                     linearlayout_video.setVisibility(View.GONE);
 
-                    Log.e("ebookcontent size ", String.valueOf(ebookContentDetails.size()));
-                    for(int i = 0; i<ebookContentDetails.size(); i++){
-                        tv_chaptername.setText(ebookContentDetails.get(i).getChapterName());
-                        ebookPageDetails = ebookContentDetails.get(i).getEbookPageDetails();
-                        total_pages = ebookContentDetails.get(i).getNoofpages();
+
+                    tv_chaptername.setText(ebookContentDetails.getChapterName());
+                    chapterid = ebookContentDetails.getChapterid();
+                    ebookPageDetails = ebookContentDetails.getEbookPageDetails();
+                    total_pages = ebookContentDetails.getNoofpages();
+
+                    if (total_pages > 0) {
+                        //FadeOutTransformation fadeOutTransformation = new FadeOutTransformation();
+                        //HorizontalFlipTransformation horizontalFlipTransformation = new HorizontalFlipTransformation();
+                        VerticalFlipTransformation verticalFlipTransformation = new VerticalFlipTransformation();
+
+                        ebookPagerAdapter = new EbookPagerAdapter(getSupportFragmentManager(), ebookPageDetails, unitid);
+                        pager.setAdapter(ebookPagerAdapter);
+
+                        ebookid = ebookContentDetails.getEbookId();
+                        getdetails();
+
+                        seekbar.setMax(total_pages - 1);
+                        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                pager.setCurrentItem(progress);
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        });
+
+                        pager.setPageTransformer(true, verticalFlipTransformation);
+
+                        //pager.setPageTransformer(true, fadeOutTransformation);
+                        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                            @Override
+                            public void onPageScrolled(int i, float v, int i1) {
+                                tv_pageno.setText((i + 1) + "/" + total_pages);
+                            }
+
+                            @Override
+                            public void onPageSelected(int i) {
+                                seekbar.setProgress(i);
+                                pager.setCurrentItem(i);
+                            }
+
+                            @Override
+                            public void onPageScrollStateChanged(int i) {
+
+                            }
+                        });
+                    } else {
+                        Log.e("in ", "PDF");
+
+                        //Toast.makeText(context, "PDF", Toast.LENGTH_SHORT).show();
                     }
 
 
-                    FadeOutTransformation fadeOutTransformation = new FadeOutTransformation();
-                    HorizontalFlipTransformation horizontalFlipTransformation = new HorizontalFlipTransformation();
-                    VerticalFlipTransformation verticalFlipTransformation = new VerticalFlipTransformation();
+                } catch (Exception e) {
+                    //reporterror(tag, e.getMessage());
+                    e.printStackTrace();
+                }
 
-                    ebookPagerAdapter = new EbookPagerAdapter(getSupportFragmentManager(), ebookPageDetails);
-                    pager.setAdapter(ebookPagerAdapter);
+            } else if (type_ebook.equalsIgnoreCase("Video")) {
 
-                    /*linearlayout_content.setVisibility(View.VISIBLE);
+                try {
+
+                    setmaterialDesign();
+                    back();
+
+                    linearlayout_content.setVisibility(View.GONE);
+                    linearlayout_pdf.setVisibility(View.GONE);
+                    linearlayout_video.setVisibility(View.VISIBLE);
+
+
+                    ebookVideoDetails = ebookContentDetails.getEbookVideoDetails();
+
+
+                    layoutManager = new LinearLayoutManager(EBookContentDisplayActivity.this);
+                    recyclerview_video.setLayoutManager(layoutManager);
+                    eBookVideoAdapter = new EBookVideoAdapter(EBookContentDisplayActivity.this, ebookVideoDetails, lang);
+                    recyclerview_video.setAdapter(eBookVideoAdapter);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (Exception e) {
+            //reporterror(tag, e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void getdetails() {
+
+        try {
+
+            JSONArray array = DatabaseHelper.getInstance(EBookContentDisplayActivity.this).get_pagedetails(ebookid, unitid, chapterid);
+            //Log.e("arr ", array.toString());
+            if (array.length() > 0) {
+
+                JSONObject obj = array.optJSONObject(0);
+                if (obj.has("lastvisitedpage")) {
+                    pager.setCurrentItem(obj.optInt("lastvisitedpage"));
+                }
+                if (obj.has("chapterprogress")) {
+                    seekbar.setProgress(obj.optInt("chapterprogress"));
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void gotoebookfragment(EbookVideoDetails video) {
+
+        try {
+
+            Intent i = new Intent(EBookContentDisplayActivity.this, EbookVideoPlayerActivity.class);
+            i.putExtra("videodetails", video);
+            startActivity(i);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public class VerticalFlipTransformation implements ViewPager.PageTransformer {
+        @Override
+        public void transformPage(View page, float position) {
+
+
+            try {
+
+                page.setTranslationX(-position * page.getWidth());
+                page.setCameraDistance(12000);
+
+                if (position < 0.5 && position > -0.5) {
+                    page.setVisibility(View.VISIBLE);
+                } else {
+                    page.setVisibility(View.INVISIBLE);
+                }
+
+
+                if (position < -1) {     // [-Infinity,-1)
+                    // This page is way off-screen to the left.
+                    page.setAlpha(0);
+
+                } else if (position <= 0) {    // [-1,0]
+                    page.setAlpha(1);
+                    page.setRotationY(180 * (1 - Math.abs(position) + 1));
+
+                } else if (position <= 1) {    // (0,1]
+                    page.setAlpha(1);
+                    page.setRotationY(-180 * (1 - Math.abs(position) + 1));
+
+                } else {    // (1,+Infinity]
+                    // This page is way off-screen to the right.
+                    page.setAlpha(0);
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        savepagedata();
+        EBookContentDisplayActivity.this.finish();
+        //super.onBackPressed();
+    }
+
+    private void savepagedata() {
+
+        try {
+            ContentValues c = new ContentValues();
+            c.put(DatabaseHelper.EBOOK_ID, ebookid);
+            c.put(DatabaseHelper.UNIT_ID, unitid);
+            c.put(DatabaseHelper.CHAPTER_ID, chapterid);
+            c.put(DatabaseHelper.CHAPTER_PROGRESS, (int) (seekbar.getProgress()));
+            c.put(DatabaseHelper.LAST_VISITED_PAGE, pager.getCurrentItem());
+            c.put(DatabaseHelper.SAVEDTIME, DateUtils.getSqliteTime());
+            //Log.e("content val ", c + "");
+
+            DatabaseHelper.getInstance(EBookContentDisplayActivity.this).save_pagedetails(c, ebookid, unitid, chapterid);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+
+
+/*public void updateforfavorite(EbookPageDetails ebookPageDetails) {
+        try {
+            Intent intent = new Intent("FavQuestionfromFragment");
+            intent.putExtra("Favorite", ebookPageDetails.getPageId());
+            LocalBroadcastManager.getInstance(EBookContentDisplayActivity.this).sendBroadcast(intent);
+        } catch (Exception e) {
+            //reporterror(tag, e.toString());
+            e.printStackTrace();
+        }
+    }
+
+    public void updateforbookmark(EbookPageDetails ebookPageDetails) {
+        try {
+            Intent intent = new Intent("BookmarkQuestionfromFragment");
+            intent.putExtra("Bookmark", ebookPageDetails.getPageId());
+            LocalBroadcastManager.getInstance(EBookContentDisplayActivity.this).sendBroadcast(intent);
+        } catch (Exception e) {
+            //reporterror(tag, e.toString());
+            e.printStackTrace();
+        }
+    }*/
+
+
+
+    /*BroadcastReceiver recforfav = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try{
+
+                if(ebookPageDetails.get(pager.getCurrentItem()).getPageId() == intent.getIntExtra("Favorite", 0)){
+
+                }
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    };
+
+    BroadcastReceiver recforbookmark = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try{
+                try{
+                    if(ebookPageDetails.get(pager.getCurrentItem()).getPageId() == intent.getIntExtra("Bookmark", 0)){
+
+                        if(ebookPageDetails.get(pager.getCurrentItem()).isBookmark()){
+
+                        }
+
+                    }
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+    };*/
+
+/*linearlayout_content.setVisibility(View.VISIBLE);
                     linearlayout_pdf.setVisibility(View.GONE);
                     linearlayout_video.setVisibility(View.GONE);
                     ebookPagerAdapter = new EbookPagerAdapter(getSupportFragmentManager(), ebookPageDetails);
@@ -210,242 +506,54 @@ public class EBookContentDisplayActivity extends Activitycommon {
                         }
                     });*/
 
-                    seekbar.setMax(total_pages);
 
+/*
+public class FadeOutTransformation implements ViewPager.PageTransformer {
+    @Override
+    public void transformPage(View page, float position) {
 
-                    seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            Log.e("prog ", String.valueOf(progress));
-                            //pager.setCurrentItem(progress);
-                        }
+        page.setTranslationX(-position * page.getWidth());
 
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
+        page.setAlpha(1 - Math.abs(position));
 
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-
-                        }
-                    });
-
-                    pager.setPageTransformer(true, verticalFlipTransformation);
-
-                    //pager.setPageTransformer(true, fadeOutTransformation);
-                    pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                        @Override
-                        public void onPageScrolled(int i, float v, int i1) {
-                            tv_pageno.setText((i+1)+"/"+total_pages);
-                            seekbar.setProgress(i+1);
-                        }
-
-                        @Override
-                        public void onPageSelected(int i) {
-
-                        }
-
-                        @Override
-                        public void onPageScrollStateChanged(int i) {
-
-                        }
-                    });
-
-                } catch (Exception e) {
-                    //reporterror(tag, e.getMessage());
-                    e.printStackTrace();
-                }
-
-            }else if(type_ebook.equalsIgnoreCase("Video")){
-
-                setmaterialDesign();
-                back();
-                linearlayout_content.setVisibility(View.GONE);
-                linearlayout_pdf.setVisibility(View.GONE);
-                linearlayout_video.setVisibility(View.VISIBLE);
-
-                for(int i = 0; i<ebookContentDetails.size(); i++){
-
-                    ebookVideoDetails = ebookContentDetails.get(i).getEbookVideoDetails();
-
-                }
-
-                layoutManager = new LinearLayoutManager(EBookContentDisplayActivity.this);
-                recyclerview_video.setLayoutManager(layoutManager);
-                eBookVideoAdapter = new EBookVideoAdapter(EBookContentDisplayActivity.this, ebookVideoDetails, lang);
-                recyclerview_video.setAdapter(eBookVideoAdapter);
-            }
-
-
-        } catch (Exception e) {
-            //reporterror(tag, e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    public void gotoebookfragment(EbookVideoDetails video) {
-
-        Intent i = new Intent(EBookContentDisplayActivity.this, EbookVideoPlayerActivity.class);
-        i.putExtra("videodetails", video);
-        startActivity(i);
 
     }
-
-    public class FadeOutTransformation implements ViewPager.PageTransformer{
-        @Override
-        public void transformPage(View page, float position) {
-
-            page.setTranslationX(-position*page.getWidth());
-
-            page.setAlpha(1-Math.abs(position));
-
-
-        }
-    }
-
-    public class HorizontalFlipTransformation implements ViewPager.PageTransformer {
-        @Override
-        public void transformPage(View page, float position) {
-
-            page.setTranslationX(-position*page.getWidth());
-            page.setCameraDistance(20000);
-
-            if (position < 0.5 && position > -0.5){
-                page.setVisibility(View.VISIBLE);
-            }
-            else {
-                page.setVisibility(View.INVISIBLE);
-            }
-
-
-
-            if (position < -1){     // [-Infinity,-1)
-                // This page is way off-screen to the left.
-                page.setAlpha(0);
-
-            }
-            else if (position <= 0 ){    // [-1,0]
-                page.setAlpha(1);
-                page.setRotationX(180*(1-Math.abs(position)+1));
-                Log.e("HORIZONTAL", "position <= 0     " + (180 * (1 - Math.abs(position) + 1)));
-
-            }
-            else if (position <= 1){    // (0,1]
-                page.setAlpha(1);
-                page.setRotationX(-180*(1-Math.abs(position)+1));
-                Log.e("HORIZONTAL", "position <= 1     " + (-180 * (1 - Math.abs(position) + 1)));
-
-            }
-            else {    // (1,+Infinity]
-                // This page is way off-screen to the right.
-                page.setAlpha(0);
-
-            }
-
-
-        }
-    }
-
-    public class VerticalFlipTransformation implements ViewPager.PageTransformer {
-        @Override
-        public void transformPage(View page, float position) {
-
-            page.setTranslationX(-position * page.getWidth());
-            page.setCameraDistance(12000);
-
-            if (position < 0.5 && position > -0.5) {
-                page.setVisibility(View.VISIBLE);
-            } else {
-                page.setVisibility(View.INVISIBLE);
-            }
-
-
-
-            if (position < -1){     // [-Infinity,-1)
-                // This page is way off-screen to the left.
-                page.setAlpha(0);
-
-            }
-            else if (position <= 0) {    // [-1,0]
-                page.setAlpha(1);
-                page.setRotationY(180 *(1-Math.abs(position)+1));
-
-            }
-            else if (position <= 1) {    // (0,1]
-                page.setAlpha(1);
-                page.setRotationY(-180 *(1-Math.abs(position)+1));
-
-            }
-            else {    // (1,+Infinity]
-                // This page is way off-screen to the right.
-                page.setAlpha(0);
-
-            }
-
-
-        }
-    }
-
-    public void updateforfavorite(EbookPageDetails ebookPageDetails) {
-        try {
-            Intent intent = new Intent("FavQuestionfromFragment");
-            intent.putExtra("Favorite", ebookPageDetails.getPageId());
-            LocalBroadcastManager.getInstance(EBookContentDisplayActivity.this).sendBroadcast(intent);
-        } catch (Exception e) {
-            //reporterror(tag, e.toString());
-            e.printStackTrace();
-        }
-    }
-
-    public void updateforbookmark(EbookPageDetails ebookPageDetails) {
-        try {
-            Intent intent = new Intent("BookmarkQuestionfromFragment");
-            intent.putExtra("Bookmark", ebookPageDetails.getPageId());
-            LocalBroadcastManager.getInstance(EBookContentDisplayActivity.this).sendBroadcast(intent);
-        } catch (Exception e) {
-            //reporterror(tag, e.toString());
-            e.printStackTrace();
-        }
-    }
-
-    /*BroadcastReceiver recforfav = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try{
-
-                if(ebookPageDetails.get(pager.getCurrentItem()).getPageId() == intent.getIntExtra("Favorite", 0)){
-
-                }
-
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    };
-
-    BroadcastReceiver recforbookmark = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            try{
-                try{
-                    if(ebookPageDetails.get(pager.getCurrentItem()).getPageId() == intent.getIntExtra("Bookmark", 0)){
-
-                        if(ebookPageDetails.get(pager.getCurrentItem()).isBookmark()){
-
-                        }
-
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-    };*/
-
 }
+
+public class HorizontalFlipTransformation implements ViewPager.PageTransformer {
+    @Override
+    public void transformPage(View page, float position) {
+
+        page.setTranslationX(-position * page.getWidth());
+        page.setCameraDistance(20000);
+
+        if (position < 0.5 && position > -0.5) {
+            page.setVisibility(View.VISIBLE);
+        } else {
+            page.setVisibility(View.INVISIBLE);
+        }
+
+
+        if (position < -1) {     // [-Infinity,-1)
+            // This page is way off-screen to the left.
+            page.setAlpha(0);
+
+        } else if (position <= 0) {    // [-1,0]
+            page.setAlpha(1);
+            page.setRotationX(180 * (1 - Math.abs(position) + 1));
+            //Log.e("HORIZONTAL", "position <= 0     " + (180 * (1 - Math.abs(position) + 1)));
+
+        } else if (position <= 1) {    // (0,1]
+            page.setAlpha(1);
+            page.setRotationX(-180 * (1 - Math.abs(position) + 1));
+            //Log.e("HORIZONTAL", "position <= 1     " + (-180 * (1 - Math.abs(position) + 1)));
+
+        } else {    // (1,+Infinity]
+            // This page is way off-screen to the right.
+            page.setAlpha(0);
+
+        }
+
+
+    }
+}*/

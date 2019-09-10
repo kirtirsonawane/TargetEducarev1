@@ -85,6 +85,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_SUBJECTS = "ebook_subjects";
 
+    public static final String TABLE_EBOOKDETAILS= "ebookdetails";
+
     public static final String TABLE_EBOOKCONTENTDETAILS = "ebookcontentdetails";
 
     public static final String TABLE_EBOOKPAGES = "ebook_pagedetails";
@@ -92,7 +94,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String PAGE_ID = "pageid";
     public static final String BOOKMARK =  "bookmark";
     public static final String FAVORITE =  "favorite";
+
+    public static final String TABLE_PAGEDETAILS = "pagedetails";
+    public static final String CHAPTER_ID = "chapterid";
+    public static final String UNIT_ID = "unitid";
     public static final String LAST_VISITED_PAGE= "lastvisitedpage";
+    public static final String CHAPTER_PROGRESS = "chapterprogress";
 
 
 
@@ -178,23 +185,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, " + SAVEDTIME + " TEXT)";
         db.execSQL(query_subjects);
 
+        String query_ebookdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKDETAILS + "("
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, " + EBOOK_ID + " INTEGER, " + UNIT_ID + " INTEGER, " + TYPE + " TEXT, " + SAVEDTIME + " TEXT)";
+        db.execSQL(query_ebookdetails);
+
         String query_ebookcontentdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKCONTENTDETAILS + "("
-                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, "+ EBOOK_ID + " INTEGER, " + TYPE + " TEXT, " + SAVEDTIME + " TEXT)";
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, "+ EBOOK_ID + " INTEGER, " + UNIT_ID + " INTEGER, " + CHAPTER_ID + " INTEGER, " + TYPE + " TEXT, " + SAVEDTIME + " TEXT)";
         db.execSQL(query_ebookcontentdetails);
 
+
         String query_ebookpages = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKPAGES + "("
-                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, " + PAGE_ID + " INTEGER, " + BOOKMARK + " INTEGER, "
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + UNIT_ID + " INTEGER, " +CHAPTER_ID + " INTEGER, " + PAGE_ID + " INTEGER, " + BOOKMARK + " INTEGER, "
                 + FAVORITE + " INTEGER, " + SAVEDTIME + " TEXT)";
         db.execSQL(query_ebookpages);
 
+        String query_pagedetails = "CREATE TABLE IF NOT EXISTS " + TABLE_PAGEDETAILS + "("
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EBOOK_ID + " INTEGER, " + UNIT_ID + " INTEGER, " + CHAPTER_ID + " INTEGER, " + CHAPTER_PROGRESS + " INTEGER, " + LAST_VISITED_PAGE + " INTEGER, "
+                + SAVEDTIME + " TEXT)";
+        db.execSQL(query_pagedetails);
+
 
     }
+
 
     public void createtable_ebookpages(){
         try {
             SQLiteDatabase db = getWritableDatabase();
             String query_ebookpages = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKPAGES + "("
-                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, " + PAGE_ID + " INTEGER, " + BOOKMARK + " INTEGER, "
+                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ UNIT_ID  + " INTEGER, " + CHAPTER_ID + " INTEGER, " + PAGE_ID + " INTEGER, " + BOOKMARK + " INTEGER, "
                     + FAVORITE + " INTEGER, " + SAVEDTIME + " TEXT)";
             db.execSQL(query_ebookpages);
         } catch (Exception e) {
@@ -202,28 +220,149 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void createtable_contentdetails(){
+    public void createtable_pagedetails(){
         try {
             SQLiteDatabase db = getWritableDatabase();
-            String query_ebookcontentdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKCONTENTDETAILS + "("
-                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, "+ EBOOK_ID + " INTEGER, " + TYPE + " TEXT, " + SAVEDTIME + " TEXT)";
-            db.execSQL(query_ebookcontentdetails);
-            Log.e("query ebook ", query_ebookcontentdetails);
+            String query_pagedetails = "CREATE TABLE IF NOT EXISTS " + TABLE_PAGEDETAILS + "("
+                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + EBOOK_ID + " INTEGER, " + UNIT_ID + " INTEGER, " + CHAPTER_ID + " INTEGER, " + CHAPTER_PROGRESS + " INTEGER, " + LAST_VISITED_PAGE + " INTEGER, "
+                    + SAVEDTIME + " TEXT)";
+            db.execSQL(query_pagedetails);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save_ebookpages(ContentValues c, int unitid, int chapterid, int pageid) {
+        try {
+            createtable_ebookpages();
+            checkunitid(TABLE_EBOOKPAGES, UNIT_ID);
+            SQLiteDatabase db = getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_EBOOKPAGES + " where " + UNIT_ID + " = '" + unitid /*+ "' AND " + CHAPTER_ID + " = '" + chapterid */+ "' AND " + PAGE_ID + " = " + pageid;
+            db.execSQL(query);
+            long id = db.insertWithOnConflict(TABLE_EBOOKPAGES, null, c, SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save_pagedetails(ContentValues c, int ebookid, int unitid, int chapterid) {
+        try {
+            createtable_pagedetails();
+            SQLiteDatabase db = getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_PAGEDETAILS + " where " + EBOOK_ID + " = '" + ebookid + "' AND " + UNIT_ID + " = '" + unitid /*+ "' AND " + CHAPTER_ID + " = '" + chapterid*/ + "'";
+            db.execSQL(query);
+            long id = db.insertWithOnConflict(TABLE_PAGEDETAILS, null, c, SQLiteDatabase.CONFLICT_REPLACE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public JSONArray get_ebookpages(int unitid, int chapterid, int page_id) {
+        JSONArray resultSet = new JSONArray();
+        try {
+            createtable_ebookpages();
+            checkunitid(TABLE_EBOOKPAGES, UNIT_ID);
+            SQLiteDatabase db = getWritableDatabase();
+            //String searchQuery = "SELECT JSONDATA FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + TYPE + " = '" + type_ebook + "'";
+            String search_page = "SELECT * FROM " + TABLE_EBOOKPAGES + " where " + UNIT_ID + " = '" + unitid + "' AND " + PAGE_ID + " = '" + page_id + "'";
+            Cursor cursor = db.rawQuery(search_page, null);
+            cursor.moveToFirst();
+            resultSet = convertcursorvaltoJSOnArray(cursor);
+            Log.e("res pages ", resultSet.toString());
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public JSONArray get_pagedetails(int ebookid, int unitid, int chapterid) {
+        JSONArray resultSet = new JSONArray();
+        try {
+            createtable_pagedetails();
+            SQLiteDatabase db = getWritableDatabase();
+            //String searchQuery = "SELECT JSONDATA FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + TYPE + " = '" + type_ebook + "'";
+            String search_page = "SELECT * FROM " + TABLE_PAGEDETAILS + " where " + EBOOK_ID + " = '" + ebookid + "' AND " + UNIT_ID + " = '" + unitid /*+ "' AND " + CHAPTER_ID + " = '" + chapterid*/ + "'";
+            Cursor cursor = db.rawQuery(search_page, null);
+            cursor.moveToFirst();
+            resultSet = convertcursorvaltoJSOnArray(cursor);
+            Log.e("res pagedetails ", resultSet.toString());
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public JSONArray get_pagedetails1(int ebookid/*, int unitid*/) {
+        JSONArray resultSet = new JSONArray();
+        try {
+            createtable_pagedetails();
+            SQLiteDatabase db = getWritableDatabase();
+            //String searchQuery = "SELECT JSONDATA FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + TYPE + " = '" + type_ebook + "'";
+            String search_page = "SELECT * FROM " + TABLE_PAGEDETAILS + " where " + EBOOK_ID + " = '" + ebookid /*+ "' AND " + UNIT_ID + " = '" + unitid + "' AND " + CHAPTER_ID + " = '" + chapterid*/ + "'";
+            Cursor cursor = db.rawQuery(search_page, null);
+            cursor.moveToFirst();
+            resultSet = convertcursorvaltoJSOnArray(cursor);
+            Log.e("res pagedetails1 ", resultSet.toString());
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public void delete_ebookpages() {
+
+        try {
+            createtable_ebookpages();
+            SQLiteDatabase db = getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_EBOOKPAGES;
+            db.execSQL(query);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void altercontent() {
+    public void delete_pagedetails() {
+
         try {
+            createtable_pagedetails();
             SQLiteDatabase db = getWritableDatabase();
-            String sql = "ALTER TABLE " + TABLE_EBOOKCONTENTDETAILS + " ADD COLUMN " + EBOOK_ID + " INTEGER DEFAULT 0 NOT NULL";
-            db.execSQL(sql);
-        } catch (Exception localException) {
-            localException.printStackTrace();
+            String query = "DELETE FROM " + TABLE_PAGEDETAILS;
+            db.execSQL(query);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+    public void createtable_ebookdetails(){
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            String query_ebookdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKDETAILS + "("
+                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, " + EBOOK_ID + " INTEGER, " + UNIT_ID + " INTEGER, " + TYPE + " TEXT, " + SAVEDTIME + " TEXT)";
+            db.execSQL(query_ebookdetails);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void createtable_contentdetails(){
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            String query_ebookcontentdetails = "CREATE TABLE IF NOT EXISTS " + TABLE_EBOOKCONTENTDETAILS + "("
+                    + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + JSONDATA + " TEXT, "+ EBOOK_ID + " INTEGER, " + UNIT_ID + " INTEGER, " + CHAPTER_ID + " INTEGER, " + TYPE + " TEXT, " + SAVEDTIME + " TEXT)";
+            db.execSQL(query_ebookcontentdetails);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void createtable_subjects(){
         try {
@@ -236,48 +375,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void save_ebookpages(ContentValues c, int page_id) {
+    public void save_ebookdetails(ContentValues c, int ebookid/*, int unitid*/) {
 
         try {
-            createtable_ebookpages();
-            delete_ebookpages();
+            createtable_ebookdetails();
+            checkunitid(TABLE_EBOOKDETAILS, UNIT_ID);
             SQLiteDatabase db = getWritableDatabase();
-            long id = db.insertWithOnConflict(TABLE_EBOOKPAGES, null, c, SQLiteDatabase.CONFLICT_REPLACE);
+            String query = "DELETE FROM " + TABLE_EBOOKDETAILS + " where " + EBOOK_ID + " = '" + ebookid /*+ "' AND " + UNIT_ID + " = '" + unitid*/ + "'";
+            db.execSQL(query);
+            long id = db.insertWithOnConflict(TABLE_EBOOKDETAILS, null, c, SQLiteDatabase.CONFLICT_REPLACE);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        //get_ebookpages(page_id);
-
     }
 
-    public void save_contentdetails(ContentValues c) {
+    public void save_contentdetails(ContentValues c, int ebookid, int unitid, int chapterid) {
 
         try {
+
             createtable_contentdetails();
-            checkcol();
-            //delete_contentdetails();
             SQLiteDatabase db = getWritableDatabase();
+            String query = "DELETE FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebookid + "' AND " + UNIT_ID + " = '" + unitid+ "' AND " + CHAPTER_ID + " = '" + chapterid + "'";
+            db.execSQL(query);
             long id = db.insertWithOnConflict(TABLE_EBOOKCONTENTDETAILS, null, c, SQLiteDatabase.CONFLICT_REPLACE);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-    }
-
-    public void checkcol() {
-        try {
-            if (!isColumnExists(TABLE_EBOOKCONTENTDETAILS, EBOOK_ID)) {
-
-                altercontent();
-            }else{
-                Log.e("here","here");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void save_subjects(ContentValues c) {
@@ -294,13 +421,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public JSONArray get_ebookpages(int page_id) {
+
+    public JSONArray get_ebookdetails(/*String type_ebook,*/ int ebook_id, int unitid) {
         JSONArray resultSet = new JSONArray();
         try {
-            createtable_ebookpages();
+            createtable_ebookdetails();
+            checkunitid(TABLE_EBOOKDETAILS, UNIT_ID);
             SQLiteDatabase db = getWritableDatabase();
-            String search_page = "SELECT * FROM " + TABLE_EBOOKPAGES + " where " + PAGE_ID + " = '" + page_id + "'";
-            Cursor cursor = db.rawQuery(search_page, null);
+
+            //String searchQuery = "SELECT * FROM "+ TABLE_EBOOKCONTENTDETAILS + " where " + TYPE + " = '" + type_ebook + "'";
+            String searchQuery = "SELECT * FROM " + TABLE_EBOOKDETAILS + " where " + EBOOK_ID + " = '" + ebook_id +/* "' AND " + UNIT_ID + " = '" + unitid +*/ "'";
+            Cursor cursor = db.rawQuery(searchQuery, null);
             cursor.moveToFirst();
             resultSet = convertcursorvaltoJSOnArray(cursor);
             cursor.close();
@@ -310,14 +441,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return resultSet;
     }
 
-    public JSONArray get_contentdetails(String type_ebook, int ebook_id) {
+    public JSONArray get_contentdetails(String type_ebook, int ebook_id, int unitid/*, int chapterid*/) {
         JSONArray resultSet = new JSONArray();
         try {
             createtable_contentdetails();
             SQLiteDatabase db = getWritableDatabase();
 
             //String searchQuery = "SELECT * FROM "+ TABLE_EBOOKCONTENTDETAILS + " where " + TYPE + " = '" + type_ebook + "'";
-            String searchQuery = "SELECT JSONDATA FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + TYPE + " = '" + type_ebook + "'";
+            String searchQuery = "SELECT * FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + UNIT_ID + " = '" + unitid + "' AND "/* + CHAPTER_ID + " = '" + chapterid + "' AND "*/+ TYPE + " = '" + type_ebook +"'";
+            Cursor cursor = db.rawQuery(searchQuery, null);
+            cursor.moveToFirst();
+            resultSet = convertcursorvaltoJSOnArray(cursor);
+            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
+    public JSONArray get_contentdetails_withchapter(String type_ebook, int ebook_id, int unitid, int chapterid) {
+        JSONArray resultSet = new JSONArray();
+        try {
+            createtable_contentdetails();
+            SQLiteDatabase db = getWritableDatabase();
+
+            //String searchQuery = "SELECT * FROM "+ TABLE_EBOOKCONTENTDETAILS + " where " + TYPE + " = '" + type_ebook + "'";
+            String searchQuery = "SELECT * FROM " + TABLE_EBOOKCONTENTDETAILS + " where " + EBOOK_ID + " = '" + ebook_id + "' AND " + UNIT_ID + " = '" + unitid /*+ "' AND " + CHAPTER_ID + " = '" + chapterid*/ + "' AND "+ TYPE + " = '" + type_ebook +"'";
             Cursor cursor = db.rawQuery(searchQuery, null);
             cursor.moveToFirst();
             resultSet = convertcursorvaltoJSOnArray(cursor);
@@ -344,12 +493,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return resultSet;
     }
 
-    public void delete_ebookpages() {
+    public void delete_ebookdetails() {
 
         try {
-            createtable_ebookpages();
+            createtable_ebookdetails();
             SQLiteDatabase db = getWritableDatabase();
-            String query = "DELETE FROM " + TABLE_EBOOKPAGES;
+            String query = "DELETE FROM " + TABLE_EBOOKDETAILS;
+            Log.e("query ebook ", query);
             db.execSQL(query);
 
         } catch (Exception e) {
@@ -381,6 +531,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void checkunitid(String table, String column_name) {
+        try {
+            if (!isColumnExists(table, column_name)) {
+                altertableebookpages(table, column_name);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void altertableebookpages(String table, String column_name) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            String sql = "ALTER TABLE " + table + " ADD COLUMN " + column_name + " INTEGER  DEFAULT 0 NOT NULL";
+            db.execSQL(sql);
+        } catch (Exception localException) {
+            localException.printStackTrace();
         }
     }
 

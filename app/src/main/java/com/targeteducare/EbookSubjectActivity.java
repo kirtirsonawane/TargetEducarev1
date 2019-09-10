@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.targeteducare.Adapter.EbookDetailsAdapter;
@@ -21,13 +20,14 @@ import java.util.ArrayList;
 
 public class EbookSubjectActivity extends Activitycommon {
 
-    RecyclerView recyclerview_textviewselect, recyclerview_ebookdetails,recyclerview_chapter;
+    RecyclerView recyclerview_textviewselect, recyclerview_ebookdetails, recyclerview_chapter;
     EbookSubjectAdapter ebookSubjectAdapter;
     RecyclerView.LayoutManager layoutManager1, layoutManager2, layoutManager3;
     EbookDetailsAdapter ebookDetailsAdapter;
     ArrayList<EbookSubjects> ebookSubjects = new ArrayList<>();
     LinearLayout linearlayout_ebook;
 
+    Bundle b;
 
 
     @Override
@@ -58,12 +58,17 @@ public class EbookSubjectActivity extends Activitycommon {
             layoutManager2 = new LinearLayoutManager(EbookSubjectActivity.this);
             recyclerview_ebookdetails.setLayoutManager(layoutManager2);
 
-
-            ebookSubjectAdapter = new EbookSubjectAdapter(EbookSubjectActivity.this, ebookSubjects, lang);
-            recyclerview_textviewselect.setAdapter(ebookSubjectAdapter);
-
             /*ebookDetailsAdapter = new EbookDetailsAdapter(EbookSubjectActivity.this, ebookDetails, lang);
             recyclerview_ebookdetails.setAdapter(ebookDetailsAdapter);*/
+
+            b = getIntent().getExtras();
+
+            if (b != null) {
+                int video = b.getInt("video");
+                ebookSubjectAdapter = new EbookSubjectAdapter(EbookSubjectActivity.this, ebookSubjects, video, lang);
+                recyclerview_textviewselect.setAdapter(ebookSubjectAdapter);
+
+            }
 
             ebook_service();
 
@@ -81,7 +86,7 @@ public class EbookSubjectActivity extends Activitycommon {
             JSONObject obj = new JSONObject();
             JSONObject mainobj = new JSONObject();
 
-            obj.put("StudentId", "6");
+            obj.put("StudentId", /*GlobalValues.student.getId()*/"6");
             //obj.put("StudentId", GlobalValues.student.getMobile());
             obj.put("ImagePath", URLS.image_url_ebooktemp());
             mainobj.put("FilterParameter", obj.toString());
@@ -102,9 +107,10 @@ public class EbookSubjectActivity extends Activitycommon {
 
             if (accesscode == Connection.GET_STUDENTEBOOK.ordinal()) {
 
-                Log.e("student ebook res ", GlobalValues.TEMP_STR);
+                //Log.e("student ebook res ", GlobalValues.TEMP_STR);
                 try {
 
+                    ebookSubjects.clear();
                     JSONObject obj = new JSONObject(GlobalValues.TEMP_STR);
                     JSONObject root = obj.optJSONObject("root");
 
@@ -136,8 +142,9 @@ public class EbookSubjectActivity extends Activitycommon {
 
                 try {
 
+                    ebookSubjects.clear();
                     JSONArray array = DatabaseHelper.getInstance(EbookSubjectActivity.this).get_subjects();
-                    Log.e("array rec", array.toString());
+                    //Log.e("array rec", array.toString());
 
                     JSONObject obj = array.optJSONObject(0);
 
@@ -151,27 +158,37 @@ public class EbookSubjectActivity extends Activitycommon {
                     }
 
                     ebookSubjectAdapter.notifyDataSetChanged();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
 
 
-
         }
     }
 
     public void goto_ontextviewselected(ArrayList<EbookDetails> ebookDetails) {
-        ebookDetailsAdapter = new EbookDetailsAdapter(EbookSubjectActivity.this, ebookDetails, lang);
-        recyclerview_ebookdetails.setAdapter(ebookDetailsAdapter);
-        ebookDetailsAdapter.notifyDataSetChanged();
+
+        try {
+            ebookDetailsAdapter = new EbookDetailsAdapter(EbookSubjectActivity.this, ebookDetails, lang);
+            recyclerview_ebookdetails.setAdapter(ebookDetailsAdapter);
+            ebookDetailsAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     public void gotogetbeookcontent(EbookDetails ebookDetails) {
-        Intent i = new Intent(EbookSubjectActivity.this, EbookChapterSelectActivity.class);
-        i.putExtra("ebookdetails", ebookDetails);
-        startActivity(i);
+
+        try {
+            Intent i = new Intent(EbookSubjectActivity.this, EbookUnitSelectionActivity.class);
+            i.putExtra("ebookdetailsid", ebookDetails.getId());
+            i.putExtra("ebookdetailstype", ebookDetails.getType());
+            startActivity(i);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

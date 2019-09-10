@@ -1,52 +1,51 @@
 package com.targeteducare;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskExecutors;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.PhoneAuthCredential;
-import com.google.firebase.auth.PhoneAuthProvider;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.targeteducare.Classes.Student;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.targeteducare.Classes.Student;
 import com.targeteducare.database.DatabaseHelper;
+
 import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class LoginV1Activity extends Activitycommon {
     EditText mobile_no, enter_otp, ip_address;
     Button submit;
-    TextView tv_newuser;
+    TextView tv_newuser, tv_otpsent;
     String et_mobileno = "";
     SharedPreferences preferences;
     SharedPreferences.Editor edit;
@@ -88,12 +87,13 @@ public class LoginV1Activity extends Activitycommon {
     int isomr = 0;
     TextView problem_with_otp;
     TextView tv_resendotp;
-    private FirebaseAuth mAuth;
-    String verificationId = "";
+    //private FirebaseAuth mAuth;
+    //String verificationId = "";
     String tag = "";
     boolean isnotified = false;
     boolean showdevicelogin = false;
     TextView txtmsg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +102,11 @@ public class LoginV1Activity extends Activitycommon {
             super.onCreate(savedInstanceState);
             loadLocale();
             setContentView(R.layout.activity_login_v1);
-            mAuth = FirebaseAuth.getInstance();
+            //mAuth = FirebaseAuth.getInstance();
             tag = this.getClass().getSimpleName();
             mobile_no = findViewById(R.id.mobile_no);
+            tv_otpsent = findViewById(R.id.tv_otpsent);
+
             mobile_no.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -174,10 +176,11 @@ public class LoginV1Activity extends Activitycommon {
 
                         if (!(mobile_no.getText().toString().trim().length() < 10)) {
                             if (!mobile_no.getText().toString().equals("")) {
-                                Log.e("Resent otp is ", otp);
-                                sendVerificationCode(mobile_no.getText().toString());
-                                // ConnectionManager.getInstance(LoginV1Activity.this).getotp(mobile_no.getText().toString(), otp);
-                                Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + mobile_no.getText().toString() + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                                //Log.e("Resent otp is ", otp);
+                                //sendVerificationCode(mobile_no.getText().toString());
+                                ConnectionManager.getInstance(LoginV1Activity.this).getotp(mobile_no.getText().toString(), getResources().getString(R.string.message_otp_verifycode) + " " +  otp);
+                                tv_otpsent.setText(R.string.message_otpsenttonumber + " " + getResources().getString(R.string.message_pleaseverify));
+                                //Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + mobile_no.getText().toString() + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
                                 submit.setText(getResources().getString(R.string.verify));
                             } else {
                                 Toast.makeText(LoginV1Activity.this, getResources().getString(R.string.message_entermobilenumber), Toast.LENGTH_SHORT).show();
@@ -214,7 +217,7 @@ public class LoginV1Activity extends Activitycommon {
                 Type type = new TypeToken<Student>() {
                 }.getType();
                 GlobalValues.student = gson.fromJson(preferences.getString("studentdetails", ""), type);
-                Log.e("isnotified ", "isnotified in login" + isnotified);
+                //Log.e("isnotified ", "isnotified in login" + isnotified);
                 Intent intent = new Intent(LoginV1Activity.this, GridMainActivity.class);
                 intent.putExtra("isnotified", isnotified);
                 startActivity(intent);
@@ -272,9 +275,10 @@ public class LoginV1Activity extends Activitycommon {
         try {
             if (submit.getText().equals(getResources().getString(R.string.submit))) {
                 et_mobileno = mobile_no.getText().toString();
-                Log.e("substring ","substring "+et_mobileno.substring(4, 10));
+                //Log.e("substring ","substring "+et_mobileno.substring(4, 10));
                 if (!(et_mobileno.trim().equals(""))) {
                     if (!(et_mobileno.trim().length() < 10)) {
+
                         JSONObject obj = new JSONObject();
                         JSONObject mainobj = new JSONObject();
                         try {
@@ -313,7 +317,7 @@ public class LoginV1Activity extends Activitycommon {
                     } else {
                         verifyCode(code);
                     }
-                    Log.e("I am into ", "flag == true");
+                    //Log.e("I am into ", "flag == true");
                 }
             }
         } catch (Exception e) {
@@ -325,12 +329,52 @@ public class LoginV1Activity extends Activitycommon {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 102) {
-            submitdata();
+            if (ActivityCompat.checkSelfPermission(LoginV1Activity.this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                opendialog("Kindly allow permissions for security reasons");
+            }
+            //submitdata();
+        }else if(requestCode == 101){
+            if (ActivityCompat.checkSelfPermission(LoginV1Activity.this, android.Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                opendialog("Kindly allow permissions for security reasons");
+            }
+        }
+    }
+
+    AlertDialog alertdialog = null;
+    public void opendialog(String msg) {
+        try {
+            if (!(LoginV1Activity.this).isFinishing()) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(this);
+                alert.setMessage(msg);
+                alert.setCancelable(false);
+
+                alert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", LoginV1Activity.this.getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+                    }
+                });
+                alertdialog = alert.create();
+
+                try {
+                    if (!(LoginV1Activity.this).isFinishing()) {
+                        alertdialog.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    protected void onResponsed(int statuscode, int accesscode, String data) {
+    protected void onResponsed(int statuscode, int accesscode, final String data) {
         super.onResponsed(statuscode, accesscode, data);
         try {
             if (statuscode == Constants.STATUS_OK) {
@@ -344,17 +388,87 @@ public class LoginV1Activity extends Activitycommon {
                         String error = subroot.optString("error");
                         //Log.e("error1 ",error);
                         if (error.equals("")) {
+
                             flag = true;
-                            tv_resendotp.setVisibility(View.VISIBLE);
+
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
+
+                            databaseReference.child(mobile_no.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        if(dataSnapshot.child("IEMIno").getValue()!=null){
+                                            String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                            if(iemi.equalsIgnoreCase(Constants.IEMIno)){
+                                                Log.e("iemi inside ", iemi);
+                                                //userexists = true;
+                                                enter_otp.setVisibility(View.GONE);
+                                                tv_resendotp.setVisibility(View.GONE);
+                                                updatedata();
+                                            }
+                                            else{
+                                                //userexists = false;
+                                                submit.setText(getResources().getString(R.string.verify));
+                                                enter_otp.setVisibility(View.VISIBLE);
+                                                tv_resendotp.setVisibility(View.VISIBLE);
+                                                final int random = new Random().nextInt(899999) + 100000;
+                                                otp = Integer.toString(random);
+                                                enter_otp.requestFocus();
+                                                if (InternetUtils.getInstance(LoginV1Activity.this).available()){
+                                                    ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, getResources().getString(R.string.message_otp_verifycode) + " " + otp);
+                                                    tv_otpsent.setText(getResources().getString(R.string.message_otpsenttonumber) + " " + getResources().getString(R.string.message_pleaseverify));
+                                                    //Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }/*else{
+                                            //userexists = false;
+                                            submit.setText(getResources().getString(R.string.verify));
+                                            enter_otp.setVisibility(View.VISIBLE);
+                                            tv_resendotp.setVisibility(View.VISIBLE);
+                                            final int random = new Random().nextInt(899999) + 100000;
+                                            otp = Integer.toString(random);
+                                            enter_otp.requestFocus();
+                                            if (InternetUtils.getInstance(LoginV1Activity.this).available()){
+                                                ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, getResources().getString(R.string.message_otp_verifycode) + " " + otp);
+                                                Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }*/
+                                    }else{
+                                        //userexists = false;
+                                        submit.setText(getResources().getString(R.string.verify));
+                                        enter_otp.setVisibility(View.VISIBLE);
+                                        tv_resendotp.setVisibility(View.VISIBLE);
+                                        final int random = new Random().nextInt(899999) + 100000;
+                                        otp = Integer.toString(random);
+                                        enter_otp.requestFocus();
+                                        if (InternetUtils.getInstance(LoginV1Activity.this).available()){
+                                            ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, getResources().getString(R.string.message_otp_verifycode) + " " + otp);
+                                            Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+                            /*tv_resendotp.setVisibility(View.VISIBLE);
                             submit.setText(getResources().getString(R.string.verify));
                             enter_otp.setVisibility(View.VISIBLE);
                             final int random = new Random().nextInt(899999) + 100000;
                             otp = Integer.toString(random);
                             enter_otp.requestFocus();
-                            if (InternetUtils.getInstance(LoginV1Activity.this).available())
-                                sendVerificationCode(mobile_no.getText().toString());
-                            // ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, otp);
-                            Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                            if (InternetUtils.getInstance(LoginV1Activity.this).available()){
+                                ConnectionManager.getInstance(LoginV1Activity.this).getotp(et_mobileno, otp);
+                                Toast.makeText(context, getResources().getString(R.string.message_otpsenttonumber) + " " + et_mobileno + getResources().getString(R.string.message_pleaseverify), Toast.LENGTH_SHORT).show();
+                            }*/
+                                //sendVerificationCode(mobile_no.getText().toString());
+
+
                             Log.e("OTP is ", otp);
                             Id = subroot.optString("Id");
                             Name = subroot.optString("Name");
@@ -378,7 +492,7 @@ public class LoginV1Activity extends Activitycommon {
                             Adhar = subroot.optString("Adhar");
                             IsActive = subroot.optString("IsActive");
                             Gender = subroot.optString("Gender");
-                            Log.e("In login, gender is ", Gender);
+                            //Log.e("In login, gender is ", Gender);
                             Nationality = subroot.optString("Nationality");
                             AltMobile = subroot.optString("AltMobile");
                             AltEmail = subroot.optString("AltEmail");
@@ -407,7 +521,7 @@ public class LoginV1Activity extends Activitycommon {
 
                             if (id != null) {
                                 if (id.length() > 0) {
-                                    Log.e("student id ", "from globalvalues is " + id);
+                                    //Log.e("student id ", "from globalvalues is " + id);
                                     if (!(Id.equalsIgnoreCase(id))) {
                                         DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.TABLE_MSTEXAMINATION);
                                         DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.TABLE_MSTEXAMINATIONv1);
@@ -419,7 +533,6 @@ public class LoginV1Activity extends Activitycommon {
                                         DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.TABLE_MSTSELECTEDANS);
                                         DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.FEEDBACK);
                                         DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.Table);
-                                        //DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.TABLE_NOTIFICATION);
                                         //  DatabaseHelper.getInstance(LoginV1Activity.this).deletedata(DatabaseHelper.Table_Splash);
                                     }
                                 }
@@ -447,17 +560,50 @@ public class LoginV1Activity extends Activitycommon {
     @Override
     protected void onResume() {
         super.onResume();
+
+        try {
+
+            TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+
+                //ActivityCompat.requestPermissions(LoginV1Activity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, 102);
+                //opendialog("Kindly allow permissions for security reasons");
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+            } else {
+                String iEMIno = telephonyManager.getDeviceId();
+                Constants.IEMIno = iEMIno;
+                Log.e("rec in login ", Constants.IEMIno);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         CheckUPdate();
     }
 
     private void verifyCode(String code) {
-        try {
+
+        if(otp.equals(code)){
+            Toast.makeText(LoginV1Activity.this, "Verified successfully", Toast.LENGTH_SHORT).show();
+            updatedata();
+        }else{
+            Toast.makeText(LoginV1Activity.this, "Not verified!!", Toast.LENGTH_SHORT).show();
+        }
+
+
+        /*try {
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
             signInwithPhoneCredential(credential);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Wrong code", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     private void updatedata() {
@@ -498,10 +644,13 @@ public class LoginV1Activity extends Activitycommon {
         }else {
             String iEMIno = telephonyManager.getDeviceId();
             GlobalValues.student.setIEMIno(iEMIno);
-            addtofirebase(GlobalValues.student.getMobile());
+            if(mobilenotblankandlengthten(GlobalValues.student.getMobile())){
+                addtofirebase(GlobalValues.student.getMobile());
+            }
+
         }
         String jsonstudent = gson.toJson(GlobalValues.student);
-        Log.e("Id is: ", GlobalValues.student.getId());
+        //Log.e("Id is: ", GlobalValues.student.getId());
         edit.putString("studentdetails", jsonstudent);
 
         edit.putBoolean("isloginv1", true);
@@ -516,7 +665,7 @@ public class LoginV1Activity extends Activitycommon {
         finish();
     }
 
-    private void signInwithPhoneCredential(PhoneAuthCredential credential) {
+    /*private void signInwithPhoneCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -545,10 +694,10 @@ public class LoginV1Activity extends Activitycommon {
                 }
             }
         });
-    }
+    }*/
 
 
-    private void sendVerificationCode(String mobile_no) {
+    /*private void sendVerificationCode(String mobile_no) {
         try {
             if (InternetUtils.getInstance(LoginV1Activity.this).available()) {
                 //   Log.e("sending code ", "sending code ");
@@ -564,10 +713,10 @@ public class LoginV1Activity extends Activitycommon {
             reporterror(tag, e.toString());
             e.printStackTrace();
         }
-    }
+    }*/
 
 
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+    /*private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
@@ -590,9 +739,8 @@ public class LoginV1Activity extends Activitycommon {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Log.e("error fb ", e.getMessage());
         }
-    };
+    };*/
 
     public void addtofirebase(String uId) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Constants.firebasedbname);
@@ -603,8 +751,16 @@ public class LoginV1Activity extends Activitycommon {
                     //Log.e("Datas   ", "" + dataSnapshot.toString());
                     if (dataSnapshot.getValue() != null) {
                         if (dataSnapshot.exists()) {
-                            GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
-                            addtofirebasedb(0);
+
+                            if (dataSnapshot.child("IEMIno").getValue() != null) {
+                                String iemi = dataSnapshot.child("IEMIno").getValue(String.class);
+
+                                if (iemi.equalsIgnoreCase(Constants.IEMIno)) {
+                                    GlobalValues.student.setLastvisiteddate(DateUtils.getSqliteTime());
+                                    addtofirebasedb(0);
+                                }
+                            }
+
                         } else {
                             addtofirebasedb(1);
                         }
@@ -638,10 +794,11 @@ public class LoginV1Activity extends Activitycommon {
                     databaseReference.updateChildren(childUpdates);*/
 
                     Map<String, Object> childUpdates = new HashMap<>();
-                    Log.e("Timetaken ", "timetaken " + GlobalValues.student.getTimetaken());
+                    //Log.e("Timetaken ", "timetaken " + GlobalValues.student.getTimetaken());
                     childUpdates.put("useractive", 1);
                     childUpdates.put("lastvisiteddate", DateUtils.getSqliteTime());
-                    childUpdates.put("IEMIno", GlobalValues.student.getIEMIno());
+                    childUpdates.put("IEMIno", Constants.IEMIno);
+                    childUpdates.put("Mobile", GlobalValues.student.getMobile());
                     childUpdates.put("islogin", 1);
 
                     databaseReference.child(GlobalValues.student.getMobile()).updateChildren(childUpdates);

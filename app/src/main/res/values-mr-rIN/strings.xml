@@ -289,4 +289,6 @@ TARGET EDUCARE PEAK खात्यावर लागू असलेल्य
     <string name="getrewardpt">प्रत्येक यशस्वी रेफरलवर बक्षीस मिळवा</string>
     <string name="no_offline_data_available">"कोणताही ऑफलाइन  माहिती उपलब्ध नाही "</string>
     <string name="no_exam_available">परीक्षा उपलब्ध नाहीत</string>
+    <string name="message_otp_verifycode">आपला सत्यापन कोड Target Educare PEAK साठी आहे</string>
+    <string name="view_omrsheet">ओमर शीट पहा</string>
 </resources>
